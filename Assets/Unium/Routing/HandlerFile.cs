@@ -71,11 +71,16 @@ namespace gw.unium
             {
                 // find "mouted" drive
 
+                if( path[0] == '/' )
+                {
+                    path = path.Substring( 1 );
+                }
+
                 var drive = sPaths[ "root" ];
 
                 foreach( var key in sPaths.Keys )
                 {
-                    if( path.StartsWith( "/" + key + "/" ) )
+                    if( path.StartsWith( key + "/" ) )
                     {
                         drive = sPaths[ key ];
                         path  = path.Substring( key.Length + 2 );

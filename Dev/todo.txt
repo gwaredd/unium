@@ -1,14 +1,10 @@
 # Now
 --------------------------------------------------------------------------------
-focus - wrap up for release -> docs, examples, project clean up
+focus - wrap up for release -> docs, examples
 
 * docs
   * readme
   * tutorial & sample scene
-
-* project
-  * collapse git history
-  * branch for release and dev variants
 
 * features
   * default web interface
@@ -16,6 +12,13 @@ focus - wrap up for release -> docs, examples, project clean up
 
 # Later
 --------------------------------------------------------------------------------
+* sokoban
+  * tidy up
+  * write automated test framework
+  * write automated tests
+
+* bugs?
+  * make server work when swapping between background and foreground on device (test on phone)
 
 * profie - potential speed improvements
   * Numbers.Compare
@@ -25,13 +28,3 @@ focus - wrap up for release -> docs, examples, project clean up
 * features
   * callout feature - establish connection by calling out to a web server
   * do we need to (optinally) return type meta data on GQL queries?
-
-* sokoban
-  * tidy up
-  * write automated test framework
-  * write automated tests
-
-
-* bugs?
-  * make server work when swapping between background and foreground on device (test on phone)
-

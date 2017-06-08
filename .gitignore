@@ -1,0 +1,17 @@
+Builds/*
+build/*
+Temp/*
+Library/*
+obj/*
+.vs/*
+Reference/*
+*.sln
+*.unityproj
+*.pidb
+*.userprefs
+*.csproj
+.DS_Store
+node_modules
+bower_components
+.vscode
+

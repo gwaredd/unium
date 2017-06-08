@@ -1,17 +1,24 @@
+# temp directories
 Builds/*
 build/*
 Temp/*
 Library/*
 obj/*
+
+# tool created files
 .vs/*
-Reference/*
+.vscode/*
 *.sln
 *.unityproj
 *.pidb
 *.userprefs
 *.csproj
 .DS_Store
+
+# libs
 node_modules
 bower_components
-.vscode
+
+# tools
+checkout_merge.bat
 

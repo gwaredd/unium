@@ -4,7 +4,7 @@ Temp/*
 Library/*
 obj/*
 .vs/*
-Reference/*
+.vscode/*
 *.sln
 *.unityproj
 *.pidb
@@ -13,5 +13,3 @@ Reference/*
 .DS_Store
 node_modules
 bower_components
-.vscode
-

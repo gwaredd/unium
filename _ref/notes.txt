@@ -1,0 +1,23 @@
+
+--------------------------------------------------------------------------------
+
+* The code you release is the code you test
+* framework is technology neutral
+
+#if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
+
+perf
+  disable debug
+  enable for .net api compatibility (allows regex compilation, much faster!)
+
+
+
+--------------------------------------------------------------------------------
+
+
+
+* interact - click / key press / swipe, rotate, resize window, close
+
+* create/delete objects?
+* screen capture / debug log / crash reports / stack traces
+

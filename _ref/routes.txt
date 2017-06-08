@@ -1,0 +1,54 @@
+Rotues & Messages
+--------------------------------------------------------------------------------
+
+REST
+
+    /q
+    /about
+    
+    /utils/debug
+    /utils/screenshot
+    /utils/scene
+
+    /file
+    /file/persistent
+    /file/streaming
+
+
+
+Socket
+
+    /q
+    /about
+
+    /bind/events.debug
+    /bind/events.scene
+
+
+Socket commands
+
+  /socket.stop(id)
+  /socket.unbind(id)
+  /socket.ping()
+  /socket.repeaterCount
+
+
+Socket Messages
+
+    {
+        id  : ...
+        q   : ...
+        repeat:
+        {
+            skip    : ...
+            samples : ...
+            freq    : ...
+            cache   : ...
+        }
+    }
+
+    {
+        id:
+        data|info|error:
+    }
+

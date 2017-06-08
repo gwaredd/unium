@@ -1,0 +1,37 @@
+# Now
+--------------------------------------------------------------------------------
+focus - wrap up for release -> docs, examples, project clean up
+
+* docs
+  * readme
+  * tutorial & sample scene
+
+* project
+  * collapse git history
+  * branch for release and dev variants
+
+* features
+  * default web interface
+
+
+# Later
+--------------------------------------------------------------------------------
+
+* profie - potential speed improvements
+  * Numbers.Compare
+  * regex for name matching
+  * path parsing regex
+
+* features
+  * callout feature - establish connection by calling out to a web server
+  * do we need to (optinally) return type meta data on GQL queries?
+
+* sokoban
+  * tidy up
+  * write automated test framework
+  * write automated tests
+
+
+* bugs?
+  * make server work when swapping between background and foreground on device (test on phone)
+

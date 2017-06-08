@@ -1,0 +1,44 @@
+doctype html
+html
+  head
+    title Unium Demo
+    link( rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' )
+
+  body( ng-app="app" ng-controller="Root" )
+
+    .jumbotron.text-center
+      h1 Unium
+      p v0.2
+
+    .container
+
+      .panel.panel-default
+        .panel-heading Send Message
+        .panel-body
+
+          .btn-group( style="margin-right: 20px;" )
+            button.btn.btn-success( ng-click="ToggleConnect()" ng-class="{'btn-success':!connected, 'btn-danger':connected}" ) {{ connected ? 'Disconnect' : 'Connect' }}
+          .btn-group
+            button.btn.btn-info( ng-click="Msg('debug')" ) Debug
+            button.btn.btn-info( ng-click="Msg('unbind')" ) Unbind
+            button.btn.btn-info( ng-click="Msg('fps')" ) FPS
+            button.btn.btn-info( ng-click="Msg('sphere')" ) Sphere
+            
+          .btn-group( style="margin-left: 20px;" )
+            button.btn.btn-danger( ng-click="Msg('stop')" ) Stop
+
+          hr/
+          .form-group
+            textarea.form-control( rows='5' ng-model="msg" )
+
+          .btn-group
+            button.btn.btn-primary( ng-click='OnSend()' ) Send
+            button.btn( ng-click='OnClear()' ) Clear
+
+      pre
+        | {{ output }}
+
+    script( src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js' )
+    script( src="demo.js" )
+
+

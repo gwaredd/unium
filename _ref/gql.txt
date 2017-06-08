@@ -1,0 +1,49 @@
+
+
+/object.attr
+/*              wildcard
+//[]            where
+//[has('')]
+//[last()]
+
+
+/object.attr=value
+/object.function()
+
+
+$ to mean 'this'
+
+
+where functions
+
+    has('')
+    last()
+
+from ncalc
+
+    https://ncalc.codeplex.com/wikipage?title=functions&referringTitle=Home
+    https://github.com/sheetsync/NCalc
+
+    abs
+    min
+    max
+
+    cos
+    sin
+    tan
+    acos
+    asin
+    atan
+
+    exp
+    pow
+    floor
+    ceiling
+    round
+    log
+    sign
+
+    sqrt
+    truncate    1.7 => 1
+
+

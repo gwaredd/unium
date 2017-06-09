@@ -2,12 +2,23 @@
 --------------------------------------------------------------------------------
 focus - wrap up for release -> docs, examples
 
-* docs
-  * readme
-  * tutorial & sample scene
+* tutorial
+* test framework
 
 * features
   * default web interface
+
+* docs - pdf
+  * routing
+  * GQL
+  * web sockets
+  * compilation
+  * streamin assets
+
+* to test
+  * difference versions of unity
+  * release and debug builds
+  * ios and android variants
 
 
 # Later

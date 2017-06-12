@@ -158,8 +158,54 @@ namespace gw.gql
                             throw new FormatException( "GQL::Query - failed to parse invoke, end of arguments not found" );
                         }
 
-                        Action      = Query.Action.Invoke;
-                        Arguments   = p.Substring( 0, p.Length - 1 ).Split( new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries );
+                        Action = Query.Action.Invoke;
+
+                        var argsStr = p.Substring( 0, p.Length - 1 );
+
+                        var args = new List<string>();
+
+                        for( int pos = 0; pos < argsStr.Length; pos++ )
+                        {
+                            var ch = argsStr[ pos ];
+
+                            if( char.IsWhiteSpace( ch ) )
+                            {
+                                continue;
+                            }
+
+                            var start = pos;
+
+                            if( ch == '\'' || ch == '{' || ch == '"' )
+                            {
+                                var end = ch == '{' ? '}' : ch;
+
+                                while( ++pos < argsStr.Length )
+                                {
+                                    if( argsStr[ pos ] == end )
+                                    {
+                                        args.Add( argsStr.Substring( start, pos - start + 1 ) );
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                do
+                                {
+                                    if( pos == argsStr.Length || argsStr[ pos ] == ',' || char.IsWhiteSpace( argsStr[ pos ] ) )
+                                    {
+                                        args.Add( argsStr.Substring( start, pos - start ) );
+                                        break;
+                                    }
+
+                                    pos++;
+                                }
+                                while( true );
+                            }
+                        }
+
+                        Arguments = args.ToArray();
+                        //Arguments   = p.Substring( 0, p.Length - 1 ).Split( new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries );
                     }
 
                     // an action can only occur on the last segment

@@ -51,7 +51,7 @@ namespace gw.gql
                         if( fieldInfo.FieldType != cachedType )
                         {
                             cachedType  = fieldInfo.FieldType;
-                            cachedValue = cachedType.IsEnum ? Enum.Parse( cachedType, valueAsString ) : Convert.ChangeType( valueAsString, cachedType );
+                            cachedValue = ConvertType.FromString( valueAsString, cachedType );
                             cacheValid  = true;
                         }
 
@@ -75,7 +75,7 @@ namespace gw.gql
                         if( propInfo.PropertyType != cachedType )
                         {
                             cachedType  = propInfo.PropertyType;
-                            cachedValue = cachedType.IsEnum ? Enum.Parse( cachedType, valueAsString ) : Convert.ChangeType( valueAsString, cachedType );
+                            cachedValue = ConvertType.FromString( valueAsString, cachedType );
                             cacheValid  = true;
                         }
 

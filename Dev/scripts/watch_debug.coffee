@@ -1,24 +1,8 @@
 #--------------------------------------------------------------------------------
 
-log       = require 'npmlog'
-util      = require 'util'
-moment    = require 'moment'
+log       = require './log'
 WebSocket = require 'ws'
 
-
-#--------------------------------------------------------------------------------
-
-# override log write to augment with dynamic text
-log.__write = log.write
-log.write = (msg, style) -> this.__write ( if util.isFunction msg then msg() else msg ), style
-
-log.prefixStyle = fg: 'white'
-log.heading = -> "[" + moment().format( "YYYY-MM-DD HH:MM:SS" ) + "]"
-
-log.style.warn  = fg: 'yellow', bg: 'black'
-log.disp.info   = ''
-log.disp.warn   = ' [WARNING]'
-log.disp.error  = ' [ERROR]'
 
 #--------------------------------------------------------------------------------
 

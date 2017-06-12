@@ -10,6 +10,11 @@ public class Player : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
+    public void MoveTo( Vector3 pos )
+    {
+        agent.destination = pos;
+    }
+
     void Update()
     {
         if( Input.GetMouseButtonDown( 0 ) )
@@ -18,7 +23,7 @@ public class Player : MonoBehaviour
 
             if( Physics.Raycast( Camera.main.ScreenPointToRay( Input.mousePosition ), out hit, 100 ) )
             {
-                agent.destination = hit.point;
+                MoveTo( hit.point );
             }
         }
     }

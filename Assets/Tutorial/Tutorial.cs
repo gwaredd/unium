@@ -28,6 +28,8 @@ public class Tutorial : MonoBehaviour
         PickupText.text = NumPickups.ToString();
 
         GetComponent<AudioSource>().Play();
+
+        Debug.Log( "Pickup collected" );
     }
 }
 

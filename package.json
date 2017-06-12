@@ -4,7 +4,8 @@
   "description": "unium tools and tests",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --opts Dev/test/mocha.opts Dev/test"
+    "test": "mocha --opts Dev/test/mocha.opts Dev/test",
+    "tutorial": "coffee Dev/scripts/tutorial.coffee -d"
   },
   "author": "Gwaredd",
   "license": "MIT",
@@ -16,6 +17,8 @@
     "mocha": "^3.3.0",
     "moment": "^2.18.1",
     "npmlog": "^4.1.0",
+    "optimist": "^0.6.1",
+    "q": "^1.5.0",
     "requestify": "^0.2.5",
     "ws": "^2.3.1"
   }

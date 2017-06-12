@@ -205,7 +205,6 @@ namespace gw.gql
                         }
 
                         Arguments = args.ToArray();
-                        //Arguments   = p.Substring( 0, p.Length - 1 ).Split( new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries );
                     }
 
                     // an action can only occur on the last segment

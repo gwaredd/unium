@@ -1,10 +1,11 @@
 #--------------------------------------------------------------------------------
 
-log       = require './log'
+_         = require 'underscore'
 chalk     = require 'chalk'
 q         = require 'q'
 WebSocket = require 'ws'
 options   = require 'optimist'
+log       = require './log'
 
 require( 'chai' ).should()
 
@@ -34,6 +35,8 @@ Game = ->
 
   nextID      = 0
   ws          = null
+
+  watches     = {}
   msgPromise  = {}
 
   @onMessage = (msg) ->
@@ -43,13 +46,18 @@ Game = ->
     msg = JSON.parse msg
 
     return unless msg.id?
-    return unless msg.id of msgPromise
 
-    d = msgPromise[ msg.id ]
-    delete msgPromise[ msg.id ]
-    
-    return d.resolve msg.data if msg.data?
-    return d.reject msg.error if msg.error?
+    if msg.id of watches
+      return log.error  "#{msg.id} - #{msg.error}" if msg.error?
+      return log.notice "#{msg.id} - #{msg.info}" if msg.info?
+      watches[ msg.id ].resolve msg.data
+
+    if msg.id of msgPromise
+      d = msgPromise[ msg.id ]
+      delete msgPromise[ msg.id ]
+      
+      return d.resolve msg.data if msg.data?
+      return d.reject msg.error if msg.error?
 
 
   #--------------------------------------------------------------------------------
@@ -63,6 +71,17 @@ Game = ->
     ws.send msg
     d.promise
 
+  @watch = (id, url) ->
+    watches[ id ] = []
+    msg = JSON.stringify id: id, q: url
+    log.info "send: #{msg}" if argv.debug?
+    ws.send msg
+
+  @waitFor = (id, timeout) ->
+    d = q.defer()
+    watches[ id ] = d
+    setTimeout ( -> d.reject 'timed out' ), timeout
+    d.promise
 
   @close = ->
     log.info "closing"
@@ -97,19 +116,29 @@ checkIsTutorial = (g) ->
 
 #--------------------------------------------------------------------------------
 
-collectPickup = (g) ->
-
-  # log.info "collecting pickups"
-
-  # todo bind to debug output
+collectNextPickup = (g) ->
 
   g
     .get "/q/scene/Game/Pickup[0].Transform.position"
     .then (d) ->
-      return log.info "no more pickups" if not d? or d.length == 0
-      log.info "collect pickup at " + d[0]
-      v = JSON.stringify d[0]
-      g.get "/q/scene/Game/Player.Player.MoveTo(#{v})"
+
+      if not d? or d.length == 0
+        log.info "no more pickups"
+        g.close()
+        return
+        
+      pos = JSON.stringify d[0]
+      log.info "collect pickup at #{pos}"
+      g
+        .get "/q/scene/Game/Player.Player.MoveTo(#{pos})"
+        .then -> g.waitFor 'pickup', 10000
+        .then -> collectNextPickup g
+
+
+#--------------------------------------------------------------------------------
+
+watchPickups = (g) ->
+  g.watch "pickup", "/bind/scene/Game.Tutorial.OnPickupCollected"
 
 
 #--------------------------------------------------------------------------------
@@ -119,7 +148,7 @@ g = new Game()
 g
   .connect 'ws://localhost:8342/ws'
   .then -> checkIsTutorial g
-  .then -> collectPickup g
-  .then -> g.close()
+  .then -> watchPickups g
+  .then -> collectNextPickup g
   .catch (e) -> log.error e; g.close()
  

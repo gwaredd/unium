@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
@@ -7,6 +8,8 @@ public class Tutorial : MonoBehaviour
     public Text PickupText;
 
     int NumPickups = 0;
+
+    public event Action<object> OnPickupCollected;
 
 	void Start()
     {
@@ -30,6 +33,11 @@ public class Tutorial : MonoBehaviour
         GetComponent<AudioSource>().Play();
 
         Debug.Log( "Pickup collected" );
+
+        if( OnPickupCollected != null )
+        {
+            OnPickupCollected( "Pickup Collected" );
+        }
     }
 }
 

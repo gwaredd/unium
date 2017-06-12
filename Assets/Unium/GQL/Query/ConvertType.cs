@@ -23,9 +23,7 @@ namespace gw.gql
 
             return Convert.ChangeType( value, type );
         }
-
     }
-
 }
 
 #endif

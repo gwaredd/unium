@@ -31,6 +31,9 @@ focus - wrap up for release -> docs, examples
 * bugs?
   * make server work when swapping between background and foreground on device (test on phone)
 
+* improvements
+  * improve type conversion and argument parsing - e.g. when passing in vectors / objects to function calls
+
 * profie - potential speed improvements
   * Numbers.Compare
   * regex for name matching

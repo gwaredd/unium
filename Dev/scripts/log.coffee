@@ -17,6 +17,7 @@ log.heading = -> "[" + moment().format( "YYYY-MM-DD HH:MM:SS" ) + "]"
 
 log.style.warn  = fg: 'yellow', bg: 'black'
 log.disp.info   = ''
+log.disp.http   = ' [DEBUG]'
 log.disp.warn   = ' [WARNING]'
 log.disp.error  = ' [ERROR]'
 

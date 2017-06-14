@@ -6,6 +6,7 @@ WebSocket = require 'ws'
 
 
 #================================================================================
+# functions (or priomises) attached to messages with an optional timeout
 
 MessageHandlers = ->
 
@@ -14,53 +15,56 @@ MessageHandlers = ->
 
 
   #--------------------------------------------------------------------------------
+  # cancel a handler given a message id and it's unique id
 
-  _cancel = ( id, pid ) ->
+  _cancel = ( mid, uid ) ->
 
-    return unless id of handlers
+    return unless mid of handlers
 
-    handlers[ id ] =_.reject handlers[ id ], (h) ->
-      return false if h.pid != pid
+    handlers[ mid ] = _.reject handlers[ mid ], (h) ->
+
+      return false if h.uid != uid
 
       clearTimeout h.timeout if h.timeout?
       h.callback.reject "timed out" if h.callback.promise?
+
       return true
 
 
   #--------------------------------------------------------------------------------
+  # add a handler for a given message id
 
-  @add = ( id, callback, timer ) ->
+  @add = ( mid, callback, timer ) ->
 
-    ledger = this
-
-    pid = ++nextID
-    cancel  = -> _cancel id, pid
+    uid = ++nextID # unique id
+    cancel  = -> _cancel mid, uid
     timeout = if not timer? then null else setTimeout cancel, timer
 
-    handlers[ id ] = [] unless id of handlers
-    handlers[ id ].push pid:pid, callback:callback, timeout:timeout
+    handlers[ mid ] = [] unless mid of handlers
+    handlers[ mid ].push uid:uid, callback:callback, timeout:timeout
   
     return cancel
 
 
   #--------------------------------------------------------------------------------
+  # remove all handlers, cancel any timeouts and reject promises
 
   @removeAll = ->
 
-    for id,list of handlers
-      _.each list, (h) ->
+    _.mapObject handlers, (list) -> _.each list, (h) ->
         clearTimeout h.timeout if h.timeout?
         h.callback.reject "removing handler" if h.callback.promise?
 
     handlers = {}
 
   #--------------------------------------------------------------------------------
+  # pass message contents along to al
 
   @onMessage = (msg) ->
 
     return unless msg.id? and msg.id of handlers
 
-    # for each handler
+    # invoke each handler (removing promises)
 
     handlers[ msg.id ] = _.filter handlers[ msg.id ], (h) ->
 
@@ -70,7 +74,7 @@ MessageHandlers = ->
 
         if msg.error? then  h.callback.reject   msg.error 
         if msg.data?  then  h.callback.resolve  msg.data
-        if msg.info?  then  h.callback.resolve  msg.info 
+        if msg.info?  then  h.callback.resolve  msg.info
 
         return false
 
@@ -78,7 +82,8 @@ MessageHandlers = ->
         h.callback msg
         return true
 
-    # remove entry if emtpy
+
+    # remove an empty handler list
 
     delete handlers[ msg.id ] if handlers[ msg.id ].length == 0
 
@@ -87,6 +92,7 @@ MessageHandlers = ->
 
 
 #================================================================================
+# convenient interface for unium WebSockets
 
 UniumSocket = ->
 
@@ -122,43 +128,57 @@ UniumSocket = ->
     @debug "send", msg if @debug?
     @ws.send msg
 
+
   #--------------------------------------------------------------------------------
-  # do thing
+  # do a thing
 
-  @get = ( url, id, timer )->
 
-    d = q.defer()
+  # send a message and wait for the response
+
+  @get = ( url, timer, id )->
+
+    future = q.defer()
 
     id = "m" + ++nextID unless id?
-    msg = JSON.stringify id:id, q:url
-    handlers.add id, d, timer
-    @send msg
+    handlers.add id, future, timer
+    @send JSON.stringify id:id, q:url
   
-    d.promise
+    future.promise
 
 
   #--------------------------------------------------------------------------------
   # watch a thing
 
+
+  # bind and unbind to game events
+
   @bind = (id, url) ->
     url = url.subsstring 2 if url.startsWith "/q/" 
-    @get "/bind#{url}", id
+    url = url.subsstring 5 if url.startsWith "/bind/" 
+    @get "/bind#{url}", null, id
     
   @unbind = (id) ->
-    @get "/socket.unbind(#{id})", id
-
-  @on = (id, fn) ->
-    handlers.add id, fn
+    @get "/socket.unbind(#{id})", null, id
 
 
   #--------------------------------------------------------------------------------
   # wait for a thing
 
+
+  # whenever message of type 'id' is received, call the callback function
+  # returns a cancel function
+
+  @on = (id, callback) ->
+    handlers.add id, callback
+
+
+  # wait until the next message of type 'id' and then fulfill the future
+
   @waitFor = (id, timer) ->
 
-    d = q.defer()
-    handlers.add id, d, timer
-    d.promise
+    future = q.defer()
+    handlers.add id, future, timer
+    future.promise
 
   return
 

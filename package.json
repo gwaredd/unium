@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --opts Dev/test/mocha.opts Dev/test",
-    "tutorial": "coffee Dev/scripts/tutorial.coffee -d"
+    "tutorial": "coffee Dev/scripts/tutorial.coffee -d",
+    "compile-scripts": "coffee -c -b -m -o Dev/tmp Dev/scripts/"
   },
   "author": "Gwaredd",
   "license": "MIT",

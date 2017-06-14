@@ -18,11 +18,11 @@ argv = options
   .alias    'h',    '?'
   .alias    'h',    'help'
 
-  .describe 'd',    'watch game debug output'
-  .alias    'd',    'debug'
+  .describe 'l',    'watch game debug log'
+  .alias    'l',    'log'
 
-  .describe 'm',    'enable message debugging'
-  .alias    'm',    'message'
+  .describe 'd',    'debug transport protocol'
+  .alias    'd',    'debug'
 
   .argv
 
@@ -37,7 +37,7 @@ if argv.help?
 
 bindEvents = ->
 
-  if argv.debug?
+  if argv.log?
     socket.bind 'debug', '/events.debug'
     socket.on   'debug', (m) -> log.http JSON.stringify m
 
@@ -85,7 +85,7 @@ collectPickups = ->
 
 #--------------------------------------------------------------------------------
 
-if argv.verbose?
+if argv.debug?
   socket.debug = (d,msg) -> log.info d, msg
 
 socket

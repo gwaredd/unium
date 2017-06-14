@@ -6,10 +6,6 @@ public class ThirdPersonCamera : MonoBehaviour
     public float        Distance    = 10.0f;
     public float        Height      = 10.0f;
 
-    void Start()
-    {
-    }
-
     void Update()
     {
         var pos = Target.transform.position - Target.transform.forward * Distance;

@@ -146,6 +146,22 @@ UniumSocket = ->
     future.promise
 
 
+  # set up listener for event first before invoking get
+
+  @waitForThenGet = ( mid, url, timer )->
+
+    # add handler for watched message first
+
+    future = q.defer()
+    handlers.add mid, future, timer
+
+    # then get url and pass on any failures
+
+    @get( url ).catch (e) -> future.priomise.reject e
+
+    future.promise
+
+
   #--------------------------------------------------------------------------------
   # watch a thing
 

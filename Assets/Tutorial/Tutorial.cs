@@ -9,6 +9,7 @@ public class Tutorial : MonoBehaviour
 
     int NumPickups = 0;
 
+    // exposed event for tutorial script to hook into
     public event Action<object> OnPickupCollected;
 
 	void Start()

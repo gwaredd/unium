@@ -31,17 +31,15 @@ if argv.help?
   process.exit 1
 
 
-
-
 #--------------------------------------------------------------------------------
 
-bindEvents = ->
+watchGlobalEvents = ->
 
   if argv.log?
     socket.bind 'debug', '/events.debug'
     socket.on   'debug', (m) -> log.http JSON.stringify m
 
-  socket.bind 'pickup', '/scene/Game.Tutorial.OnPickupCollected'
+  socket.bind 'scene',  '/events.sceneLoaded'
 
 
 #--------------------------------------------------------------------------------
@@ -61,25 +59,40 @@ checkIsTutorial = ->
 #--------------------------------------------------------------------------------
 
 reloadScene = ->
-  # TODO: reloadScene
+  socket.waitForThenGet 'scene', '/utils/scene/Tutorial', 10000
 
+watchPickupEvent = ->
+  # need to do this after the scene is reloaded!
+  socket.bind 'pickup', '/scene/Game.Tutorial.OnPickupCollected'
 
 #--------------------------------------------------------------------------------
 
 collectPickups = ->
 
   socket
+
+    # get position of first pickup in the scene
+
     .get "/q/scene/Game/Pickup[0].Transform.position"
+
     .then (d) ->
 
+      # exit if  no pickups found
+
       throw new Error "no more pickups" if not d? or d.length == 0
+
+      # otherwise ...
+      #   first wait for a pickup message
+      #   then call Move on player with position of pickup
         
       pos = JSON.stringify d[0]
+      socket.waitForThenGet 'pickup', "/q/scene/Game/Player.Player.MoveTo(#{pos})", 10000
+
       log.info "collect pickup at #{pos}"
 
-      socket.get "/q/scene/Game/Player.Player.MoveTo(#{pos})"
 
-    .then (d) -> socket.waitFor 'pickup', 10000
+    # when we get the pickup message, then repeat (until none left)
+
     .then collectPickups
 
 
@@ -90,8 +103,10 @@ if argv.debug?
 
 socket
   .open 'ws://localhost:8342/ws'
+  .then watchGlobalEvents
   .then checkIsTutorial
-  .then bindEvents
+  .then reloadScene
+  .then watchPickupEvent
   .then collectPickups
   .catch (e) -> log.error e; socket.close()
  

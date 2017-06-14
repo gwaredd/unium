@@ -3,7 +3,6 @@
 focus - wrap up for release -> docs, examples
 
 * tutorial
-* test framework
 
 * features
   * default web interface

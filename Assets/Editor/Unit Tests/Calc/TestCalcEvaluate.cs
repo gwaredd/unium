@@ -1,4 +1,5 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
+#if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using NUnit.Framework;
 using System;
@@ -199,3 +200,4 @@ public class TestCalcEvaluate
     }
 }
 
+#endif

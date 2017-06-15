@@ -36,6 +36,9 @@ namespace gw.unium
             json.Name( "tag" );
             json.StringValue( go.tag );
 
+            json.Name( "activeInHierarchy" );
+            json.Value( go.activeInHierarchy );
+
             // components
 
             json.Name( "components" );

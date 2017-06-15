@@ -1,5 +1,4 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
-#if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,8 @@ namespace gw.gql
     public class Root
     {
         Dictionary<string,object> mRoot = new Dictionary<string,object>();
+
+#if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
         public Interpreter.Child[] Children
         {
@@ -29,6 +30,8 @@ namespace gw.gql
             }
         }
 
+#endif
+
         public void Add( string key, object value )
         {
             mRoot.Add( key, value );
@@ -43,6 +46,8 @@ namespace gw.gql
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
+    
     public class InterpreterSearchRoot  : InterpreterDefault
     {
         override public Child[] Children( object obj )
@@ -50,8 +55,9 @@ namespace gw.gql
             return ( obj as Root ).Children;
         }
     }
-}
 
 #endif
+}
+
 
         

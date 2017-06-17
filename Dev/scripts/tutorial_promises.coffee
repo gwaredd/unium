@@ -1,5 +1,5 @@
 
-UniumSocket = require './UniumSocket'
+UniumSocket = require './UniumSocketPromises'
 log         = require './log'
 options     = require 'optimist'
 
@@ -86,9 +86,10 @@ collectPickups = ->
       #   then call Move on player with position of pickup
         
       pos = JSON.stringify d[0]
+      log.info "collect pickup at #{pos}"
+      
       socket.waitForThenGet 'pickup', "/q/scene/Game/Player.Player.MoveTo(#{pos})", 10000
 
-      log.info "collect pickup at #{pos}"
 
 
     # when we get the pickup message, then repeat (until none left)

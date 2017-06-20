@@ -7,10 +7,7 @@ chalk       = require 'chalk'
 
 require( 'chai' ).should()
 
-socket = new UniumSocket()
 
-
-#--------------------------------------------------------------------------------
 # command line options
 
 argv = options
@@ -38,6 +35,9 @@ if argv.debug?
 
 
 #--------------------------------------------------------------------------------
+
+socket = new UniumSocket()
+
 
 runCoroutine = (fn) ->
   
@@ -74,6 +74,8 @@ collectPickups = (itr) ->
     # otherwise, collect pickup
 
     pos = JSON.stringify pos[0]
+    log.info "Move to " + chalk.cyan pos
+
     yield from socket.getAndWait itr, get:"/q/scene/Game/Player.Player.MoveTo(#{pos})", waitFor:'pickup', timeout:10000
 
 
@@ -81,7 +83,7 @@ collectPickups = (itr) ->
 
 start = (itr) ->
 
-  # try
+  try
 
     # connect to game
 
@@ -90,7 +92,7 @@ start = (itr) ->
 
     # check this is the right scene
 
-    log.info "checking tutorial scene"
+    log.info "Checking tutorial scene"
     about = yield from socket.get itr, "/about"
     about.Product.should.equal "unium"
     about.Unium.should.equal "1.0"
@@ -102,22 +104,21 @@ start = (itr) ->
       yield from socket.bind itr, map:'/events.debug', to:'debug'
       socket.on 'debug', (m) -> log.http JSON.stringify m
 
-    yield from socket.bind itr, map:'/events.sceneLoaded', to:'scene'
-    
-
     # reload scene
 
+    log.info "Reloading scene"
+    yield from socket.bind itr, map:'/events.sceneLoaded', to:'scene'
     yield from socket.getAndWait itr, get:'/utils/scene/Tutorial', waitFor:'scene', timeout:10000
 
+    log.info "Collecting pickups"
     yield from collectPickups itr
 
 
     socket.close()
 
-  # catch e
-  #   log.error e
+  catch e
+    log.error e
 
-  # process.exit 0
 
 
 runCoroutine start  

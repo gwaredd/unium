@@ -78,7 +78,7 @@ MessageHandlers = ->
       clearTimeout h.timeout if h.timeout?
       if msg.error? then  h.callback.throw  msg.error 
       if msg.data?  then  h.callback.next   msg.data
-      if msg.info?  then  h.callback.next   msg.info
+      if msg.info?  then  h.callback.next   info: msg.info
     
 
   return
@@ -141,9 +141,14 @@ UniumSocket = ->
   # itr, waitFor:event, timeout:1000, get:url
 
   @getAndWait = ( itr, cfg )->
+
     timeout = if cfg? then cfg.timeout else null
     handlers.add cfg.waitFor, itr, timeout
-    yield from @get itr, cfg.get
+
+    id = "m" + ++nextID
+    @send JSON.stringify id:id, q:cfg.get
+    
+    yield
 
 
   #--------------------------------------------------------------------------------

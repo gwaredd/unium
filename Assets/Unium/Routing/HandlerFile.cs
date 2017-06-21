@@ -83,7 +83,7 @@ namespace gw.unium
                     if( path.StartsWith( key + "/" ) )
                     {
                         drive = sPaths[ key ];
-                        path  = path.Substring( key.Length + 2 );
+                        path  = path.Substring( key.Length + 1 );
                         break;
                     }
                 }

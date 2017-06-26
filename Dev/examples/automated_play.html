@@ -1,0 +1,83 @@
+<!-- --------------------------------------------------------------------------------
+  Automated play of the tutorial level
+  -------------------------------------------------------------------------------- -->
+<html>
+  <head>
+    <title>Unium Automated Play Example</title>
+  </head>
+  <body>
+
+    <!-- --------------------------------------------------------------------------------
+      UI
+      -------------------------------------------------------------------------------- -->
+      
+    <table width='100%'>
+      <tr>
+        <th width='50%'>Debug output ...</th>
+        <th>Code ...</th>
+      </tr>
+      <tr>
+        <td valign='top'>
+          <pre id='output'></pre>
+        </td>
+        <td valign='top'>
+          <pre id='code'></pre>
+        </td>
+      </tr>
+    </table>
+
+    <!-- --------------------------------------------------------------------------------
+      Util Function 
+      -------------------------------------------------------------------------------- -->
+
+    <script type="text/javascript">
+      function Log( txt ) { document.getElementById( 'output' ).innerHTML += txt + "\n" }
+    </script>
+
+
+    <!-- --------------------------------------------------------------------------------
+      Code
+      -------------------------------------------------------------------------------- -->
+
+    <script id='sample' type="text/javascript">
+      // connect to game
+
+      var ws = new WebSocket( "ws://localhost:8342/ws" )
+
+      ws.onerror  = () => { Log( "Error connecting to game - is it running?" ) }
+      ws.onclose  = () => { Log( "Connection closed" ) }
+
+      // when successfully connected
+
+      ws.onopen = () => {
+        Log( "Connected to game" )
+
+        // bind to debug output to receive debug message
+        ws.send( JSON.stringify({ id: 'dbg', q: '/bind/events.debug' }))
+      }
+
+      // when we receive a message
+
+      ws.onmessage = (e) => {
+        var msg = JSON.parse( e.data )
+        if( msg.info ) {
+          Log( "INFO: " + msg.info )
+        }
+        else if( msg.error ) {
+          Log( "ERROR: " + msg.error )
+        }
+        else {
+          Log( msg.data.message )
+        }
+      }
+    </script>
+
+
+    <!-- --------------------------------------------------------------------------------
+      Show code in web page
+      -------------------------------------------------------------------------------- -->
+
+    <script>document.getElementById( 'code' ).innerHTML = document.getElementById( 'sample' ).innerText</script>
+
+  </body>
+</html>

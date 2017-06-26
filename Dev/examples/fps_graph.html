@@ -1,0 +1,204 @@
+<!-- --------------------------------------------------------------------------------
+  Use a repeater to watch the FPS and graph the output
+  -------------------------------------------------------------------------------- -->
+<html>
+  <head>
+    <title>Unium FPS Graph Demo</title>
+
+    <!-- --------------------------------------------------------------------------------
+      Some graph styles
+      -------------------------------------------------------------------------------- -->
+
+    <style>
+      body {
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .graph .axis {
+          stroke-width: 1;
+      }
+
+      .graph .axis .tick line {
+          stroke: black;
+      }
+
+      .graph .axis .tick text {
+          fill: black;
+          font-size: 0.7em;
+      }
+
+      .graph .axis .domain {
+          fill: none;
+          stroke: black;
+      }
+
+      .graph .group {
+          fill: none;
+          stroke: black;
+          stroke-width: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- --------------------------------------------------------------------------------
+      UI
+      -------------------------------------------------------------------------------- -->
+
+    <table width='100%'>
+      <tr>
+        <th width='50%'>FPS</th>
+        <th>Code</th>
+      </tr>
+      <tr>
+        <td valign='top'>
+          <center>
+            <div class="graph"></div>
+          </center>
+          <hr/>
+          <pre id='output'></pre>
+        </td>
+        <td valign='top'>
+          <pre id='code'></pre>
+        </td>
+      </tr>
+    </table>
+
+
+
+    <!-- --------------------------------------------------------------------------------
+      Draw Graph
+      -------------------------------------------------------------------------------- -->
+
+    <!-- D3 -->
+    <script src='http://d3js.org/d3.v3.min.js' type="text/javascript"></script>
+
+    <!-- graph script -->
+    <script>
+
+        // setup graph
+
+        var shift     = 0
+
+        var width     = 600
+        var height    = 300
+
+        var x     = d3.scale.linear().domain( [ 0, width ] ).range( [ 0, width ] )
+        var y     = d3.scale.linear().domain( [ 0, 80 ] ).range( [ height, 0 ] )
+        var line  = d3.svg.line()
+                            .x( (d,i) => x( shift + i + 50 ) )
+                            .y( (d) => y( d ) )
+
+        // create SVG
+
+        var svg = d3.select( '.graph' ).append('svg' )
+            .attr( 'class', 'chart' )
+            .attr( 'width', width + 50 )
+            .attr( 'height', height + 50 )
+
+        var axis = svg.append( 'g' )
+            .attr( 'class', 'x axis' )
+            .attr( 'transform', 'translate(50,' + height + ')' )
+            .call( x.axis = d3.svg.axis().scale(x).orient('bottom') )
+
+        var y_axis = svg.append( 'g' )
+            .attr( 'class', 'y axis' )
+            .attr( 'transform', 'translate(50,0)' )
+            .call( y.axis = d3.svg.axis().scale(y).orient('left') )
+
+        var paths = svg.append('g')
+
+
+        // create graph
+
+        var data  = [0]
+
+        graph = paths.append( 'path' )
+            .data( [data] )
+            .attr( 'class', 'group' )
+            .style( 'stroke', 'blue' )
+
+
+        // add fps sample and update graph
+
+        var count = 0
+
+        function UpdateGraph( fps ) {
+
+            // add data point
+
+            data.push( fps )
+
+            // slide things over
+
+            if( data.length > width )
+            {
+              // remove oldest sample
+
+              data.shift()
+
+              // slide x-axis
+
+              x.domain( [ ++shift, shift + width ] )
+              axis.call( x.axis )
+            }
+
+            // update graph
+
+            graph.attr( 'd', line )
+        }
+
+    </script>
+
+
+    <!-- --------------------------------------------------------------------------------
+      Utility script
+      -------------------------------------------------------------------------------- -->
+
+    <script type="text/javascript">
+      function Log( txt ) { document.getElementById( 'output' ).innerHTML += txt + "\n" }
+    </script>
+
+
+    <!-- --------------------------------------------------------------------------------
+      Demo code
+     -------------------------------------------------------------------------------- -->
+
+    <script id='sample' type="text/javascript">
+      // connect to game
+
+      var ws = new WebSocket( "ws://localhost:8342/ws" )
+
+      ws.onerror = () => { Log( "ERROR: Failed to connect to the game - is it running?" ) }
+      ws.onclose = () => { Log( "Connection closed" ) }
+
+      // when successfully connected
+
+      ws.onopen = () => {
+        ws.send( JSON.stringify({ q:'/q/stats.FPS', repeat:{ freq: 0 } })) // repeat FPS
+        Log( "Connected to game" )
+      }
+
+      // when we receive a message
+
+      ws.onmessage = (e) => {
+        var msg = JSON.parse( e.data )
+        if( msg.info ) {
+          Log( "INFO: " + msg.info )
+        } else if( msg.error ) {
+          Log( "ERROR: " + msg.error )
+        } else {
+          UpdateGraph( msg.data[0] ) // update graph with new FPS value
+        }
+      }
+    </script>
+
+
+    <!-- --------------------------------------------------------------------------------
+      Show code in web page
+      -------------------------------------------------------------------------------- -->
+
+    <script>document.getElementById( 'code' ).innerHTML = document.getElementById( 'sample' ).innerText</script>
+
+  </body>
+</html>

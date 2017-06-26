@@ -2,7 +2,7 @@
 --------------------------------------------------------------------------------
 focus - wrap up for release -> docs, examples
 
-* tutorial
+* tutorial & examples
 * docs - review & convert to pdf
 
 * to test

@@ -67,9 +67,11 @@ public class UniumComponent : MonoBehaviour
             Application.runInBackground = true;
         }
 
+        var root = Path.Combine( Application.streamingAssetsPath, StaticFiles != null ? StaticFiles : "" );
+
         HandlerFile.Mount( "persistent", Application.persistentDataPath );
         HandlerFile.Mount( "streaming",  Application.streamingAssetsPath );
-        HandlerFile.Mount( "root",       Application.isEditor && String.IsNullOrEmpty( StaticFiles ) == false ? Path.Combine( Application.dataPath, StaticFiles ) : Application.persistentDataPath );
+        HandlerFile.Mount( "root",       root );
 
 
         Application.logMessageReceivedThreaded += HandlerUtils.LogMessage;

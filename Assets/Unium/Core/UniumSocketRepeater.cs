@@ -48,7 +48,7 @@ namespace gw.unium
 
             public void Cancel()
             {
-                mRequest.Info( "cancelled" );
+                mRequest.Info( "stopped" );
                 IsFinished = true;
             }
 

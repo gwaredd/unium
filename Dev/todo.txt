@@ -19,6 +19,11 @@ focus - wrap up for release -> docs, examples
   * release and debug builds
   * ios and android variants
 
+* test file loading on android (need to use WWW)
+* change static files to use streaming assets folder
+
+* test on ios
+
 
 # Later
 --------------------------------------------------------------------------------

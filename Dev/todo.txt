@@ -3,20 +3,24 @@
 focus - wrap up for release -> docs, examples
 
 * tutorial & examples
-* docs - review & convert to pdf
-
-* to test
-  * difference versions of unity
-  * release and debug builds
-  * ios and android variants
 
 
-* test on ios
-  * background mode
-* test on android
-  * test file loading on android (need to use WWW)
+* review & present
 
-* run unit/func tests
+  * docs - review & convert to pdf
+
+  * to test
+    * difference versions of unity
+    * release and debug builds
+    * ios and android variants
+
+
+  * test on ios
+    * background mode
+  * test on android
+    * test file loading on android (need to use WWW)
+
+  * run unit/func tests
 
 
 

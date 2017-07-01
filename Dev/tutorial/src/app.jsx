@@ -12,6 +12,10 @@ import Intro from './components/intro.jsx'
 import NavBar from './components/navbar.jsx'
 import Tutorial from './components/tutorial.jsx'
 
+import 'brace/mode/csharp';
+import 'brace/theme/textmate';
+import 'brace/mode/javascript';
+
 //--------------------------------------------------------------------------------
 
 class App extends React.Component {

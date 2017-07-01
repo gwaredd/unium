@@ -1,14 +1,19 @@
 import React from 'react'
-import { ListGroup, ListGroupItem, Panel } from 'react-bootstrap'
+import { Button, ListGroup, ListGroupItem, Panel } from 'react-bootstrap'
 
 import TutorialServer from './tutorial_server.jsx'
+import TutorialRoutes from './tutorial_routes.jsx'
+import TutorialGQL from './tutorial_gql.jsx'
+import TutorialSockets from './tutorial_sockets.jsx'
+import TutorialExamples from './tutorial_examples.jsx'
 
 const pages = [
-  { name: 'Intro',      component: React.createFactory( TutorialServer ) },
+  { name: 'Intro',      component: null },
   { name: 'Web Server', component: React.createFactory( TutorialServer ) },
-  { name: 'Routes',     component: React.createFactory( TutorialServer ) },
-  { name: 'GQL',        component: React.createFactory( TutorialServer ) },
-  { name: 'WebSockets', component: React.createFactory( TutorialServer ) },
+  { name: 'Routes',     component: React.createFactory( TutorialRoutes ) },
+  { name: 'GQL',        component: React.createFactory( TutorialGQL ) },
+  { name: 'WebSockets', component: React.createFactory( TutorialSockets ) },
+  { name: 'Examples',   component: React.createFactory( TutorialExamples ) },
 ]
 
 export default class Tutorial extends React.Component {
@@ -20,18 +25,31 @@ export default class Tutorial extends React.Component {
   MenuItem(name,index) {
     return <ListGroupItem key={index} onClick={()=>this.props.setPage(index)} active={index==0} bsStyle={index==this.props.page ? 'success' : null}>{name}</ListGroupItem>
   }
+
+  Next() {
+    this.props.setPage( this.props.page + 1 )
+  }
   
   render() {
+
+    const page = pages[ this.props.page ];
+
     return (
       <div className="row">
-        <div className="col-md-2">
+        <div className="col-sm-2">
           <ListGroup>
             { pages.map( (p,i) => this.MenuItem( p.name, i ) ) }
           </ListGroup>
         </div>
-        <div className="col-md-10">
-          <Panel header={ pages[ this.props.page ].name } bsStyle="primary">
-            { pages[ this.props.page ].component() }
+        <div className="col-sm-10">
+          <Panel header={ page.name } bsStyle="primary">
+            { page.component( this.props ) }
+            { this.props.page != pages.length - 1 && (
+              <div>
+                <hr/>
+                <Button className="pull-right" bsStyle="success" onClick={()=>this.Next()}>Next</Button>
+              </div>
+            )}
           </Panel>
         </div>
       </div>

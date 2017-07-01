@@ -93,9 +93,10 @@ ws.onmessage = (e) => {
 
   if( msg.info ) {
     Log( "Successfully bound to debug events, waiting for debug ouput" );
+    ws.send( JSON.stringify({ q:'/q/scene/Game.Tutorial.SayHello()' }));
   } else if( msg.error ) {
     Log( "ERROR: " + msg.error );
-  } else {
+  } else if( msg.data.message ) {
     Log( msg.data.message );
   }
 

@@ -7,6 +7,7 @@ public class Tutorial : MonoBehaviour
     public bool OpenBrowser = true;
     public Text PickupText;
 
+    static bool OpenOnce = true;
     int NumPickups = 0;
 
     // exposed event for tutorial script to hook into
@@ -14,8 +15,9 @@ public class Tutorial : MonoBehaviour
 
 	void Start()
     {
-        if( OpenBrowser )
+        if( OpenBrowser && OpenOnce )
         {
+            OpenOnce = false;
             System.Diagnostics.Process.Start( "http://localhost:8342/tutorial/index.html" );
         }
     }

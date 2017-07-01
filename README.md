@@ -1,18 +1,13 @@
 # unium
 > An open source test automation framework for Unity games and the occasional debug tool
 
-Fundamentally, Unium is a web server.
+Unium is an experimental library for the purposes of facilitating automated testing and tool development for your Unity games.
 
-If you embed it into your game, you get an remote interface for querying and changing the game state whether it is running in editor, on device or somewhere in the cloud. Turns out this can be quite useful for writing automated tests and other things.
+The main idea is twofold. Firstly, embed a web server into your project to provide an interface onto the game. Secondly, implement a query language that to some degree takes care of the tedious bits.
 
-The principles it tries to adhere to:
+The advantages of a web server is that HTTP provides a technology agnostic protocol that places no restrictions on whatever tools and frameworks you wish to use. It also means it will work whether the game is running in editor, on device or on some headless server in the clouds.
 
-* The code you write is the code you test
-* It should be technology agnostic
-
-Hopefuly, this means you are free to use your preferred test practices, frameworks and tools and not have to do anything to the runtime code.
-
-This has been inspired at least in part by the [Selenium](http://www.seleniumhq.org/) and [Appium](http://appium.io/) projects, hence 'Unium' in the interests of propagating some kind of awful naming convention.
+Hopefully the query language and automatic reflection reduces the amount of manual serialisation code that often makes these kind of systems a pain to work with.
 
 
 ## Getting Started
@@ -29,32 +24,4 @@ Your default browser should open automtically. The tutorial is best experienced 
 
 Documentation can be found in the corresponding [unium.pdf](https://raw.githubusercontent.com/gwaredd/unium/master/unium.pdf) files.
 
-### Your Game
-
-To add unium to your game
-
-* Import the unium asset package
-* Add the UniumComponent to a game object
-
-That's it, by default the server will start automatically on port 8342 when the component is enabled.
-
-Note that Unium is compiled out for release builds (non-development, non-editor). See the documentation to change this.
-
-## Technical Details
-
-The webserver is ...
-
-* A singleton
-* Multi-Threaded
-* Supports REST and WebSockets
-* Flexible routing
-* Automatically added to the "Don't Destroy" group
-
-Implements a version of GQL - a query language for interacting with the game
-
-* An [XPath](https://en.wikipedia.org/wiki/XPath)-like query language
-* Query values from the scene graph
-* Change variables and invoke functions
-* Watching of variables and events through the WebSockets interface
-* Automatic JSON serialisation
 

@@ -35,22 +35,24 @@ export default class Tutorial extends React.Component {
     const page = pages[ this.props.page ];
 
     return (
-      <div className="row">
-        <div className="col-sm-2">
-          <ListGroup>
-            { pages.map( (p,i) => this.MenuItem( p.name, i ) ) }
-          </ListGroup>
-        </div>
-        <div className="col-sm-10">
-          <Panel header={ page.name } bsStyle="primary">
-            { page.component( this.props ) }
-            { this.props.page != pages.length - 1 && (
-              <div>
-                <hr/>
-                <Button className="pull-right" bsStyle="success" onClick={()=>this.Next()}>Next</Button>
-              </div>
-            )}
-          </Panel>
+      <div className='container'>
+        <div className="row">
+          <div className="col-sm-2">
+            <ListGroup>
+              { pages.map( (p,i) => this.MenuItem( p.name, i ) ) }
+            </ListGroup>
+          </div>
+          <div className="col-sm-10">
+            <Panel header={ page.name } bsStyle="primary">
+              { page.component( this.props ) }
+              { this.props.page != pages.length - 1 && (
+                <div>
+                  <hr/>
+                  <Button className="pull-right" bsStyle="success" onClick={()=>this.Next()}>Next</Button>
+                </div>
+              )}
+            </Panel>
+          </div>
         </div>
       </div>
     )

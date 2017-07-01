@@ -8,18 +8,16 @@ export default class Tutorial extends React.Component {
     return (
       <div>
         <p>
-          Essentially, Unium is a webserver that you embed into your game. This gives you a remote API that you can target for automated tests or debug tools.
+          Unium is an experimental library for the purposes of facilitating automated testing and tool development for your Unity games.
         </p>
         <p>
-          The 
-          
-
-Appium is built on the idea that testing native apps shouldn't require including an SDK or recompiling your app. And that 
-
-Meaning you are free to use your preferred test practices, frameworks, and tools.
+          The main idea is twofold. Firstly, embed a web server into your project to provide an interface onto the game. Secondly, implement a query language that to some degree takes care of the tedious bits.
         </p>
         <p>
-          Check the tutorial scene is running by clicking <b><i>Try Now</i></b> below to fetch some basic information about the game.
+          The advantages of a web server is that HTTP provides a technology agnostic protocol that places no restrictions on whatever tools and frameworks you wish to use. It also means it will work whether the game is running in editor, on device or on some headless server in the clouds.
+        </p>
+        <p>
+          Check the tutorial scene is running by clicking <b><i>Try Now</i></b> below to fetch some basic information about the game, or alternatively copy the url into your browser.
         </p>
 
         <TryNow url="http://localhost:8342/about" message='It works! The game returned us some data ...' />

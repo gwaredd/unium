@@ -9,10 +9,11 @@ export default class Tutorial extends React.Component {
 
   static url = "http://localhost:8342/utils/screenshot"
 
-  static code = `// add a thing
+  static code = `// register the about handler route
 RoutesHTTP.Add( "/about", HandlerUtils.HandlerAbout );
   
-// define handler
+// The handler is just a function that responds with some data.
+// In this case it reflects some JSON data about the game.
 
 public static void HandlerAbout( RequestAdapter req, string path )
 {
@@ -62,26 +63,31 @@ public static void HandlerAbout( RequestAdapter req, string path )
     return (
       <div>
         <p>
-          some explanation of routes
+Routes map incoming requests to associated handling routines by their URL (or partial URL). Whilst GQL provides a good deal of functionality, if you want to add something bespoke you can register your own routes.
         </p>
-
         <p>
-          screenshot
+The default routes along with the other configuration can be found in the Unium.cs file. The route handler for the 'about' route from the first example looks like this.
         </p>
+        <center>
+          <AceEditor
+              mode="csharp"
+              theme="textmate"
+              editorProps={{$blockScrolling: true}}
+              readOnly
+              value={Tutorial.code}
+              fontSize={14}
+              height='280px'
+              width='80%'
+              showPrintMargin={false}
+              showGutter={true}
+              highlightActiveLine={true}
+            />
+          </center>
 
-         <AceEditor
-            mode="csharp"
-            theme="textmate"
-            editorProps={{$blockScrolling: true}}
-            readOnly
-            value={Tutorial.code}
-            fontSize={14}
-            height='320px'
-            width='80%'
-            showPrintMargin={false}
-            showGutter={true}
-            highlightActiveLine={true}
-          />
+        <hr/>
+        <p style={{marginTop:'20px'}}>
+          Handlers can return any kind of data, for example they can be used to take a screenshot.
+        </p>
 
         <div style={{ padding: '3em'}}>
           <FormGroup>
@@ -97,13 +103,13 @@ public static void HandlerAbout( RequestAdapter req, string path )
           <Button bsStyle="info" onClick={()=>this.screenshot()}>Take screenshot</Button>
 
           { this.state.hasImage && (
-            <p>
+            <center style={{marginTop:'3em'}}>
               <img src={this.state.imageData} width="80%" />
-            </p>
+            </center>
           )}
           { this.state.error && (
             <Alert bsStyle="danger">
-              <h4>Oh snap! You got an error!</h4>
+              <h4>Oops! Something went wrong :/</h4>
               <p>
                 {this.state.error}
               </p>

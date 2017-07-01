@@ -22,7 +22,7 @@ class App extends React.Component {
 
   constructor( props ) {
     super( props )
-    this.state    = { page:3 }
+    this.state    = { page:0 }
     this.setPage  = this.setPage.bind( this )
   }
 

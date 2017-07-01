@@ -40,5 +40,10 @@ public class Tutorial : MonoBehaviour
             OnPickupCollected( "Pickup Collected" );
         }
     }
+
+    public void SayHello()
+    {
+        Debug.Log( "Hello from Unium" );
+    }
 }
 

@@ -63,7 +63,7 @@ public static void HandlerAbout( RequestAdapter req, string path )
     return (
       <div>
         <p>
-Routes map incoming requests to associated handling routines by their URL (or partial URL). Whilst GQL provides a good deal of functionality, if you want to add something bespoke you can register your own routes.
+Routes map incoming requests to associated handling routines by their URL (or partial URL). You can register your own routes for custom actions.
         </p>
         <p>
 The default routes along with the other configuration can be found in the Unium.cs file. The route handler for the 'about' route from the first example looks like this.

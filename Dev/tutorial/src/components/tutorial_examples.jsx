@@ -6,12 +6,13 @@ export default class Tutorial extends React.Component {
   render() {
     return (
       <div>
-        Click the links below to see some simple examples
-        <hr/>
+        <p>
+          Here are some simplfied examples that put it all together
+        </p>
         <ul>
-          <li><a href='#'>Debug Output</a></li>
-          <li><a href='#'>FPS Graph</a></li>
-          <li><a href='#'>Automated Playthrough</a></li>
+          <li><a href='debug_output.html' target='_blank'>Debug Output</a></li>
+          <li><a href='fps_graph.html' target='_blank'>FPS Graph</a></li>
+          <li><a href='automated_play.html' target='_blank'>Automated Playthrough</a></li>
         </ul>
       </div>
     )

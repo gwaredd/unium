@@ -86,6 +86,13 @@ namespace gw.proto.utils
             mPrevious = Token.Key;
         }
 
+        public void Value( bool value )
+        {
+            NewItem();
+            mBuilder.Append( value ? "true" : "false" );
+            mPrevious = Token.Value;
+        }
+
         public void Value( string value )
         {
             NewItem();

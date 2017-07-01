@@ -39,7 +39,7 @@ namespace gw.unium
 
                 eventInfo.AddEventHandler( Target, Delegate );
 
-                msg.Info( "bind " + eventInfo.Name );
+                msg.Info( "bound" );
             }
 
             public void Unbind()
@@ -50,7 +50,7 @@ namespace gw.unium
                 }
 
                 EventInfo.RemoveEventHandler( Target, Delegate );
-                Message.Info( "unbind " + EventInfo.Name );
+                Message.Info( "unbound" );
             }
         }
 

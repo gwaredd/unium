@@ -4,6 +4,7 @@ build/*
 Temp/*
 Library/*
 obj/*
+Dev/tmp/*
 
 # tool created files
 .vs/*
@@ -20,5 +21,6 @@ node_modules
 bower_components
 
 # tools
-checkout_merge.bat
+release.bat
+checkout.bat
 

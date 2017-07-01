@@ -64,7 +64,7 @@ namespace gw.gql
                             if( argType != cachedTypes[ i ] )
                             {
                                 cachedTypes[ i ]  = argType;
-                                cachedValues[ i ] = argType.IsEnum ? Enum.Parse( argType, strArgs[ i ] ) : Convert.ChangeType( strArgs[ i ], argType );
+                                cachedValues[ i ] = ConvertType.FromString( strArgs[ i ], argType );
                             }
 
                             args[ i ] = cachedValues[ i ];

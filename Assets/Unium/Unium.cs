@@ -78,11 +78,12 @@ namespace gw.unium
             // Socket routes
             //
 
-            RoutesSocket.Add( "/q",         HandlerGQL.Query ).CacheContext = HandlerGQL.CacheContext;
-            RoutesSocket.Add( "/about",     HandlerUtils.HandlerAbout );
+            RoutesSocket.Add( "/q",             HandlerGQL.Query ).CacheContext = HandlerGQL.CacheContext;
+            RoutesSocket.Add( "/about",         HandlerUtils.HandlerAbout );
+            RoutesSocket.Add( "/utils/scene",   HandlerUtils.HandlerScene );
 
-            RoutesSocket.Add( "/socket",    HandlerSocketCommand.Execute );
-            RoutesSocket.Add( "/bind",      HandlerSocketBind.HandleBind );
+            RoutesSocket.Add( "/socket",        HandlerSocketCommand.Execute );
+            RoutesSocket.Add( "/bind",          HandlerSocketBind.HandleBind );
         }
 
 

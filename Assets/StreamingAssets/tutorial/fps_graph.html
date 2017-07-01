@@ -1,0 +1,253 @@
+<!-- --------------------------------------------------------------------------------
+  Use a repeater to watch the FPS and graph the output
+  -------------------------------------------------------------------------------- -->
+<html>
+  <head>
+    <title>Unium FPS Graph Example</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- --------------------------------------------------------------------------------
+      Some graph styles
+      -------------------------------------------------------------------------------- -->
+
+    <style>
+      body {
+        margin-top: 100px;
+      }
+
+      .graph .axis {
+          stroke-width: 1;
+      }
+
+      .graph .axis .tick line {
+          stroke: black;
+      }
+
+      .graph .axis .tick text {
+          fill: black;
+          font-size: 0.7em;
+      }
+
+      .graph .axis .domain {
+          fill: none;
+          stroke: black;
+      }
+
+      .graph .group {
+          fill: none;
+          stroke: black;
+          stroke-width: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- --------------------------------------------------------------------------------
+      UI
+      -------------------------------------------------------------------------------- -->
+
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Unium FPS Graph Example</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">About</h3>
+        </div>
+        <div class="panel-body">
+          Demonstrates watching a variable (repeaters).
+        </div>
+      </div>
+      
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Graph</h3>
+        </div>
+        <div class="panel-body">
+          <center>
+            <div class="graph"></div>
+          </center>
+        </div>
+      </div>
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Debug Output</h3>
+        </div>
+        <div class="panel-body">
+          <pre id='output'></pre>
+        </div>
+      </div>
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Code</h3>
+        </div>
+        <div class="panel-body">
+          <div id="editor" style='height:500px'></div>
+        </div>
+      </div>
+    </div>      
+
+
+
+    <!-- --------------------------------------------------------------------------------
+      Draw Graph
+      -------------------------------------------------------------------------------- -->
+
+    <!-- D3 -->
+    <script src='http://d3js.org/d3.v3.min.js' type="text/javascript"></script>
+
+    <!-- graph script -->
+    <script>
+
+        // setup graph
+
+        var shift     = 0
+
+        var width     = 600
+        var height    = 300
+
+        var x     = d3.scale.linear().domain( [ 0, width ] ).range( [ 0, width ] )
+        var y     = d3.scale.linear().domain( [ 0, 80 ] ).range( [ height, 0 ] )
+        var line  = d3.svg.line()
+                            .x( (d,i) => x( shift + i + 50 ) )
+                            .y( (d) => y( d ) )
+
+        // create SVG
+
+        var svg = d3.select( '.graph' ).append('svg' )
+            .attr( 'class', 'chart' )
+            .attr( 'width', width + 50 )
+            .attr( 'height', height + 50 )
+
+        var axis = svg.append( 'g' )
+            .attr( 'class', 'x axis' )
+            .attr( 'transform', 'translate(50,' + height + ')' )
+            .call( x.axis = d3.svg.axis().scale(x).orient('bottom') )
+
+        var y_axis = svg.append( 'g' )
+            .attr( 'class', 'y axis' )
+            .attr( 'transform', 'translate(50,0)' )
+            .call( y.axis = d3.svg.axis().scale(y).orient('left') )
+
+        var paths = svg.append('g')
+
+
+        // create graph
+
+        var data  = [0]
+
+        graph = paths.append( 'path' )
+            .data( [data] )
+            .attr( 'class', 'group' )
+            .style( 'stroke', 'blue' )
+
+
+        // add fps sample and update graph
+
+        var count = 0
+
+        function UpdateGraph( fps ) {
+
+            // add data point
+
+            data.push( fps )
+
+            // slide things over
+
+            if( data.length > width )
+            {
+              // remove oldest sample
+
+              data.shift()
+
+              // slide x-axis
+
+              x.domain( [ ++shift, shift + width ] )
+              axis.call( x.axis )
+            }
+
+            // update graph
+
+            graph.attr( 'd', line )
+        }
+
+    </script>
+
+
+
+    <!-- --------------------------------------------------------------------------------
+      Demo code
+     -------------------------------------------------------------------------------- -->
+
+    <script id='sample' type="text/javascript">// log debug output to panel
+
+function Log( txt ) { document.getElementById( 'output' ).innerHTML += txt + "\n" }
+
+
+// connect to game
+
+var ws = new WebSocket( "ws://localhost:8342/ws" );
+
+ws.onerror = () => { Log( "ERROR: Failed to connect to the game - is it running?" ) };
+ws.onclose = () => { Log( "Connection closed" ) };
+
+// when successfully connected
+
+ws.onopen = () => {
+  Log( "Connected to game, watching FPS variable" );
+  ws.send( JSON.stringify({ q:'/q/stats.FPS', repeat:{ freq: 0 } })); // repeat this every frame
+};
+
+// when we receive a message
+
+ws.onmessage = (e) => {
+
+  var msg = JSON.parse( e.data );
+
+  if( msg.info ) {
+    Log( "Game agrees to repeat the FPS variable :)" );
+  } else if( msg.error ) {
+    Log( "ERROR: " + msg.error );
+  } else {
+    UpdateGraph( msg.data[0] ); // update graph with new FPS value
+  }
+};
+    </script>
+
+
+
+    <!-- --------------------------------------------------------------------------------
+      do the code thing
+      -------------------------------------------------------------------------------- -->
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.7/ace.js' type='text/javascript'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.7/mode-javascript.js' type='text/javascript'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.7/theme-chrome.js' type='text/javascript'></script>
+
+    <script>
+
+      // init editor
+      var editor = ace.edit("editor")
+      editor.setTheme("ace/theme/chrome")
+      editor.getSession().setMode("ace/mode/javascript")
+
+      editor.setValue( document.getElementById( 'sample' ).innerText )
+
+      editor.setHighlightActiveLine( false )
+      editor.setReadOnly( true )
+      editor.setShowPrintMargin( false )
+      editor.selection.clearSelection()
+
+    </script>
+
+  </body>
+</html>

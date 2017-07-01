@@ -57,7 +57,12 @@ namespace gw.unium
             // save screenshot
             
             var filename = Path.Combine( HandlerFile.GetPath( "persistent" ), "screenshot.png" );
-            ScreenCapture.CaptureScreenshot( filename );
+
+            #if UNITY_5
+                Application.CaptureScreenshot( filename );
+            #else
+                ScreenCapture.CaptureScreenshot( filename );
+            #endif
 
             UniumComponent.Log( "Screenshot '" + filename + "'" );
 

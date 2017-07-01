@@ -1,0 +1,132 @@
+<!-- --------------------------------------------------------------------------------
+  Bind to the debug event to watch the game debug menu
+  -------------------------------------------------------------------------------- -->
+<html>
+  <head>
+    <title>Unium Debug Output Example</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" />
+  </head>
+  <style>
+    body
+    {
+      margin-top: 100px;
+    }
+  </style>
+  <body>
+
+    <!-- --------------------------------------------------------------------------------
+      UI
+      -------------------------------------------------------------------------------- -->
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Unium Debug Output Example</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">About</h3>
+        </div>
+        <div class="panel-body">
+          Demonstrates binding to an event.
+        </div>
+      </div>
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Debug Output</h3>
+        </div>
+        <div class="panel-body">
+          <pre id='output'></pre>
+        </div>
+      </div>
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Code</h3>
+        </div>
+        <div class="panel-body">
+          <div id="editor" style='height:600px'></div>
+        </div>
+      </div>
+    </div>      
+
+
+    <!-- --------------------------------------------------------------------------------
+      Code
+      -------------------------------------------------------------------------------- -->
+
+    <script id='sample' type="text/javascript">// log output to div
+
+function Log( txt ) {
+  document.getElementById( 'output' ).innerHTML += txt + "\n";
+}
+
+// connect to game
+
+var ws = new WebSocket( "ws://localhost:8342/ws" );
+
+ws.onerror  = () => { Log( "Error connecting to game - is it running?" ) };
+ws.onclose  = () => { Log( "Connection closed" ) };
+
+// when successfully connected
+
+ws.onopen = () => {
+  Log( "Connected to game, binding to debug events" );
+  ws.send( JSON.stringify({ q:'/bind/events.debug' }));
+};
+
+// when we receive a message
+
+ws.onmessage = (e) => {
+
+  // parse json
+
+  var msg = JSON.parse( e.data );
+
+  // log message we received
+
+  if( msg.info ) {
+    Log( "Successfully bound to debug events, waiting for debug ouput" );
+    ws.send( JSON.stringify({ q:'/q/scene/Game.Tutorial.SayHello()' }));
+  } else if( msg.error ) {
+    Log( "ERROR: " + msg.error );
+  } else if( msg.data.message ) {
+    Log( msg.data.message );
+  }
+
+};
+    </script>
+
+
+    <!-- --------------------------------------------------------------------------------
+      init page
+      -------------------------------------------------------------------------------- -->
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.7/ace.js' type='text/javascript'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.7/mode-javascript.js' type='text/javascript'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.7/theme-chrome.js' type='text/javascript'></script>
+
+    <script>
+
+      // init editor
+      var editor = ace.edit("editor")
+      editor.setTheme("ace/theme/chrome")
+      editor.getSession().setMode("ace/mode/javascript")
+
+      editor.setValue( document.getElementById( 'sample' ).innerText )
+
+      editor.setHighlightActiveLine( false )
+      editor.setReadOnly( true )
+      editor.setShowPrintMargin( false )
+      editor.selection.clearSelection()
+
+    </script>
+
+  </body>
+</html>

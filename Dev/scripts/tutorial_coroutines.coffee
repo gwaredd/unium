@@ -24,6 +24,8 @@ argv = options
   .describe 'd',    'debug transport protocol'
   .alias    'd',    'debug'
 
+  .describe 'ip',   'specificy the ip address'
+
   .argv
 
 if argv.help?
@@ -83,11 +85,13 @@ collectPickups = (itr) ->
 
 start = (itr) ->
 
+  url = if argv.ip? then "ws://#{argv.ip}:8342/ws" else 'ws://localhost:8342/ws'
+
   try
 
     # connect to game
 
-    yield from socket.open itr, 'ws://localhost:8342/ws'
+    yield from socket.open itr, url
     log.info "Connected to " + chalk.cyan socket.ws.url
 
     # check this is the right scene

@@ -1,13 +1,11 @@
 # Now
 --------------------------------------------------------------------------------
-focus - wrap up for release -> docs, examples
+focus - wrap up for release
 
-* tutorial & examples
+* tutorial video
 
 
 * review & present
-
-  * docs - review & convert to pdf
 
   * to test
     * difference versions of unity
@@ -26,14 +24,28 @@ focus - wrap up for release -> docs, examples
 
 # Later
 --------------------------------------------------------------------------------
+
 * features
   * default web interface
 
 
-* sokoban
-  * tidy up
-  * write automated test framework
-  * write automated tests
+* named queries
+
+  /q/scene//Pickup#pickups
+
+  #pickups/q/scene//Pickup
+  pickups#/q/scene//Pickup
+
+  /q/scene//[near($pickups)]
+
+
+
+* attribute selector
+
+  /q/scene//Player@Transform.position,MoveComp.velocity
+  /q/scene//Player@Transform.position as pos,MoveComp.velocity as vel
+  /q/scene//Player@Transform.position={1,2,3},SomeComp.DoAThing()
+  /q/scene//Player@SomeComp.DoAThing()
 
 * bugs?
   * make server work when swapping between background and foreground on device (test on phone)

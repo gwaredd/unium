@@ -1,17 +1,27 @@
 ﻿using UnityEngine;
-using gw.unium;
+using UnityEngine.UI;
 using System;
+
+using gw.unium;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 public class Test : MonoBehaviour
 {
+    public Text IPText;
+
+
     //----------------------------------------------------------------------------------------------------
 
     void Start()
     {
         // check we can add routes dynamically
         Unium.RoutesHTTP.AddImmediate( "/test", ( RequestAdapter req, string path ) => req.Respond( @"{""test"":""ok""}" ) );
+
+        if( IPText != null )
+        {
+            IPText.text = Network.player.ipAddress.ToString();
+        }
     }
 
     //----------------------------------------------------------------------------------------------------

@@ -19,7 +19,6 @@ describe 'Sockets Sample Variables', ->
     ws.on 'open',   -> ws.send JSON.stringify id:"repeat", q: "/q/scene/Game/Sphere.Transform.position", repeat:{}
     ws.on 'close',  -> assert pass, "Failed to complete all messages sucessfully"; done()
 
-
     expecting = "repeat"
     count     = 0
     prev      = 0
@@ -63,7 +62,7 @@ describe 'Sockets Sample Variables', ->
         when "close"
 
           msg.should.have.property( 'id' ).and.is.equal 'repeat'
-          msg.should.have.property( 'info' ).and.is.equal 'cancelled'
+          msg.should.have.property( 'info' ).and.is.equal 'stopped'
 
           expecting = "none"
           pass = true

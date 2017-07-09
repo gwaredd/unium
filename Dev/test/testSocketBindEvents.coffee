@@ -197,8 +197,8 @@ describe 'Sockets Bind Events', ->
       # handle info
 
       if msg.info?
-        return ++open if msg.info == "bind TickEvent"
-        if msg.info == "unbind TickEvent"
+        return ++open if msg.info == "bound"
+        if msg.info == "unbound"
           --open
           setTimeout (-> ws.close()), 2000 if open==0
           return

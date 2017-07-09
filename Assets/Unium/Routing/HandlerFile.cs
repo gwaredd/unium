@@ -1,4 +1,8 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
+using UnityEngine;
+using System.Threading;
+
+
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using System;
@@ -65,16 +69,78 @@ namespace gw.unium
 
         //----------------------------------------------------------------------------------------------------
 
+        static void UploadFile( RequestAdapter req, string filepath )
+        {
+            try
+            {
+                File.WriteAllBytes( filepath, req.Body );
+                req.Reject( ResponseCode.OK );
+            }
+            catch( Exception )
+            {
+                req.Reject( ResponseCode.InternalServerError );
+            }
+        }
+
+        //----------------------------------------------------------------------------------------------------
+
+        static void DownloadFile( RequestAdapter req, string filepath )
+        {
+#if UNITY_ANDROID
+
+            var data = new WWW( filepath );
+
+            while( !data.isDone )
+            {
+                Thread.Sleep( 10 );
+            }
+
+            if( string.IsNullOrEmpty( data.error ) )
+            {
+                req.SetContentType( GetMimeType( filepath ) );
+                req.Respond( data.bytes );
+            }
+            else
+            {
+                req.Reject( ResponseCode.InternalServerError );
+            }
+
+#else
+
+            // System.IO
+
+            if( ( File.GetAttributes( filepath ) & FileAttributes.Directory ) == FileAttributes.Directory )
+            {
+                // list contents of directory
+                
+                var files = from c in Directory.GetFileSystemEntries( filepath ) select Path.GetFileName( c );
+                req.Respond( JsonReflector.Reflect( files.ToArray() ) );
+            }
+            else
+            {
+                // dump bytes
+
+                req.SetContentType( GetMimeType( filepath ) );
+                req.Respond( File.ReadAllBytes( filepath ) );
+            }
+#endif
+        }
+
+        //----------------------------------------------------------------------------------------------------
+
         public static void Serve( RequestAdapter req, string path )
         {
             try
             {
-                // find "mouted" drive
+                // remove initial /
 
                 if( path[0] == '/' )
                 {
                     path = path.Substring( 1 );
                 }
+
+
+                // find "drive"
 
                 var drive = sPaths[ "root" ];
 
@@ -88,34 +154,20 @@ namespace gw.unium
                     }
                 }
 
+                // combine drive path and file path to get local path
+
                 var filepath = Path.Combine( drive, path );
 
-                //
+
+                // do the thing
 
                 if( req.Body == null )
                 {
-                    if( ( File.GetAttributes( filepath ) & FileAttributes.Directory ) == FileAttributes.Directory )
-                    {
-                        var files = from c in Directory.GetFileSystemEntries( filepath ) select Path.GetFileName( c );
-                        req.Respond( JsonReflector.Reflect( files.ToArray() ) );
-                    }
-                    else
-                    {
-                        req.SetContentType( GetMimeType( filepath ) );
-                        req.Respond( File.ReadAllBytes( filepath ) );
-                    }
+                    DownloadFile( req, filepath );
                 }
                 else
                 {
-                    try
-                    {
-                        File.WriteAllBytes( filepath, req.Body );
-                        req.Reject( ResponseCode.OK );
-                    }
-                    catch( Exception )
-                    {
-                        req.Reject( ResponseCode.InternalServerError );
-                    }
+                    UploadFile( req, filepath );
                 }
             }
             catch( Exception )

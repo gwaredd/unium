@@ -116,11 +116,10 @@ namespace gw.unium
                 Product     = Application.productName,
                 Company     = Application.companyName,
                 Version     = Application.version,
-                
                 IPAddress   = Network.player.ipAddress,
                 FPS         = 1.0f / Time.smoothDeltaTime,
                 RunningTime = Time.realtimeSinceStartup,
-                Scene       = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name,
+                Scene       = SceneManager.GetActiveScene().name,
             }));
         }
 

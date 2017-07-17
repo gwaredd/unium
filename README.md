@@ -22,6 +22,10 @@ For a live tutorial that will guide you through unium and it's features
 
 Your default browser should open automtically. The tutorial is best experienced with the editor and browser side-by-side. 
 
-Documentation can be found in the corresponding [unium.pdf](https://github.com/gwaredd/unium/blob/master/unium.pdf) files.
+Documentation can be found in the corresponding [unium.pdf](https://github.com/gwaredd/unium/blob/master/unium.pdf) file. 
 
+
+### Tutorial Video
+
+[![Unium Tutorial Video](http://img.youtube.com/vi/7mTaPr2oaG4/0.jpg)](http://www.youtube.com/watch?v=7mTaPr2oaG4 "Unium Tutorial Video")
 

@@ -1,0 +1,204 @@
+<html>
+  <head>
+    <title>Unium Socket Explorer</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" />
+  </head>
+  <style>
+    body
+    {
+      margin-top: 100px;
+    }
+    #message {
+      font-family: monospace;
+    }
+  </style>
+  <body>
+
+    <!-- --------------------------------------------------------------------------------
+      UI
+      -------------------------------------------------------------------------------- -->
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Unium Socket Explorer</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+
+      <div class='row'>
+        <div class="col-lg-6">
+
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Message Composer</h3>
+            </div>
+            <div class="panel-body">
+              <form class="form-horizontal">
+                <fieldset>
+
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label">URL</label>
+                    <div class="col-lg-10">
+                      <input type="text" class="form-control" id="url" placeholder="ws://localhost:8342/ws" autocomplete="off">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label">Message</label>
+                    <div class="col-lg-10">
+                      <textarea class="form-control" rows="5" id="message"></textarea>
+                      <span class="help-block">This will be sent to the server</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-lg-2 control-label">Examples</label>
+                    <div class="col-lg-10">
+                      <select class="form-control" id="select" onchange="onExample(this.value)">
+                        <option value='about_noid'>About (basic request, no id)</option>
+                        <option value='about'>About (basic request)</option>
+                        <option value='fps'>FPS (sampling values)</option>
+                        <option value='stop'>Stop FPS (socket commands)</option>
+                        <option value='bind'>Debug (binding to events)</option>
+                        <option value='hello'>Hello (generate some debug output)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                </fieldset>
+              </form>
+
+              <hr/>
+
+              <div class="col-lg-10 col-lg-offset-2">
+                <button class="btn btn-primary" onclick="onSend()">Send</button>
+                <div class='pull-right'>
+                  <button class="btn btn-danger" onclick="onDisconnect()">Disconnect</button>
+                  <button class="btn btn-success" onclick="onConnect()">Connect</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Debug Output</h3>
+            </div>
+            <div class="panel-body">
+              <button class="btn btn-default" onclick="onClear()">Clear</button>
+              <br/><br/>
+              <pre id='output'></pre>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- --------------------------------------------------------------------------------
+      Code
+      -------------------------------------------------------------------------------- -->
+
+    <script id='sample' type="text/javascript">// log output to div
+
+      var examples = {
+        about_noid: `{
+  "q" : "/about"
+}`,
+        about: `{
+  "id": "some_id",
+  "q" : "/about"
+}`,
+        fps: `{
+  "id": "fps",
+  "q" : "/q/stats.FPS",
+  "repeat": { "freq": 0.25 }
+}`,
+        stop: `{
+  "id": "stop_fps",
+  "q" : "/socket.stop(fps)"
+}`,
+        bind: `{
+  "id": "dbg",
+  "q" : "/bind/events.debug"
+}`,
+        hello: `{
+  "id": "hello",
+  "q" : "/q/scene/Game.Tutorial.SayHello()"
+}`,
+      }
+
+      var ws;
+      var url;
+
+      function log( txt ) {
+        document.getElementById( 'output' ).innerHTML += txt + "\n";
+      }
+
+      function onClear() {
+        document.getElementById( 'output' ).innerHTML = "";
+      }
+
+      function onConnect() {
+        
+        url = document.getElementById( 'url' ).value;
+        if( !url ) {
+          url = "ws://localhost:8342/ws"
+        }
+
+        log( "Connecting to " + url )
+
+        ws = new WebSocket( url );
+
+        ws.onerror    = () => { log( "Error connecting to game - is it running?" ) };
+        ws.onclose    = () => { log( "Connection closed" ); ws = null };
+        ws.onopen     = () => { log( "Connected to the game" ) }
+        ws.onmessage  = (e) => { log( "recv: " + e.data ) }
+      }
+
+      function onDisconnect() {
+        if( ws ) {
+          ws.close()
+          ws = null
+          log( "Disconnected" )
+        }
+      }
+
+      function onExample( example ) {
+        document.getElementById( 'message' ).value = examples[ example ]
+      }
+
+      function onSend() {
+
+        if( !ws ) {
+          log( "Can't send message, not connected" )
+          return
+        }
+
+        var msg = document.getElementById( 'message' ).value
+ 
+        try {
+          msg = JSON.parse( msg )
+          msg = JSON.stringify( msg )
+
+          log( "send: " + msg )
+          ws.send( msg )
+
+        } catch( e ) {
+          log( e.toString() )
+        }
+      }
+
+      onExample( 'about_noid' )
+
+    </script>
+
+  </body>
+</html>

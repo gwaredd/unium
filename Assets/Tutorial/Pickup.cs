@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
+using gw.proto.utils;
 
 public class Pickup : MonoBehaviour
 {
-    public float RotateSpeed    = 0.5f;
-    public float BobSpeed       = 0.01f;
-    public float BobHeight      = 0.2f;
+    public string   ID             = null;
+    public float    RotateSpeed    = 0.5f;
+    public float    BobSpeed       = 0.01f;
+    public float    BobHeight      = 0.2f;
 
     float mStartY   = 0.0f;
     float mT        = 0.0f;
 
     void Start()
     {
+        ID = Util.RandomString( 6 );
         SendMessageUpwards( "PickupCreated" );
 
         mStartY = transform.position.y;

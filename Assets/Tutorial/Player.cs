@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
+
+// navmesh moved to UnityEngine.AI in 2017
+#if !UNITY_5
 using UnityEngine.AI;
+#endif
+
 
 public class Player : MonoBehaviour
 {

@@ -38,7 +38,11 @@ public class Test : MonoBehaviour
             type = UnityEngine.Random.value < 0.6f ? LogType.Warning : LogType.Error;
         }
 
+        #if UNITY_5
+        Debug.logger.Log( type, string.Format( "Level time is {0}", Time.timeSinceLevelLoad ) );
+        #else
         Debug.unityLogger.Log( type, string.Format( "Level time is {0}", Time.timeSinceLevelLoad ) );
+        #endif
     }
 
 

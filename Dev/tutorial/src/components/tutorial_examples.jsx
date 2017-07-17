@@ -13,6 +13,7 @@ export default class Tutorial extends React.Component {
           <li><a href='debug_output.html' target='_blank'>Debug Output</a></li>
           <li><a href='fps_graph.html' target='_blank'>FPS Graph</a></li>
           <li><a href='automated_play.html' target='_blank'>Automated Playthrough</a></li>
+          <li><a href='sockets.html' target='_blank'>Socket Explorer</a></li>
         </ul>
       </div>
     )

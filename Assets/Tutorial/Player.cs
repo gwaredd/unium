@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
+
+//using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {

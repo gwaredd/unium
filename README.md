@@ -24,4 +24,7 @@ Your default browser should open automtically. The tutorial is best experienced 
 
 Documentation can be found in the corresponding [unium.pdf](https://github.com/gwaredd/unium/blob/master/unium.pdf) files.
 
+### Compatability
+
+* Compatible with Unity v5.4.2 and up
 

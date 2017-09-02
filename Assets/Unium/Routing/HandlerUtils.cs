@@ -10,6 +10,8 @@ using UnityEngine.SceneManagement;
 
 using gw.proto.http;
 using gw.proto.utils;
+using System.Collections;
+using UnityEditor;
 
 namespace gw.unium
 {
@@ -18,44 +20,18 @@ namespace gw.unium
 
     public static class HandlerUtils
     {
-        public class DeferredRedirect
-        {
-            public float    Timer   = 1.0f;
-            public string   URL     = "";
-
-            public DeferredRedirect( string url )
-            {
-                URL = url;
-            }
-
-            public void Tick( RequestAdapter req )
-            {
-                Timer -= Time.deltaTime;
-
-                if( Timer <= 0.0f )
-                {
-                    req.Redirect( URL );
-                }
-            }
-        }
-
-
         //----------------------------------------------------------------------------------------------------
         // take a screen shot and return the image
 
         public static void Screenshot( RequestAdapter req, string path )
         {
-            // handle defer
-            
-            if( req.CachedContext != null )
-            {
-                ( req.CachedContext as DeferredRedirect ).Tick( req );
-                return;
-            }
+            UniumComponent.Singleton.StartCoroutine( TakeScreenshot( req, path ) );
+        }
 
-            
+        static IEnumerator TakeScreenshot( RequestAdapter req, string path )
+        {
             // save screenshot
-            
+
             var filename = Path.Combine( HandlerFile.GetPath( "persistent" ), "screenshot.png" );
 
             #if UNITY_5
@@ -68,7 +44,8 @@ namespace gw.unium
 
             // screenshots don't happen immediately, so defer a redirect for a small amount of time
 
-            req.Defer( new DeferredRedirect( "/file/persistent/screenshot.png?cb=" + Util.RandomString() ) );
+            yield return new WaitForSeconds( 1.0f );
+            req.Redirect( "/file/persistent/screenshot.png?cb=" + Util.RandomString() );
         }
 
 
@@ -134,6 +111,20 @@ namespace gw.unium
             {
                 var scenes = new List<object>();
 
+#if UNITY_EDITOR
+
+                foreach( var scene in EditorBuildSettings.scenes )
+                {
+                    scenes.Add( new
+                    {
+                        name    = Path.GetFileNameWithoutExtension( scene.path ),
+                        path    = scene.path,
+                        enabled = scene.enabled
+                    } );
+                }
+
+#else
+
                 for( int i = 0; i < SceneManager.sceneCount; i++ )
                 {
                     var scene = SceneManager.GetSceneAt( i );
@@ -141,10 +132,10 @@ namespace gw.unium
                     scenes.Add( new {
                         name    = scene.name,
                         path    = scene.path,
-                        index   = scene.buildIndex,
-                        loaded  = scene.isLoaded
+                        enabled = true
                     } );
                 }
+#endif
 
                 req.Respond( JsonReflector.Reflect( scenes.ToArray() ) );
             }
@@ -153,9 +144,28 @@ namespace gw.unium
 
             else
             {
-                var name = path.Substring( 1 );
-                SceneManager.LoadScene( name );
-                req.Respond( string.Format( @"{{""loading"":""{0}""}}", name ) );
+                UniumComponent.Singleton.StartCoroutine( LoadScene( req, path.Substring( 1 ) ) );
+            }
+        }
+
+        private static IEnumerator LoadScene( RequestAdapter req, string name )
+        {
+            var asyncOp = SceneManager.LoadSceneAsync( name, LoadSceneMode.Single );
+
+            if( asyncOp == null )
+            {
+                req.Reject( ResponseCode.NotFound );
+            }
+            else
+            {
+                asyncOp.allowSceneActivation = true;
+
+                while( asyncOp.isDone == false )
+                {
+                    yield return asyncOp;
+                }
+
+                req.Reject( ResponseCode.OK );
             }
         }
 

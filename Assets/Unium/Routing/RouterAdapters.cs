@@ -12,7 +12,6 @@ namespace gw.unium
     {
         public virtual  string  Path                                { get { return null; } }
         public virtual  byte[]  Body                                { get { return null; } }
-        public virtual  void    Defer( object context )             { CachedContext = context; }
 
         public abstract void Reject( ResponseCode code );
         public abstract void Redirect( string url );
@@ -38,10 +37,10 @@ namespace gw.unium
         public override String  Path                                { get { return mPath; } }
         public override byte[]  Body                                { get { return mRequest.Method == "POST" ? mRequest.Body : null; } }
 
-        public override void Reject( ResponseCode code )            { CachedContext = null; mRequest.Reject( code ); }
-        public override void Redirect( string url )                 { CachedContext = null; mRequest.Redirect( url ); }
-        public override void Respond( string data )                 { CachedContext = null; mRequest.Send( data ); }
-        public override void Respond( byte[] data )                 { CachedContext = null; mRequest.Send( data ); }
+        public override void Reject( ResponseCode code )            { mRequest.Reject( code ); }
+        public override void Redirect( string url )                 { mRequest.Redirect( url ); }
+        public override void Respond( string data )                 { mRequest.Send( data ); }
+        public override void Respond( byte[] data )                 { mRequest.Send( data ); }
 
         public override void SetContentType( string mimetype )      { mRequest.Response.Headers[ "Content-Type" ] = mimetype; }
     }

@@ -236,11 +236,7 @@ public class UniumComponent : MonoBehaviour
             var req = mQueuedRequests[ 0 ];
 
             req.Route.Dispatch( req.Request );
-
-            if( req.Request.CachedContext == null )
-            {
-                mQueuedRequests.RemoveAt( 0 );
-            }
+            mQueuedRequests.RemoveAt( 0 );
         }
     }
 

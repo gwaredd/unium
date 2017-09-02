@@ -1,28 +1,11 @@
 # Now
 --------------------------------------------------------------------------------
-focus - wrap up for release
 
-* tutorial video
-
-
-* review & present
-
-  * to test
-    * difference versions of unity
-    * release and debug builds
-    * ios and android variants
+* look/fix integration tests
+* get file loading working on android
 
 
-  * test on ios
-    * background mode
-  * test on android
-    * test file loading on android (need to use WWW)
-
-  * run unit/func tests
-
-
-
-# Later
+# Next
 --------------------------------------------------------------------------------
 
 * features
@@ -61,3 +44,23 @@ focus - wrap up for release
 * features
   * callout feature - establish connection by calling out to a web server
   * do we need to (optinally) return type meta data on GQL queries?
+
+
+# Later
+--------------------------------------------------------------------------------
+
+* call out to server
+
+  * list of connected clients - user name, ip, version, level, in editor or in game, development build, etc
+  * historical list / log
+  * click to launch on-device debug menu for client
+  * off-device debug menu?
+  * "terminal mode" for "chatting" with client
+
+  * run tests on connected clients
+
+* default debug interface
+
+  * debug output
+  * platform for tools? - dashboard widgets
+

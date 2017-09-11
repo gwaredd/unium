@@ -11,7 +11,9 @@ using UnityEngine.SceneManagement;
 using gw.proto.http;
 using gw.proto.utils;
 using System.Collections;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace gw.unium
 {

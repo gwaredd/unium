@@ -88,6 +88,7 @@ namespace gw.unium
         {
 #if UNITY_ANDROID
 
+            /*
             var data = new WWW( filepath );
 
             while( !data.isDone )
@@ -104,7 +105,8 @@ namespace gw.unium
             {
                 req.Reject( ResponseCode.InternalServerError );
             }
-
+            */
+            req.Reject(ResponseCode.InternalServerError);
 #else
 
             // System.IO

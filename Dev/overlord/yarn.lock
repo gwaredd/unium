@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@giantmachines/redux-websocket@https://github.com/giantmachines/redux-websocket":
+  version "0.0.21"
+  resolved "https://github.com/giantmachines/redux-websocket#4a75615101c2b382a658633b242aa961cb91f1cc"
+  dependencies:
+    lodash "^4.17.2"
+
 abbrev@1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"

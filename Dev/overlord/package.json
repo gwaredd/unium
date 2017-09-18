@@ -11,6 +11,7 @@
     "build": "node ./node_modules/webpack/bin/webpack.js"
   },
   "dependencies": {
+    "@giantmachines/redux-websocket": "https://github.com/giantmachines/redux-websocket",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-stage-2": "^6.24.1",
     "bootstrap": "^3.3.7",

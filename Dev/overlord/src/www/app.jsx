@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Alert, Nav, Navbar, NavItem, MenuItem, NavDropdown, Panel } from 'react-bootstrap';
 
 // https://youtu.be/nrg7zhgJd4w
+// redux-websocket? - https://github.com/giantmachines/redux-websocket
 
 // connect store values ...
 @connect( (store) => {

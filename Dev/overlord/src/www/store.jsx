@@ -1,9 +1,21 @@
+//-------------------------------------------------------------------------------
+
+import websocket from '@giantmachines/redux-websocket'
 
 import { combineReducers, applyMiddleware, createStore } from 'redux'
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
 
 const middleware = applyMiddleware( thunk, createLogger() )
+
+// const app = combineReducers(reducers)
+// const store = createStore(
+//   app,
+//   applyMiddleware(
+//     websocket,
+//     ...
+//   )
+// )
 
 const reducerOne = function( state={test:1}, action ) {
 

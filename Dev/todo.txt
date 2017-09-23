@@ -64,3 +64,13 @@
   * debug output
   * platform for tools? - dashboard widgets
 
+
+# Extensions
+--------------------------------------------------------------------------------
+
+* Overlord - device manger / test runner
+* A la Carte / Omakase - debug menu maker
+* Editor Extensions - 
+* Test Runner
+
+

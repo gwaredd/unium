@@ -4,11 +4,16 @@ import { Provider } from 'react-redux'
 
 import App from './app.jsx'
 import Store from './store.jsx'
+import Overlord from './overlord.jsx'
 
-const app = document.getElementById( 'root' )
+var overlord = new Overlord( Store )
 
 ReactDOM.render(
+
   <Provider store={Store}>
     <App/>
-  </Provider>, app )
+  </Provider>,
+
+  document.getElementById( 'root' )
+)
 

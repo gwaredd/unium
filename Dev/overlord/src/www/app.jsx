@@ -1,14 +1,14 @@
+//-------------------------------------------------------------------------------
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { Alert, Nav, Navbar, NavItem, MenuItem, NavDropdown, Panel } from 'react-bootstrap';
 
-// https://youtu.be/nrg7zhgJd4w
-// redux-websocket? - https://github.com/giantmachines/redux-websocket
 
 // connect store values ...
 @connect( (store) => {
   return {
-    user: store.user
+    minions: store.minions
   }
 })
 export default class App extends React.Component {
@@ -19,7 +19,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log( this.props.user )
     return (
       <div>
         <Navbar>

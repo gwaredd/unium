@@ -1,7 +1,5 @@
 //-------------------------------------------------------------------------------
 
-// https://youtu.be/nrg7zhgJd4w
-
 import { combineReducers, applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
@@ -18,7 +16,5 @@ const initial_state = {
 
 const middleware = applyMiddleware( thunk, Overlord, createLogger() )
 
-const store = createStore( reducers, initial_state, middleware );
-
-export default store
+export default createStore( reducers, initial_state, middleware );
 

@@ -8,11 +8,19 @@ export function setConnectedState( state ) {
   }
 }
 
-export function ovSendCommand( cmd ) {
+export function ovConnect() {
+  return { type: 'OVERLORD_CONNECT' }
+}
+
+export function ovDisconnect() {
+  return { type: 'OVERLORD_DISCONNECT' }
+}
+
+export function listMinions() {
   return {
     type: "OVERLORD_SEND",
     payload: {
-      type: cmd
+      type: 'list'
     }
   }
 }

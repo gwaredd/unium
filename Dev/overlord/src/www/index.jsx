@@ -1,16 +1,30 @@
+//-------------------------------------------------------------------------------
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { Panel } from 'react-bootstrap';
 
-import App from './app.jsx'
-import Store from './store.jsx'
+import Store from './model/store.jsx'
 
-Store.dispatch( { type: 'OVERLORD_CONNECT' } )
+import Menu from './menu.jsx'
+import Minions from './minions.jsx'
+import * as actions from './model/actions.jsx'
+
+
+//-------------------------------------------------------------------------------
+
+Store.dispatch( actions.ovConnect() )
 
 ReactDOM.render(
 
   <Provider store={Store}>
-    <App/>
+    <div>
+      <Menu />
+      <Panel header="Minions" bsStyle="primary">
+        <Minions/>
+      </Panel>
+    </div>
   </Provider>,
 
   document.getElementById( 'root' )

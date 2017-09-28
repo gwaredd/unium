@@ -43,10 +43,10 @@ onClient = (msg) ->
 
     switch msg.type
       when "list"
-        this.send JSON.stringify {type:'hello'}
+        this.send JSON.stringify type:'list', data: _.map minions, (m) -> _.omit m, 'socket'
       else
         warn "Unknown overlord message type '#{msg.type}'"
-        
+
   catch e
     error "" + e
 
@@ -65,29 +65,39 @@ wss = new WebSocket.Server { server }
 
 wss.on 'connection', (socket, req) ->
 
+  ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+
+
   if req.url == "/overlord"
   
-    log "Accepted websocket request for #{req.url}", req
+    log "client connected from #{ip}"
 
-    socket.isAlive = true
-    socket.on 'pong',     -> this.isAlive = true
-    socket.on 'close',    -> xs = this; clients = _.reject clients, (c) -> c == xs
+    socket.on 'close', ->
+      xs = this
+      clients = _.reject clients, (c) -> c == xs
+      log "client disconnected from #{ip}"
+
     socket.on 'message',  onClient
 
     clients.push socket
 
+
   else if req.url == "/minion"
 
-    socket.isAlive = true
-    socket.on 'pong',     -> this.isAlive = true
-    socket.on 'close',    -> xs = this; minions = _.reject minions, (m) -> m.socket == xs
+    log "minion connected from #{ip}"
+
+    socket.on 'close', ->
+      xs = this
+      minions = _.reject minions, (m) -> m.socket == xs
+      log "minion disconnected from #{ip}"
+
     socket.on 'message',  onMinion
 
     minions.push new Minion socket
 
   else
 
-    error "Rejected websocket request for #{req.url}", req
+    error "Rejected websocket request for #{req.url} from #{ip}", req
     socket.close()
 
 

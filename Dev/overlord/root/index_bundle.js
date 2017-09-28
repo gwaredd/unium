@@ -18875,22 +18875,47 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRedux = __webpack_require__(162);
 
-var _app = __webpack_require__(344);
+var _reactBootstrap = __webpack_require__(345);
 
-var _app2 = _interopRequireDefault(_app);
-
-var _store = __webpack_require__(482);
+var _store = __webpack_require__(490);
 
 var _store2 = _interopRequireDefault(_store);
 
+var _menu = __webpack_require__(488);
+
+var _menu2 = _interopRequireDefault(_menu);
+
+var _minions = __webpack_require__(487);
+
+var _minions2 = _interopRequireDefault(_minions);
+
+var _actions = __webpack_require__(489);
+
+var actions = _interopRequireWildcard(_actions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_store2.default.dispatch({ type: 'OVERLORD_CONNECT' });
+//-------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------
+
+_store2.default.dispatch(actions.ovConnect());
 
 _reactDom2.default.render(_react2.default.createElement(
   _reactRedux.Provider,
   { store: _store2.default },
-  _react2.default.createElement(_app2.default, null)
+  _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(_menu2.default, null),
+    _react2.default.createElement(
+      _reactBootstrap.Panel,
+      { header: 'Minions', bsStyle: 'primary' },
+      _react2.default.createElement(_minions2.default, null)
+    )
+  )
 ), document.getElementById('root'));
 
 /***/ }),
@@ -32287,122 +32312,7 @@ function verifySubselectors(mapStateToProps, mapDispatchToProps, mergeProps, dis
 }
 
 /***/ }),
-/* 344 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _dec, _class; //-------------------------------------------------------------------------------
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(162);
-
-var _reactBootstrap = __webpack_require__(345);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// connect store values ...
-var App = (_dec = (0, _reactRedux.connect)(function (store) {
-  return {
-    minions: store.minions
-  };
-}), _dec(_class = function (_React$Component) {
-  _inherits(App, _React$Component);
-
-  function App() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, App);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.onConnect = function () {
-      _this.props.dispatch({ type: 'OVERLORD_CONNECT' });
-    }, _this.onDisconnect = function () {
-      _this.props.dispatch({ type: 'OVERLORD_DISCONNECT' });
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(App, [{
-    key: 'render',
-    value: function render() {
-
-      var minions = this.props.minions;
-
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          _reactBootstrap.Navbar,
-          null,
-          _react2.default.createElement(
-            _reactBootstrap.Navbar.Header,
-            null,
-            _react2.default.createElement(
-              _reactBootstrap.Navbar.Brand,
-              null,
-              _react2.default.createElement(
-                'a',
-                { href: '#' },
-                'Unium: Overlord'
-              )
-            )
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.Navbar.Collapse,
-            { style: { marginRight: '10px' } },
-            _react2.default.createElement(
-              _reactBootstrap.Nav,
-              { pullRight: true },
-              minions.connected ? _react2.default.createElement(
-                _reactBootstrap.NavItem,
-                { onClick: this.onDisconnect },
-                'Connected \xA0',
-                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'ok-sign' })
-              ) : _react2.default.createElement(
-                _reactBootstrap.NavItem,
-                { onClick: this.onConnect },
-                'Not connected \xA0',
-                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'remove-sign' })
-              )
-            )
-          )
-        ),
-        _react2.default.createElement(
-          _reactBootstrap.Panel,
-          { header: 'Minions', bsStyle: 'primary' },
-          'Panel content'
-        )
-      );
-    }
-  }]);
-
-  return App;
-}(_react2.default.Component)) || _class);
-exports.default = App;
-
-/***/ }),
+/* 344 */,
 /* 345 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -43693,53 +43603,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 482 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _redux = __webpack_require__(165);
-
-var _reduxThunk = __webpack_require__(483);
-
-var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
-
-var _reduxLogger = __webpack_require__(484);
-
-var _overlord = __webpack_require__(486);
-
-var _overlord2 = _interopRequireDefault(_overlord);
-
-var _minions = __webpack_require__(485);
-
-var Minions = _interopRequireWildcard(_minions);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var reducers = (0, _redux.combineReducers)({
-  minions: Minions.reducer
-}); //-------------------------------------------------------------------------------
-
-// https://youtu.be/nrg7zhgJd4w
-
-var initial_state = {
-  minions: Minions.initial_state
-};
-
-var middleware = (0, _redux.applyMiddleware)(_reduxThunk2.default, _overlord2.default, (0, _reduxLogger.createLogger)());
-
-var store = (0, _redux.createStore)(reducers, initial_state, middleware);
-
-exports.default = store;
-
-/***/ }),
+/* 482 */,
 /* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -43777,7 +43641,9 @@ exports['default'] = thunk;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(101)))
 
 /***/ }),
-/* 485 */
+/* 485 */,
+/* 486 */,
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43786,36 +43652,263 @@ exports['default'] = thunk;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports.reducer = reducer;
+var _dec, _class; //-------------------------------------------------------------------------------
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(162);
+
+var _reactBootstrap = __webpack_require__(345);
+
+var _actions = __webpack_require__(489);
+
+var actions = _interopRequireWildcard(_actions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 //-------------------------------------------------------------------------------
-// reducer
 
+var Minions = (_dec = (0, _reactRedux.connect)(function (store) {
+  return {
+    minions: store.minions
+  };
+}), _dec(_class = function (_React$Component) {
+  _inherits(Minions, _React$Component);
 
-var initial_state = exports.initial_state = {
-  connected: false,
-  minions: []
-};
+  function Minions() {
+    _classCallCheck(this, Minions);
 
-function reducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initial_state;
-  var action = arguments[1];
-
-
-  switch (action.type) {
-
-    case 'CONNECTION_STATE':
-      state = _extends({}, state, { connected: action.payload.state });
-      break;
+    return _possibleConstructorReturn(this, (Minions.__proto__ || Object.getPrototypeOf(Minions)).apply(this, arguments));
   }
 
-  return state;
+  _createClass(Minions, [{
+    key: 'render',
+    value: function render() {
+
+      var minions = this.props.minions.minions;
+
+      if (minions.length == 0) {
+        return _react2.default.createElement(
+          'span',
+          null,
+          ' No minions connected '
+        );
+      }
+      return;
+      _react2.default.createElement(
+        _reactBootstrap.Table,
+        { striped: true, bordered: true, condensed: true, hover: true },
+        _react2.default.createElement(
+          'thead',
+          null,
+          _react2.default.createElement(
+            'tr',
+            null,
+            _react2.default.createElement(
+              'th',
+              null,
+              'ID'
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              'IP'
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              'Application'
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              'Version'
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              'Scene'
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return Minions;
+}(_react2.default.Component)) || _class);
+exports.default = Minions;
+
+/***/ }),
+/* 488 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _dec, _class; //-------------------------------------------------------------------------------
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(162);
+
+var _reactBootstrap = __webpack_require__(345);
+
+var _actions = __webpack_require__(489);
+
+var actions = _interopRequireWildcard(_actions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//-------------------------------------------------------------------------------
+
+var Menu = (_dec = (0, _reactRedux.connect)(function (store) {
+  return {
+    minions: store.minions
+  };
+}), _dec(_class = function (_React$Component) {
+  _inherits(Menu, _React$Component);
+
+  function Menu() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Menu);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Menu.__proto__ || Object.getPrototypeOf(Menu)).call.apply(_ref, [this].concat(args))), _this), _this.onConnect = function () {
+      _this.props.dispatch(actions.ovConnect());
+    }, _this.onDisconnect = function () {
+      _this.props.dispatch(actions.ovDisconnect());
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(Menu, [{
+    key: 'render',
+    value: function render() {
+
+      var minions = this.props.minions;
+
+      return _react2.default.createElement(
+        _reactBootstrap.Navbar,
+        null,
+        _react2.default.createElement(
+          _reactBootstrap.Navbar.Header,
+          null,
+          _react2.default.createElement(
+            _reactBootstrap.Navbar.Brand,
+            null,
+            _react2.default.createElement(
+              'a',
+              { href: '#' },
+              'Unium: Overlord'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.Navbar.Collapse,
+          { style: { marginRight: '10px' } },
+          _react2.default.createElement(
+            _reactBootstrap.Nav,
+            { pullRight: true },
+            minions.connected ? _react2.default.createElement(
+              _reactBootstrap.NavItem,
+              { onClick: this.onDisconnect },
+              'Connected \xA0',
+              _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'ok-sign' })
+            ) : _react2.default.createElement(
+              _reactBootstrap.NavItem,
+              { onClick: this.onConnect },
+              'Not connected \xA0',
+              _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'remove-sign' })
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return Menu;
+}(_react2.default.Component)) || _class);
+exports.default = Menu;
+
+/***/ }),
+/* 489 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setConnectedState = setConnectedState;
+exports.ovConnect = ovConnect;
+exports.ovDisconnect = ovDisconnect;
+exports.listMinions = listMinions;
+function setConnectedState(state) {
+  return {
+    type: "CONNECTION_STATE",
+    payload: {
+      state: state
+    }
+  };
+}
+
+function ovConnect() {
+  return { type: 'OVERLORD_CONNECT' };
+}
+
+function ovDisconnect() {
+  return { type: 'OVERLORD_DISCONNECT' };
+}
+
+function listMinions() {
+  return {
+    type: "OVERLORD_SEND",
+    payload: {
+      type: 'list'
+    }
+  };
 }
 
 /***/ }),
-/* 486 */
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43825,7 +43918,50 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _actions = __webpack_require__(487);
+var _redux = __webpack_require__(165);
+
+var _reduxThunk = __webpack_require__(483);
+
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+var _reduxLogger = __webpack_require__(484);
+
+var _overlord = __webpack_require__(491);
+
+var _overlord2 = _interopRequireDefault(_overlord);
+
+var _minions = __webpack_require__(492);
+
+var Minions = _interopRequireWildcard(_minions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var reducers = (0, _redux.combineReducers)({
+  minions: Minions.reducer
+}); //-------------------------------------------------------------------------------
+
+var initial_state = {
+  minions: Minions.initial_state
+};
+
+var middleware = (0, _redux.applyMiddleware)(_reduxThunk2.default, _overlord2.default, (0, _reduxLogger.createLogger)());
+
+exports.default = (0, _redux.createStore)(reducers, initial_state, middleware);
+
+/***/ }),
+/* 491 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _actions = __webpack_require__(489);
 
 var actions = _interopRequireWildcard(_actions);
 
@@ -43840,7 +43976,7 @@ exports.default = function () {
   var onOpen = function onOpen(ws, store, token) {
     return function (evt) {
       store.dispatch(actions.setConnectedState(true));
-      store.dispatch(actions.ovSendCommand('list'));
+      store.dispatch(actions.listMinions());
     };
   };
 
@@ -43850,25 +43986,13 @@ exports.default = function () {
     };
   };
 
-  //-------------------------------------------------------------------------------
-
   var onMessage = function onMessage(ws, store) {
     return function (evt) {
-
       var msg = JSON.parse(evt.data);
-
-      console.log(msg);
-
-      switch (msg.type) {
-
-        case "list":
-          //store.dispatch( actions.messageReceived(msg) )
-          break;
-
-        default:
-          console.log("Received unknown message type: '" + msg.type + "'");
-          break;
-      }
+      store.dispatch({
+        type: "MINION_" + msg.type.toUpperCase(),
+        payload: msg.data
+      });
     };
   };
 
@@ -43920,7 +44044,7 @@ exports.default = function () {
 // middleware for handling websocket connections to server
 
 /***/ }),
-/* 487 */
+/* 492 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43929,24 +44053,43 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setConnectedState = setConnectedState;
-exports.ovSendCommand = ovSendCommand;
-function setConnectedState(state) {
-  return {
-    type: "CONNECTION_STATE",
-    payload: {
-      state: state
-    }
-  };
-}
 
-function ovSendCommand(cmd) {
-  return {
-    type: "OVERLORD_SEND",
-    payload: {
-      type: cmd
-    }
-  };
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.reducer = reducer;
+//-------------------------------------------------------------------------------
+// reducer
+
+var initial_state = exports.initial_state = {
+  connected: false,
+  minions: []
+};
+
+function reducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initial_state;
+  var action = arguments[1];
+
+
+  switch (action.type) {
+
+    case 'CONNECTION_STATE':
+      state = _extends({}, state, { connected: action.payload.state });
+      break;
+
+    case 'MINION_LIST':
+      break;
+
+    case 'MINION_ADD':
+      break;
+
+    case 'MINION_REMOVE':
+      break;
+
+    case 'MINION_UPDATE':
+      break;
+  }
+
+  return state;
 }
 
 /***/ })

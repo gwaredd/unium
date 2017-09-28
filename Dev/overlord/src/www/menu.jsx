@@ -2,23 +2,24 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Alert, Nav, Navbar, NavItem, MenuItem, NavDropdown, Panel, Glyphicon } from 'react-bootstrap';
+import { Nav, Navbar, NavItem, Glyphicon } from 'react-bootstrap';
+import * as actions from './model/actions.jsx'
 
+//-------------------------------------------------------------------------------
 
-// connect store values ...
 @connect( (store) => {
   return {
     minions: store.minions
   }
 })
-export default class App extends React.Component {
+export default class Menu extends React.Component {
 
   onConnect = () => {
-    this.props.dispatch({type:'OVERLORD_CONNECT'})
+    this.props.dispatch( actions.ovConnect() )
   }
 
   onDisconnect = () => {
-    this.props.dispatch({type:'OVERLORD_DISCONNECT'})
+    this.props.dispatch( actions.ovDisconnect() )
   }
 
   render() {
@@ -26,7 +27,6 @@ export default class App extends React.Component {
     var minions = this.props.minions
 
     return (
-      <div>
 
         <Navbar>
           <Navbar.Header>
@@ -50,14 +50,6 @@ export default class App extends React.Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-
-        <Panel header="Minions" bsStyle="primary">
-          Panel content
-        </Panel>
-
-      </div>
     );
   }
 }
-
-

@@ -11,31 +11,19 @@ export default (function(){
   
   const onOpen = (ws,store,token) => evt => {
     store.dispatch( actions.setConnectedState( true ) )
-    store.dispatch( actions.ovSendCommand('list') )
+    store.dispatch( actions.listMinions() )
   }
 
   const onClose = (ws,store) => evt => {
     store.dispatch( actions.setConnectedState( false ) )
   }
 
-  //-------------------------------------------------------------------------------
-
   const onMessage = (ws,store) => evt => {
-
     var msg = JSON.parse( evt.data )
-
-    console.log( msg )
-
-    switch(msg.type) {
-
-      case "list":
-        //store.dispatch( actions.messageReceived(msg) )
-        break
-
-      default:
-        console.log( "Received unknown message type: '" + msg.type + "'" )
-        break
-    }
+    store.dispatch({
+      type    : "MINION_" + msg.type.toUpperCase(),
+      payload : msg.data
+    })
   }
 
 

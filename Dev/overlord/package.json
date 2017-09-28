@@ -7,8 +7,8 @@
   "description": "test agent controller for unium",
   "repository": "https://github.com/gwaredd/unium.git",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "build": "node ./node_modules/webpack/bin/webpack.js",
+    "prod": "node ./node_modules/webpack/bin/webpack.js --progress --colors -p",
+    "build": "node ./node_modules/webpack/bin/webpack.js --progress --colors -d",
     "watch": "node ./node_modules/webpack/bin/webpack.js --progress --colors --watch",
     "server": "coffee ./src/server/index.coffee"
   },

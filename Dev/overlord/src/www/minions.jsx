@@ -10,9 +10,10 @@ export const initial_state = {
 export function reducer( state=initial_state, action ) {
 
   switch( action.type ) {
-    case 'OVERLORD_CONNECTION': {
+
+    case 'CONNECTION_STATE':
       state = {...state, connected: action.payload.state }
-    }
+      break
   }
 
   return state

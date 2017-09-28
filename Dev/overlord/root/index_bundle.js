@@ -18883,13 +18883,9 @@ var _store = __webpack_require__(482);
 
 var _store2 = _interopRequireDefault(_store);
 
-var _overlord = __webpack_require__(486);
-
-var _overlord2 = _interopRequireDefault(_overlord);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var overlord = new _overlord2.default(_store2.default);
+_store2.default.dispatch({ type: 'OVERLORD_CONNECT' });
 
 _reactDom2.default.render(_react2.default.createElement(
   _reactRedux.Provider,
@@ -32331,20 +32327,29 @@ var App = (_dec = (0, _reactRedux.connect)(function (store) {
   _inherits(App, _React$Component);
 
   function App() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.onConnect = function () {
+      _this.props.dispatch({ type: 'OVERLORD_CONNECT' });
+    }, _this.onDisconnect = function () {
+      _this.props.dispatch({ type: 'OVERLORD_DISCONNECT' });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(App, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      // dispatch?
-      //this.props.dispatch()
-    }
-  }, {
     key: 'render',
     value: function render() {
+
+      var minions = this.props.minions;
+
       return _react2.default.createElement(
         'div',
         null,
@@ -32361,6 +32366,25 @@ var App = (_dec = (0, _reactRedux.connect)(function (store) {
                 'a',
                 { href: '#' },
                 'Unium: Overlord'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Navbar.Collapse,
+            { style: { marginRight: '10px' } },
+            _react2.default.createElement(
+              _reactBootstrap.Nav,
+              { pullRight: true },
+              minions.connected ? _react2.default.createElement(
+                _reactBootstrap.NavItem,
+                { onClick: this.onDisconnect },
+                'Connected \xA0',
+                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'ok-sign' })
+              ) : _react2.default.createElement(
+                _reactBootstrap.NavItem,
+                { onClick: this.onConnect },
+                'Not connected \xA0',
+                _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'remove-sign' })
               )
             )
           )
@@ -43687,6 +43711,10 @@ var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
 var _reduxLogger = __webpack_require__(484);
 
+var _overlord = __webpack_require__(486);
+
+var _overlord2 = _interopRequireDefault(_overlord);
+
 var _minions = __webpack_require__(485);
 
 var Minions = _interopRequireWildcard(_minions);
@@ -43695,19 +43723,17 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//-------------------------------------------------------------------------------
-
-// https://youtu.be/nrg7zhgJd4w
-
 var reducers = (0, _redux.combineReducers)({
   minions: Minions.reducer
-});
+}); //-------------------------------------------------------------------------------
+
+// https://youtu.be/nrg7zhgJd4w
 
 var initial_state = {
   minions: Minions.initial_state
 };
 
-var middleware = (0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger.createLogger)());
+var middleware = (0, _redux.applyMiddleware)(_reduxThunk2.default, _overlord2.default, (0, _reduxLogger.createLogger)());
 
 var store = (0, _redux.createStore)(reducers, initial_state, middleware);
 
@@ -43779,10 +43805,10 @@ function reducer() {
 
 
   switch (action.type) {
-    case 'OVERLORD_CONNECTION':
-      {
-        state = _extends({}, state, { connected: action.payload.state });
-      }
+
+    case 'CONNECTION_STATE':
+      state = _extends({}, state, { connected: action.payload.state });
+      break;
   }
 
   return state;
@@ -43798,9 +43824,6 @@ function reducer() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _actions = __webpack_require__(487);
 
@@ -43808,46 +43831,93 @@ var actions = _interopRequireWildcard(_actions);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+exports.default = function () {
 
-var Overlord = function () {
-  function Overlord(store) {
-    _classCallCheck(this, Overlord);
+  //-------------------------------------------------------------------------------
 
-    this.store = store;
-    this.connect();
-  }
+  var socket = null;
 
-  _createClass(Overlord, [{
-    key: 'connect',
-    value: function connect() {
+  var onOpen = function onOpen(ws, store, token) {
+    return function (evt) {
+      store.dispatch(actions.setConnectedState(true));
+      store.dispatch(actions.ovSendCommand('list'));
+    };
+  };
 
-      var url = document.location.href.replace(/^http?/i, "ws") + 'overlord';
-      var socket = new WebSocket(url);
+  var onClose = function onClose(ws, store) {
+    return function (evt) {
+      store.dispatch(actions.setConnectedState(false));
+    };
+  };
 
-      var store = this.store;
+  //-------------------------------------------------------------------------------
 
-      socket.onopen = function () {
-        store.dispatch(actions.onConnection(true));
-        socket.send(JSON.stringify({ type: 'list' }));
+  var onMessage = function onMessage(ws, store) {
+    return function (evt) {
+
+      var msg = JSON.parse(evt.data);
+
+      console.log(msg);
+
+      switch (msg.type) {
+
+        case "list":
+          //store.dispatch( actions.messageReceived(msg) )
+          break;
+
+        default:
+          console.log("Received unknown message type: '" + msg.type + "'");
+          break;
+      }
+    };
+  };
+
+  //-------------------------------------------------------------------------------
+  // redux
+
+  return function (store) {
+    return function (next) {
+      return function (action) {
+
+        switch (action.type) {
+
+          case 'OVERLORD_CONNECT':
+
+            if (socket != null) {
+              socket.close();
+            }
+
+            var url = document.location.href.replace(/^http?/i, "ws") + 'overlord';
+
+            socket = new WebSocket(url);
+            socket.onmessage = onMessage(socket, store);
+            socket.onclose = onClose(socket, store);
+            socket.onopen = onOpen(socket, store, action.token);
+
+            break;
+
+          case 'OVERLORD_DISCONNECT':
+
+            if (socket != null) {
+              socket.close();
+            }
+
+            socket = null;
+
+            break;
+
+          case 'OVERLORD_SEND':
+            socket.send(JSON.stringify(action.payload));
+            break;
+
+          default:
+            return next(action);
+        }
       };
-
-      socket.onclose = function () {
-        store.dispatch(actions.onConnection(false));
-      };
-
-      socket.onerror = function (err) {
-        console.error(err);
-      };
-
-      socket.onmessage = function (msg) {};
-    }
-  }]);
-
-  return Overlord;
-}();
-
-exports.default = Overlord;
+    };
+  };
+}(); //-------------------------------------------------------------------------------
+// middleware for handling websocket connections to server
 
 /***/ }),
 /* 487 */
@@ -43859,12 +43929,22 @@ exports.default = Overlord;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.onConnection = onConnection;
-function onConnection(state) {
+exports.setConnectedState = setConnectedState;
+exports.ovSendCommand = ovSendCommand;
+function setConnectedState(state) {
   return {
-    type: "OVERLORD_CONNECTION",
+    type: "CONNECTION_STATE",
     payload: {
       state: state
+    }
+  };
+}
+
+function ovSendCommand(cmd) {
+  return {
+    type: "OVERLORD_SEND",
+    payload: {
+      type: cmd
     }
   };
 }

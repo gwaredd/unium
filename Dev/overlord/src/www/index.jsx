@@ -4,9 +4,8 @@ import { Provider } from 'react-redux'
 
 import App from './app.jsx'
 import Store from './store.jsx'
-import Overlord from './overlord.jsx'
 
-var overlord = new Overlord( Store )
+Store.dispatch( { type: 'OVERLORD_CONNECT' } )
 
 ReactDOM.render(
 

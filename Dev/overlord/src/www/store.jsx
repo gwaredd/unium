@@ -5,6 +5,7 @@
 import { combineReducers, applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
+import Overlord from './overlord.jsx'
 import * as Minions from './minions.jsx'
 
 const reducers = combineReducers({
@@ -15,7 +16,7 @@ const initial_state = {
   minions: Minions.initial_state
 }
 
-const middleware = applyMiddleware( thunk, createLogger() )
+const middleware = applyMiddleware( thunk, Overlord, createLogger() )
 
 const store = createStore( reducers, initial_state, middleware );
 

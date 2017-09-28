@@ -36,11 +36,19 @@ minions   = []
 clients   = []
 
 onClient = (msg) ->
-  switch msg.type
-    when "list"
-      console.log "list"
-    else
-      warn "Unknown overlord message type '#{msg.type}'"
+
+  try
+
+    msg = JSON.parse msg
+
+    switch msg.type
+      when "list"
+        this.send JSON.stringify {type:'hello'}
+      else
+        warn "Unknown overlord message type '#{msg.type}'"
+        
+  catch e
+    error "" + e
 
 
 #--------------------------------------------------------------------------------

@@ -100,6 +100,7 @@ Minion = ->
         RunningTime : 12.0
         Scene       : "Scene1"
         Platform    : "Android"
+        Port        : 8342
 
       ws.send JSON.stringify id:"about", data:about
 
@@ -117,7 +118,7 @@ Minion = ->
         minion.itr.next()
 
       
-      sceneChanges = 5
+      sceneChanges = 10000
       for i in [0..sceneChanges]
         setTimeout changeScene, 2000 + Math.floor Math.random() * 3000;
         yield

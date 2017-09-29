@@ -41,8 +41,8 @@ clients   = []
 
 logger.colours = !argv.nc?
 
-broadcast = (msg) ->
-  msg = JSON.stringify msg
+broadcast = (id, data) ->
+  msg = JSON.stringify id:id, data:data
   _.each clients, (client) -> client.send msg
 
 
@@ -57,7 +57,7 @@ onClient = (msg) ->
     msg = JSON.parse msg
 
     if msg.id == 'list'
-      this.send JSON.stringify id:'list', data: _.map minions, (m) -> m.getInfo()
+      this.send JSON.stringify id:'list', data: _.map minions, (socket) -> socket.minion.getInfo()
     else
       this.overlord.error "Unknown overlord message type '#{msg.id}'"
 
@@ -82,7 +82,7 @@ onMinion = (msg) ->
       else
         throw "Unknown overlord message type '#{msg.id}'"
 
-    broadcast id:'update', data: this.minion.getInfo()
+    broadcast 'update', this.minion.getInfo()
 
   catch e
     error "" + e
@@ -127,14 +127,14 @@ wss.on 'connection', (socket, req) ->
 
     socket.on 'close', ->
       this.minion.onClose()
-      broadcast id:'remove', data: this.minion.getInfo()
+      broadcast 'remove', this.minion.getInfo()
       xs = this
       minions = _.reject minions, (sock) -> sock == xs
 
     socket.on 'message', onMinion
     minions.push socket
 
-    broadcast id:'add', data: socket.minion.getInfo()
+    broadcast 'add', socket.minion.getInfo()
 
   else
 

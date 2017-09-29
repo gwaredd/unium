@@ -12,7 +12,10 @@ module.exports = (socket,ip) ->
   @about  = null
   @scene  = ""
 
-  @onClose = -> logger.log @ip, "Minion##{@id} disconnected"
+  @log    = (m) -> logger.log @ip, "Minion##{@id} #{m}"
+  @error  = (m) -> logger.error @ip, "Minion##{@id} #{m}"
+
+  @onClose = -> this.log "disconnected"
   @onScene = (data) -> @scene = data
 
   @onAbout = (data) ->
@@ -20,21 +23,22 @@ module.exports = (socket,ip) ->
     @scene = data.Scene
 
     if data.Product? and data.Version? and data.Platform?
-      logger.log @ip, "Minion##{@id} running #{data.Product} v#{data.Version}, #{data.Platform}"
+      @log "running #{data.Product} v#{data.Version} on #{data.Platform}"
     else
       @socket.close()
 
 
   @getInfo = ->
     id      : @id
-    ip      : @ip
+    ip      : if @about? then "#{@about.IPAddress}:#{@about.Port}" else @ip
     product : if @about? then @about.Product else "Unknown"
     version : if @about? then @about.Version else "Unknown"
     editor  : if @about? and @about.IsEditor then true else false
+    platform: if @about? then @about.Platform else "Unknown"
     scene   : @scene
 
 
-  logger.log ip, "Minion##{@id} connected"
+  this.log "connected"
 
   return this
 

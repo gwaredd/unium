@@ -21,7 +21,7 @@ export default (function(){
   const onMessage = (ws,store) => evt => {
     var msg = JSON.parse( evt.data )
     store.dispatch({
-      type    : "MINION_" + msg.type.toUpperCase(),
+      type    : "MINION_" + msg.id.toUpperCase(),
       payload : msg.data
     })
   }

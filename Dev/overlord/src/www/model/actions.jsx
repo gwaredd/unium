@@ -20,7 +20,7 @@ export function listMinions() {
   return {
     type: "OVERLORD_SEND",
     payload: {
-      type: 'list'
+      id: 'list'
     }
   }
 }

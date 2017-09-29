@@ -29,6 +29,7 @@ export default class Minions extends React.Component {
             <th>IP</th>
             <th>Application</th>
             <th>Version</th>
+            <th>Editor</th>
             <th>Scene</th>
           </tr>
         </thead>

@@ -20,7 +20,7 @@ export default class AcGrid extends React.PureComponent {
 
   static defaultProps = {
     className: "layout",
-    items: 4,
+    items: 1,
     rowHeight: 150,
     onLayoutChange: function() {},
     cols: 4

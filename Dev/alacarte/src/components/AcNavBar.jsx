@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Glyphicon } from 'react-bootstrap'
 
-import * as ActionsApp from '../model/ActionsApp.jsx'
+import * as Actions from '../model/Actions.jsx'
 
 import { connect } from 'react-redux'
 
@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
 export default class AcNavBar extends React.Component {
 
   onScreenshot = () => {
-    this.props.dispatch( ActionsApp.appScreenshot( true ))
+    this.props.dispatch( Actions.appScreenshot( true ))
   }
 
   render() {

@@ -4,8 +4,10 @@ import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
-import * as ActionsApp from '../model/ActionsApp.jsx'
+import * as Actions from '../model/Actions.jsx'
 
+
+//-------------------------------------------------------------------------------
 
 @connect( (store) => {
   return {
@@ -15,7 +17,7 @@ import * as ActionsApp from '../model/ActionsApp.jsx'
 export default class AcModalScreenshot extends React.Component {
 
   onClose = () => {
-    this.props.dispatch( ActionsApp.appScreenshot( false ) )
+    this.props.dispatch( Actions.appCancelDialog() )
   }
 
   render() {
@@ -23,7 +25,7 @@ export default class AcModalScreenshot extends React.Component {
     var app = this.props.app
 
     return (
-      <Modal show={app.screenshot} onHide={this.onClose}>
+      <Modal show={app.screenshot} bsSize="large" onHide={this.onClose}>
           <Modal.Header closeButton>
             <Modal.Title>Take Screenshot</Modal.Title>
           </Modal.Header>

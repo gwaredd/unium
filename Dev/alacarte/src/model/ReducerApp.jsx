@@ -2,7 +2,8 @@
 // reducer
 
 export const initial_state = {
-  screenshot: false
+  screenshot  : false,
+  confirm     : null
 }
 
 export function reducer( state=initial_state, action ) {
@@ -11,6 +12,14 @@ export function reducer( state=initial_state, action ) {
 
     case 'APP_SCREENSHOT':
       state = {...state, screenshot: action.payload }
+      break
+
+    case 'APP_CONFIRM':
+      state = {...state, confirm: action.payload }
+      break
+
+    case 'APP_CANCEL_DIALOG':
+      state = {...state, confirm: null, screenshot: false }
       break
   }
 

@@ -20,7 +20,7 @@ export default class AcGrid extends React.PureComponent {
 
   static defaultProps = {
     className: "layout",
-    items: 50,
+    items: 4,
     rowHeight: 150,
     onLayoutChange: function() {},
     cols: 4
@@ -47,7 +47,7 @@ export default class AcGrid extends React.PureComponent {
     const p = this.props
     return _.map(new Array(p.items), function(item, i) {
       const y = _.result(p, 'y') || Math.ceil(Math.random() * 4) + 1
-      return {x: i % 4, y: Math.floor(i / 6) * y, w: 1, h: 1, i: i.toString()}
+      return {x: 2 * i % 4, y: Math.floor(i / 6) * y, w: 2, h: 2, i: i.toString()}
     })
   }
 

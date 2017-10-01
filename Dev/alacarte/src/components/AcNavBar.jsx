@@ -4,7 +4,20 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Glyphicon } from 'react-bootstrap'
 
+import * as ActionsApp from '../model/ActionsApp.jsx'
+
+import { connect } from 'react-redux'
+
+@connect( (store) => {
+  return {
+    app: store.app
+  }
+})
 export default class AcNavBar extends React.Component {
+
+  onScreenshot = () => {
+    this.props.dispatch( ActionsApp.appScreenshot( true ))
+  }
 
   render() {
     return (
@@ -16,9 +29,9 @@ export default class AcNavBar extends React.Component {
         </Navbar.Header>
         <Nav pullRight>
           <NavItem eventKey={4} href="#">
-            <Glyphicon glyph='lock'/>
+            <Glyphicon glyph='cog'/>
           </NavItem>
-          <NavItem eventKey={5} href="#">
+          <NavItem eventKey={5} onClick={this.onScreenshot}>
             <Glyphicon glyph='camera'/>
           </NavItem>
           <NavItem eventKey={6} href="#">

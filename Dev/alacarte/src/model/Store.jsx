@@ -3,22 +3,25 @@
 import { combineReducers, applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-// import Overlord from './overlord.jsx'
-// import * as Minions from './minions.jsx'
 
-// const reducers = combineReducers({
-//   minions: Minions.reducer
-// })
+import * as ReducerApp from './ReducerApp.jsx'
 
-// const initial_state = {
-//   minions: Minions.initial_state
-// }
+//-------------------------------------------------------------------------------
 
-// const middleware = applyMiddleware( thunk, Overlord, createLogger() )
+const reducers = combineReducers({
+  app: ReducerApp.reducer
+})
 
-// export default createStore( reducers, initial_state, middleware )
-
-export function reducer( state, action ) {
+const initial_state = {
+  app: ReducerApp.initial_state
 }
-  
-export default createStore( reducer )
+
+const middleware = applyMiddleware(
+  thunk,
+  createLogger()
+)
+
+//-------------------------------------------------------------------------------
+
+export default createStore( reducers, initial_state, middleware )
+

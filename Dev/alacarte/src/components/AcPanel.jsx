@@ -8,18 +8,16 @@ export default class AcPanel extends React.Component {
   render() {
 
     var title = (
-      <span className='clearfix'>
-        <span>
-          Ac Panel
-        </span>
-        <Button className='pull-right' bsStyle="primary" bsSize="small" onClick={() => {alert('do stuff')}}>
-          <Glyphicon glyph="remove" />
-        </Button>
-      </span>
+      <div>
+        Ac Panel
+        <div className='pull-right'>
+          <Glyphicon className='acPanelIcon' glyph="remove" style={{fontSize:'10px'}} onClick={ () => {alert('ok')}}/>
+        </div>
+      </div>
     )
 
     return (
-      <Panel className="acPanel" header={title} bsStyle="primary">
+      <Panel className="acPanel" header={title}>
         Panel content
       </Panel>
     )

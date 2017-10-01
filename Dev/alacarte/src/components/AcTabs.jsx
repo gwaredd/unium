@@ -48,7 +48,7 @@ export default class AcTabs extends React.Component {
 
     return (
 
-      <Tabs animation={true} id="tabs" >
+      <Tabs animation={true} id="tabs" className='acTabs'>
         <Tab eventKey={1} title={this.title('Tab 1',1)} mountOnEnter onEnter={()=>{this.onEnterTab(1)}}>
           <AcGrid/>
         </Tab>

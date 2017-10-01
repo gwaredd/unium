@@ -18,12 +18,9 @@ export default class AcPanel extends React.Component {
     )
 
     return (
-      <div>
-        footer
-      </div>
-      // <Navbar fixedBottom>
-      //   <Panel collapsible header={title} eventKey="1" style={{margin:'0px'}}>Panel 1 content</Panel>
-      // </Navbar>
+      <Navbar fixedBottom>
+        <Panel collapsible header={title} eventKey="1" style={{margin:'0px'}}>Panel 1 content</Panel>
+      </Navbar>
    )
   }
 }

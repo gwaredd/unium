@@ -16,3 +16,10 @@ body {
   margin-bottom: 100px;
 }
 
+.debugOutput {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  background-color: #f5f5f5;
+}

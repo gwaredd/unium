@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Nav, Navbar, NavItem, Glyphicon } from 'react-bootstrap';
+import { Nav, Navbar, NavItem, Glyphicon } from 'react-bootstrap'
 import * as actions from './model/actions.jsx'
 
 //-------------------------------------------------------------------------------
@@ -38,18 +38,18 @@ export default class Menu extends React.Component {
             <Nav pullRight>
                 { minions.connected ? ( 
                   <NavItem onClick={this.onDisconnect}>
-                    Connected &nbsp;
+                    Connected &nbsp
                     <Glyphicon glyph='ok-sign'/>
                   </NavItem>
                 ):(
                   <NavItem onClick={this.onConnect}>
-                    Not connected &nbsp;
+                    Not connected &nbsp
                     <Glyphicon glyph='remove-sign'/>
                   </NavItem>
                 )}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-    );
+    )
   }
 }

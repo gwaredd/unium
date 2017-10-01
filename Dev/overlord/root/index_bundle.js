@@ -45590,12 +45590,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //-------------------------------------------------------------------------------
 
 function MinionList(props) {
+
   var minions = props.minions;
 
   var list = minions.map(function (m) {
-
     var url = "http://" + m.ip + "/";
-
     return _react2.default.createElement(
       'tr',
       { key: m.id.toString() },

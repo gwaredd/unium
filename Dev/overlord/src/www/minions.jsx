@@ -9,12 +9,11 @@ import * as actions from './model/actions.jsx'
 //-------------------------------------------------------------------------------
 
 function MinionList( props ) {
+
   var minions = props.minions
-
+  
   var list = minions.map( (m) => {
-
     var url = "http://" + m.ip + "/"
-
     return (
       <tr key={m.id.toString()}>
         <td>{ m.id }</td>

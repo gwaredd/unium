@@ -1,3 +1,4 @@
+//-------------------------------------------------------------------------------
 
 export function appScreenshot( state ) {
   return {
@@ -29,3 +30,17 @@ export function appCancelDialog() {
     type: "APP_CANCEL_DIALOG"
   }
 }
+
+
+//-------------------------------------------------------------------------------
+
+export function tabAdd( id, name ) {
+  return {
+    type: "TAB_ADD",
+    payload: {
+      id    : id,
+      name  : name
+    }
+  }
+}
+

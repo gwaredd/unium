@@ -1,0 +1,13 @@
+
+add/remove panel
+add/remove widget
+move/copy widget
+
+config panel
+  - colour
+  - name
+
+add debug area
+
+screenshot button
+

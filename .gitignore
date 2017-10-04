@@ -4,7 +4,7 @@ build/*
 Temp/*
 Library/*
 obj/*
-Dev/tmp/*
+tmp
 
 # tool created files
 .vs/*

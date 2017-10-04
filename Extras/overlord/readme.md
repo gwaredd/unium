@@ -1,24 +1,36 @@
 # Unium Overlord
 
+> Test agent controller
+
 ## Install
 
-Requirements
+### Requirements
 
-* node.js
+* [node.js](https://nodejs.org/)
 
-Install
+### Install
 
-> npm install --production
+```
+npm install --production
+```
 
+### Run
 
-Run
-
-> npm start
+```
+npm start
+```
 
 ## Build
 
-> npm install
-> npm run build
+```
+npm install
+```
 
-> npm run prod
+```
+npm run build
+```
+
+```
+npm run release
+```
 

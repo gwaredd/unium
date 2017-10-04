@@ -56,13 +56,15 @@ onClient = (msg) ->
 
     msg = JSON.parse msg
 
-    if msg.id == 'list'
-      this.send JSON.stringify id:'list', data: _.map minions, (socket) -> socket.minion.getInfo()
-    else
-      this.overlord.error "Unknown overlord message type '#{msg.id}'"
+    switch msg.id
+      when "list"
+        @send JSON.stringify id:'list', data: _.map minions, (socket) -> socket.minion.getInfo()
+      else
+        throw "Unknown overlord message type '#{msg.id}'"
 
   catch e
-    this.overlord.error e
+
+    @overlord.error e
 
 
 #--------------------------------------------------------------------------------
@@ -76,16 +78,17 @@ onMinion = (msg) ->
 
     switch msg.id
       when "about"
-        this.minion.onAbout msg.data
+        @minion.onAbout msg.data
       when "scene"
-        this.minion.onScene msg.data
+        @minion.onScene msg.data
       else
         throw "Unknown overlord message type '#{msg.id}'"
 
     broadcast 'update', this.minion.getInfo()
 
   catch e
-    error "" + e
+  
+    @minion.error e
 
 
 #--------------------------------------------------------------------------------

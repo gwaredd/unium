@@ -1109,6 +1109,10 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
+coffeescript@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/coffeescript/-/coffeescript-2.0.1.tgz#7b74a62ee5b9bc833c9a77968605327421c5312a"
+
 color-convert@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.0.tgz#1accf97dd739b983bf994d56fec8f95853641b7a"

@@ -1,20 +1,21 @@
 {
   "name": "overlord",
   "version": "1.0.0",
-  "main": "index.js",
-  "author": "Gwaredd",
+  "main": "./src/server/index.coffee",
+  "author": "gwaredd@hotmail.com",
   "license": "MIT",
-  "description": "test agent controller for unium",
+  "description": "Test agent manager for unium for use with the UniumMinion component",
   "repository": "https://github.com/gwaredd/unium.git",
   "scripts": {
-    "prod": "node ./node_modules/webpack/bin/webpack.js --progress --colors -p",
+    "start": "node ./node_modules/coffeescript/bin/coffee ./src/server/index.coffee",
     "build": "node ./node_modules/webpack/bin/webpack.js --progress --colors -d",
     "watch": "node ./node_modules/webpack/bin/webpack.js --progress --colors --watch",
-    "server": "coffee ./src/server/index.coffee"
+    "release": "node ./node_modules/webpack/bin/webpack.js --progress --colors -p"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
     "chalk": "^2.1.0",
+    "coffeescript": "^2.0.1",
     "express": "^4.15.4",
     "morgan": "^1.8.2",
     "optimist": "^0.6.1",

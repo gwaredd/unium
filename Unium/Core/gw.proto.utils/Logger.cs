@@ -1,8 +1,8 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 
 using System;
-using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace gw.proto.utils
 {
@@ -13,19 +13,19 @@ namespace gw.proto.utils
         [Flags]
         public enum Severity
         {
-            None    = 0x00,
-            Info    = 0x01,
+            None = 0x00,
+            Info = 0x01,
             Warning = 0x02,
-            Error   = 0x04,
-            All     = 0x07,
+            Error = 0x04,
+            All = 0x07,
         }
 
-        public Severity Type    { get; private set; }
-        public String   Message { get; private set; }
+        public Severity Type { get; private set; }
+        public String Message { get; private set; }
 
         public LogEvent( Severity type, string text )
         {
-            Type    = type;
+            Type = type;
             Message = text;
         }
     }
@@ -84,8 +84,9 @@ namespace gw.proto.utils
             {
                 var stackTrace = new StackTrace();
 
-                msg = _formatRegEx.Replace( Format, m => {
-                    switch( m.Groups[1].Value )
+                msg = _formatRegEx.Replace( Format, m =>
+                {
+                    switch( m.Groups[ 1 ].Value )
                     {
                         case "%": return "%";
                         case "s": return severity.ToString().ToLower();
@@ -101,11 +102,10 @@ namespace gw.proto.utils
                     }
 
                     return m.Value;
-                });
+                } );
             }
 
             return String.Format( msg, args );
         }
     }
 }
-

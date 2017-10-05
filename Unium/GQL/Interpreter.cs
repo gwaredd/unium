@@ -15,16 +15,16 @@ namespace gw.gql
         {
             public Child( string name, object value )
             {
-                Name    = name;
-                Value   = value;
+                Name = name;
+                Value = value;
             }
 
             public string Name;
             public object Value;
         }
 
-        virtual public object   Attr( object obj, string name )     { return null; }
-        virtual public Child[]  Children( object obj )              { return null; }
+        virtual public object Attr( object obj, string name ) { return null; }
+        virtual public Child[] Children( object obj ) { return null; }
     }
 
 
@@ -33,7 +33,7 @@ namespace gw.gql
     public static class Interpreters
     {
         static Interpreter mDefault = new InterpreterDefault();
-        static Dictionary<Type, Interpreter> mInterpreters = new Dictionary<Type, Interpreter>(); 
+        static Dictionary<Type, Interpreter> mInterpreters = new Dictionary<Type, Interpreter>();
 
         static public void Add( Type type, Interpreter interpreter )
         {
@@ -151,4 +151,3 @@ namespace gw.gql
         }
     }
 }
-

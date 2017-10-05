@@ -47,12 +47,12 @@ namespace gw.gql
                     if( fieldInfo != null )
                     {
                         // convert to type
-                        
+
                         if( fieldInfo.FieldType != cachedType )
                         {
-                            cachedType  = fieldInfo.FieldType;
+                            cachedType = fieldInfo.FieldType;
                             cachedValue = ConvertType.FromString( valueAsString, cachedType );
-                            cacheValid  = true;
+                            cacheValid = true;
                         }
 
                         if( cacheValid )
@@ -71,12 +71,12 @@ namespace gw.gql
                     if( propInfo != null && propInfo.CanWrite )
                     {
                         // convert to type
-                        
+
                         if( propInfo.PropertyType != cachedType )
                         {
-                            cachedType  = propInfo.PropertyType;
+                            cachedType = propInfo.PropertyType;
                             cachedValue = ConvertType.FromString( valueAsString, cachedType );
-                            cacheValid  = true;
+                            cacheValid = true;
                         }
 
                         if( cacheValid )

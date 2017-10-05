@@ -204,7 +204,7 @@ namespace gw.gql
                     var keyType = dict.GetType().GetGenericArguments()[ 0 ];
                     var keyActual = Convert.ChangeType( key, keyType );
 
-                    if( dict.Contains( keyActual  ) )
+                    if( dict.Contains( keyActual ) )
                     {
                         visit( dict[ keyActual ], depth );
                     }
@@ -220,4 +220,3 @@ namespace gw.gql
 }
 
 #endif
-

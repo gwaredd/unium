@@ -12,8 +12,8 @@ namespace gw.gql.calc
 
     public abstract class LogicalExpression
     {
-        public abstract object  Evaluate( EvaluationContext context );
-        public abstract bool    IsBoolean();
+        public abstract object Evaluate( EvaluationContext context );
+        public abstract bool IsBoolean();
     }
 
 
@@ -23,20 +23,20 @@ namespace gw.gql.calc
     {
         int     mType;
         object  mValue;
-        
+
         public OperandExpression( Token token )
         {
             mType = token.Type;
 
             switch( mType )
             {
-                case Token.Null:        break;
-                case Token.Boolean:     mValue = Boolean.Parse( token.Text ); break;
-                case Token.Integer:     mValue = Int32.Parse( token.Text ); break;
-                case Token.Double:      mValue = Double.Parse( token.Text ); break;
-                case Token.String:      mValue = token.Text; break;
-                case Token.Variable:    mValue = token.Text; break;
-                    
+                case Token.Null: break;
+                case Token.Boolean: mValue = Boolean.Parse( token.Text ); break;
+                case Token.Integer: mValue = Int32.Parse( token.Text ); break;
+                case Token.Double: mValue = Double.Parse( token.Text ); break;
+                case Token.String: mValue = token.Text; break;
+                case Token.Variable: mValue = token.Text; break;
+
                 default:
                     throw new FormatException( "Bad token type" );
             }
@@ -48,7 +48,7 @@ namespace gw.gql.calc
             {
                 return context != null ? context.EvaluateParameter( mValue as string, context ) : null;
             }
-            
+
             return mValue;
         }
 
@@ -73,13 +73,13 @@ namespace gw.gql.calc
                 throw new FormatException( "Bad token type" );
             }
 
-            mType    = token.Type;
+            mType = token.Type;
             mOperand = operand;
         }
 
         public override object Evaluate( EvaluationContext context )
         {
-            return mType == Token.Negate ?  Numbers.Negate( mOperand.Evaluate( context ) ) : !Convert.ToBoolean( mOperand.Evaluate( context ) );
+            return mType == Token.Negate ? Numbers.Negate( mOperand.Evaluate( context ) ) : !Convert.ToBoolean( mOperand.Evaluate( context ) );
         }
 
         public override bool IsBoolean()
@@ -96,7 +96,7 @@ namespace gw.gql.calc
         int mType;
         LogicalExpression mLHS;
         LogicalExpression mRHS;
-        
+
         public BinaryExpression( Token token, LogicalExpression lhs, LogicalExpression rhs )
         {
             if( !token.IsBinaryOperator() )
@@ -105,36 +105,36 @@ namespace gw.gql.calc
             }
 
             mType = token.Type;
-            mLHS    = lhs;
-            mRHS    = rhs;
+            mLHS = lhs;
+            mRHS = rhs;
         }
-            
+
         public override object Evaluate( EvaluationContext context )
         {
             switch( mType )
             {
-                case Token.EQ:          return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) == 0;
-                case Token.NE:          return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) != 0;
-                case Token.LT:          return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) < 0;
-                case Token.LTE:         return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) <= 0;
-                case Token.GT:          return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) > 0;
-                case Token.GTE:         return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) >= 0;
+                case Token.EQ: return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) == 0;
+                case Token.NE: return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) != 0;
+                case Token.LT: return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) < 0;
+                case Token.LTE: return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) <= 0;
+                case Token.GT: return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) > 0;
+                case Token.GTE: return Numbers.Compare( mLHS.Evaluate( context ), mRHS.Evaluate( context ) ) >= 0;
 
-                case Token.Subtract:    return Numbers.Substract( mLHS.Evaluate( context ), mRHS.Evaluate( context ) );
-                case Token.Multiply:    return Numbers.Multiply( mLHS.Evaluate( context ), mRHS.Evaluate( context ) );
-                case Token.Divide:      return Numbers.Divide( Convert.ToDouble( mLHS.Evaluate( context ) ), mRHS.Evaluate( context ) );
-                case Token.Modulus:     return Numbers.Modulo( mLHS.Evaluate( context ), mRHS.Evaluate( context ) );
-                case Token.Exp:         return Numbers.Power( mLHS.Evaluate( context ), mRHS.Evaluate( context ) );
-                    
-                case Token.OR:          return Convert.ToBoolean( mLHS.Evaluate( context ) ) || Convert.ToBoolean( mRHS.Evaluate( context ) );
-                case Token.AND:         return Convert.ToBoolean( mLHS.Evaluate( context ) ) && Convert.ToBoolean( mRHS.Evaluate( context ) );
-                    
+                case Token.Subtract: return Numbers.Substract( mLHS.Evaluate( context ), mRHS.Evaluate( context ) );
+                case Token.Multiply: return Numbers.Multiply( mLHS.Evaluate( context ), mRHS.Evaluate( context ) );
+                case Token.Divide: return Numbers.Divide( Convert.ToDouble( mLHS.Evaluate( context ) ), mRHS.Evaluate( context ) );
+                case Token.Modulus: return Numbers.Modulo( mLHS.Evaluate( context ), mRHS.Evaluate( context ) );
+                case Token.Exp: return Numbers.Power( mLHS.Evaluate( context ), mRHS.Evaluate( context ) );
+
+                case Token.OR: return Convert.ToBoolean( mLHS.Evaluate( context ) ) || Convert.ToBoolean( mRHS.Evaluate( context ) );
+                case Token.AND: return Convert.ToBoolean( mLHS.Evaluate( context ) ) && Convert.ToBoolean( mRHS.Evaluate( context ) );
+
                 case Token.Add:
-                {
-                    var lhs = mLHS.Evaluate( context );
-                    var rhs = mRHS.Evaluate( context );
-                    return lhs is string ? String.Concat( lhs, rhs ) : Numbers.Add( lhs, rhs );
-                }
+                    {
+                        var lhs = mLHS.Evaluate( context );
+                        var rhs = mRHS.Evaluate( context );
+                        return lhs is string ? String.Concat( lhs, rhs ) : Numbers.Add( lhs, rhs );
+                    }
             }
 
             return null;
@@ -153,7 +153,7 @@ namespace gw.gql.calc
     {
         string mName;
         LogicalExpression[] mArgs;
-        
+
         public FunctionExpression( Token token, LogicalExpression[] arguments )
         {
             if( token.Type != Token.Function )
@@ -182,7 +182,7 @@ namespace gw.gql.calc
     {
         public delegate object ParameterDelegate( string name, EvaluationContext context );
         public delegate object FunctionDelegate( string name, LogicalExpression[] arguments, EvaluationContext context );
-        
+
         public ParameterDelegate    EvaluateParameter   = ( name, context ) => null;
         public FunctionDelegate     InvokeFunction      = ( name, args, context ) => null;
     }

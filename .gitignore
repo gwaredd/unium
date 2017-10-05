@@ -54,5 +54,4 @@ yarn-error.log
 npm-error.log
 
 # tools
-release.bat
 checkout.bat

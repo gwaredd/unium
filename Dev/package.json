@@ -2,14 +2,13 @@
   "name": "unium",
   "version": "1.0.0",
   "description": "unium tools and tests",
-  "main": "index.js",
   "scripts": {
-    "test": "mocha --opts Dev/test/mocha.opts Dev/test",
-    "tutorial": "coffee Dev/scripts/tutorial.coffee -d",
-    "compile-scripts": "coffee -c -b -m -o Dev/tmp Dev/scripts/",
+    "test": "mocha --opts ./test/mocha.opts ./test",
+    "tutorial": "coffee ./scripts/tutorial.coffee -d",
+    "compile-scripts": "coffee -c -b -m -o ./tmp ./scripts/",
     "tutorial-web": "webpack-dev-server --content-base=out/"
   },
-  "author": "Gwaredd",
+  "author": "gwaredd@hotmail.com",
   "license": "MIT",
   "repository": "https://github.com/gwaredd/unium.git",
   "devDependencies": {

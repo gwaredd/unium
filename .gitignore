@@ -38,9 +38,18 @@ sysinfo.txt
 *.unitypackage
 
 
+# Unity3D generated meta files
+*.pidb.meta
+
+# Unity3D Generated File On Crash Reports
+sysinfo.txt
+
+# Builds
+*.apk
+*.unitypackage
+
 # libs
 node_modules
-bower_components
 
 # tools
 release.bat

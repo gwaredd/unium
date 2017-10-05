@@ -155,8 +155,8 @@ public class TestQuery
 
         r = new Query( "/a.o=fish", root ).Select().Execute();
         Assert.AreEqual( 1, r.Count );
-        Assert.AreEqual( typeof( string ), r[0].GetType() );
-        Assert.AreEqual( "fish", r[0] );
+        Assert.AreEqual( typeof( string ), r[ 0 ].GetType() );
+        Assert.AreEqual( "fish", r[ 0 ] );
 
         // set multiple
 
@@ -293,13 +293,13 @@ public class TestQuery
         Assert.AreEqual( 1, r.Count );
         Assert.AreEqual( r[ 0 ], "bb" );
 
-//        r = new Query( "/a/[last()].name", root ).Select().Execute();
-//        Assert.AreEqual( 1, r.Count );
-//        Assert.AreEqual( r[ 0 ], "cc" );
-//
-//        r = new Query( "/a/[last()-1].name", root ).Select().Execute();
-//        Assert.AreEqual( 1, r.Count );
-//        Assert.AreEqual( r[ 0 ], "bb" );
+        //        r = new Query( "/a/[last()].name", root ).Select().Execute();
+        //        Assert.AreEqual( 1, r.Count );
+        //        Assert.AreEqual( r[ 0 ], "cc" );
+        //
+        //        r = new Query( "/a/[last()-1].name", root ).Select().Execute();
+        //        Assert.AreEqual( 1, r.Count );
+        //        Assert.AreEqual( r[ 0 ], "bb" );
 
         // basic recursive find
 
@@ -407,7 +407,7 @@ public class TestQuery
 
         r = new Query( "/dict.dict", root ).Select().Execute();
         Assert.AreEqual( 1, r.Count );
-        Assert.IsNotNull( r[0] as IDictionary );
+        Assert.IsNotNull( r[ 0 ] as IDictionary );
 
         r = new Query( "/dict.dict/*", root ).Select().Execute();
         Assert.AreEqual( 3, r.Count );

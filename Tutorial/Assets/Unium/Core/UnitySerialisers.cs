@@ -92,7 +92,7 @@ namespace gw.unium
             json.Name( "name" );
             json.StringValue( t.name );
 
-            
+
             json.Name( "position" );
             json.Value( JsonReflector.Reflect( t.position ) );
 

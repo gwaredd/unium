@@ -11,12 +11,12 @@ namespace gw.proto.http
 
     public enum WebSocketOpCode : byte
     {
-        Continue    = 0x00,
-        Text        = 0x01,
-        Binary      = 0x02,
-        Close       = 0x08,
-        Ping        = 0x09,
-        Pong        = 0x0A,
+        Continue = 0x00,
+        Text = 0x01,
+        Binary = 0x02,
+        Close = 0x08,
+        Ping = 0x09,
+        Pong = 0x0A,
     }
 
 
@@ -30,10 +30,10 @@ namespace gw.proto.http
 
 
         public byte[]   Payload;
-        public bool     IsFinal         { get; private set; }
-        public bool     IsMasked        { get; private set; }
-        public bool     IsComplete      { get { return mState == Reading.Complete; } }
-        public WebSocketOpCode OpCode   { get; private set; }
+        public bool IsFinal { get; private set; }
+        public bool IsMasked { get; private set; }
+        public bool IsComplete { get { return mState == Reading.Complete; } }
+        public WebSocketOpCode OpCode { get; private set; }
 
 
         //------------------------------------------------------------------------------
@@ -52,10 +52,10 @@ namespace gw.proto.http
 
         public WebSocketFrame()
         {
-            Payload     = null;
-            OpCode      = WebSocketOpCode.Continue;
-            IsFinal     = false;
-            IsMasked    = false;
+            Payload = null;
+            OpCode = WebSocketOpCode.Continue;
+            IsFinal = false;
+            IsMasked = false;
         }
 
 
@@ -112,10 +112,10 @@ namespace gw.proto.http
         [Flags]
         enum Flag : byte
         {
-            Fin     = 0x80, // end of data
-            Rsv     = 0x70, // reserved bits
-            Op      = 0x0F, // op code
-            Mask    = 0x80, // mask
+            Fin = 0x80, // end of data
+            Rsv = 0x70, // reserved bits
+            Op = 0x0F, // op code
+            Mask = 0x80, // mask
             Payload = 0x7F, // payload portion
         }
 
@@ -134,11 +134,11 @@ namespace gw.proto.http
 
             var codeByte    = buffer[ offset + 0 ];
             var payloadByte = buffer[ offset + 1 ];
-                
+
 
             // calculate header size
 
-            IsMasked = (byte)( payloadByte & (byte) Flag.Mask ) == (byte) Flag.Mask;
+            IsMasked = (byte) ( payloadByte & (byte) Flag.Mask ) == (byte) Flag.Mask;
 
             uint payload    = (uint) ( payloadByte & (byte) Flag.Payload );
             uint headerSize = 2;
@@ -195,12 +195,12 @@ namespace gw.proto.http
 
                 mPayloadLen = (uint) size;
             }
-                
+
 
             // decode all the control bits
 
             IsFinal = ( codeByte & (byte) Flag.Fin ) == (byte) Flag.Fin;
-            OpCode  = (WebSocketOpCode) ( codeByte & (byte) Flag.Op );
+            OpCode = (WebSocketOpCode) ( codeByte & (byte) Flag.Op );
 
             if( ( codeByte & (byte) Flag.Rsv ) != 0 )
             {
@@ -226,7 +226,7 @@ namespace gw.proto.http
 
             // otherwise start reading the payload body
 
-            mState  = Reading.Payload;
+            mState = Reading.Payload;
             Payload = new byte[ mPayloadLen ];
 
 
@@ -246,7 +246,7 @@ namespace gw.proto.http
 
             if( IsMasked )
             {
-                for( uint i=0; i < numBytes; i++, mWritePosition++ )
+                for( uint i = 0; i < numBytes; i++, mWritePosition++ )
                 {
                     Payload[ mWritePosition ] = (byte) ( buffer[ offset++ ] ^ mMask[ mWritePosition % 4 ] );
                 }

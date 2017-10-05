@@ -12,7 +12,7 @@ public class TestSocket
 {
     class MockWebSocket : WebSocket
     {
-        public MockWebSocket() : base( new HttpRequest() ) {}
+        public MockWebSocket() : base( new HttpRequest() ) { }
 
         public string Expect = null;
 
@@ -89,8 +89,8 @@ public class TestSocket
         rcv.Expect = @"{""data"":{""name"":""name"",""child"":{""c"":""a""}}}";
         msg.Reply( o );
 
-//        rcv.Expect = @"{""data"":{""name"":""name"",""child"":{""c"":""a""}}}";
-//        msg.Reply( o, true );
+        //        rcv.Expect = @"{""data"":{""name"":""name"",""child"":{""c"":""a""}}}";
+        //        msg.Reply( o, true );
 
         rcv.Expect = @"{""data"":null}";
         msg.Reply( null as object );

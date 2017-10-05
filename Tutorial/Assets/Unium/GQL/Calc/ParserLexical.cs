@@ -25,8 +25,8 @@ namespace gw.gql.calc
 
             set
             {
-                mText   = value;
-                mPrev   = null;
+                mText = value;
+                mPrev = null;
                 mOffset = 0;
             }
         }
@@ -127,7 +127,7 @@ namespace gw.gql.calc
 
             mValue[ 0 ] = ch;
             mValueLength = 1;
-            
+
             switch( ch )
             {
                 case '+': return mPrev = new Token( Token.Add, new string( mValue, 0, mValueLength ) );
@@ -144,56 +144,56 @@ namespace gw.gql.calc
                 case '=': Consume( '=' ); return mPrev = new Token( Token.EQ, new string( mValue, 0, mValueLength ) );
                 case '&': Consume( '&' ); return mPrev = new Token( Token.AND, new string( mValue, 0, mValueLength ) );
                 case '|': Consume( '|' ); return mPrev = new Token( Token.OR, new string( mValue, 0, mValueLength ) );
-                    
+
                 case '.': return mPrev = char.IsDigit( Peek() ) ? ReadNumber() : new Token( Token.Unknown, null );
 
                 case '-':
-                {
-                    if( mPrev == null || mPrev.IsOperator() || mPrev.Type == Token.Comma || mPrev.Type == Token.LPAREN )
                     {
-                        if( char.IsDigit( Peek() ) )
+                        if( mPrev == null || mPrev.IsOperator() || mPrev.Type == Token.Comma || mPrev.Type == Token.LPAREN )
                         {
-                            return mPrev = ReadNumber();
+                            if( char.IsDigit( Peek() ) )
+                            {
+                                return mPrev = ReadNumber();
+                            }
+                            else
+                            {
+                                return mPrev = new Token( Token.Negate, new string( mValue, 0, mValueLength ) );
+                            }
                         }
-                        else
-                        {
-                            return mPrev = new Token( Token.Negate, new string( mValue, 0, mValueLength ) );
-                        }
-                    }
 
-                    return mPrev = new Token( Token.Subtract, new string( mValue, 0, mValueLength ) );
-                }
+                        return mPrev = new Token( Token.Subtract, new string( mValue, 0, mValueLength ) );
+                    }
 
 
                 // 'string' or "string"
 
                 case '"':
                 case '\'':
-                {
-                    mValueLength = 0;
-
-                    while( mOffset < mText.Length )
                     {
-                        // end of string
+                        mValueLength = 0;
 
-                        if( mText[ mOffset ] == ch )
+                        while( mOffset < mText.Length )
                         {
-                            mOffset++;
-                            break;
+                            // end of string
+
+                            if( mText[ mOffset ] == ch )
+                            {
+                                mOffset++;
+                                break;
+                            }
+
+                            // escaped characters
+
+                            if( mText[ mOffset ] == '\\' )
+                            {
+                                mOffset++;
+                            }
+
+                            mValue[ mValueLength++ ] = mText[ mOffset++ ];
                         }
 
-                        // escaped characters
-
-                        if( mText[ mOffset ] == '\\' )
-                        {
-                            mOffset++;
-                        }
-
-                        mValue[ mValueLength++] = mText[ mOffset++ ];
+                        return mPrev = new Token( Token.String, new string( mValue, 0, mValueLength ) );
                     }
-
-                    return mPrev = new Token( Token.String, new string( mValue, 0, mValueLength ) );
-                }
             }
 
             // number
@@ -220,12 +220,12 @@ namespace gw.gql.calc
 
                 switch( word )
                 {
-                    case "true" :   
+                    case "true":
                     case "false": return mPrev = new Token( Token.Boolean, word );
-                    case "null" : return mPrev = new Token( Token.Null, word );
-                    case "and"  : return mPrev = new Token( Token.AND, word );
-                    case "or"   : return mPrev = new Token( Token.OR, word );
-                    case "not"  : return mPrev = new Token( Token.NOT, word );
+                    case "null": return mPrev = new Token( Token.Null, word );
+                    case "and": return mPrev = new Token( Token.AND, word );
+                    case "or": return mPrev = new Token( Token.OR, word );
+                    case "not": return mPrev = new Token( Token.NOT, word );
                 }
 
                 // skip ws

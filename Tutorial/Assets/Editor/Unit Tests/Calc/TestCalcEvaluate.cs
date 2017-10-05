@@ -10,7 +10,7 @@ using gw.gql.calc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-[TestFixture, Category("Calc")]
+[TestFixture, Category( "Calc" )]
 public class TestCalcEvaluate
 {
     //----------------------------------------------------------------------------------------------------
@@ -18,23 +18,23 @@ public class TestCalcEvaluate
     [Test]
     public void ShouldParseValues()
     {
-        Assert.AreEqual( 123456, new Expression( "123456" ).Evaluate() );
+        Assert.AreEqual( 123456,   new Expression( "123456" ).Evaluate() );
         Assert.AreEqual( 123.456d, new Expression( "123.456" ).Evaluate() );
-        Assert.AreEqual( true, new Expression( "true" ).Evaluate() );
-        Assert.AreEqual( "true", new Expression( "'true'" ).Evaluate() );
+        Assert.AreEqual( true,     new Expression( "true" ).Evaluate() );
+        Assert.AreEqual( "true",   new Expression( "'true'" ).Evaluate() );
         Assert.AreEqual( "azerty", new Expression( "'azerty'" ).Evaluate() );
-        Assert.IsNull( new Expression( "null" ).Evaluate() );
+        Assert.IsNull(             new Expression( "null" ).Evaluate() );
     }
 
 
     [Test]
     public void ShouldParseScientificNotation()
     {
-        Assert.AreEqual( 12.2d, new Expression( "1.22e1" ).Evaluate() );
-        Assert.AreEqual( 100d, new Expression( "1e2" ).Evaluate() );
-        Assert.AreEqual( 100d, new Expression( "1e+2" ).Evaluate() );
-        Assert.AreEqual( 0.01d, new Expression( "1e-2" ).Evaluate() );
-        Assert.AreEqual( 0.001d, new Expression( ".1e-2" ).Evaluate() );
+        Assert.AreEqual( 12.2d,        new Expression( "1.22e1" ).Evaluate() );
+        Assert.AreEqual( 100d,         new Expression( "1e2" ).Evaluate() );
+        Assert.AreEqual( 100d,         new Expression( "1e+2" ).Evaluate() );
+        Assert.AreEqual( 0.01d,        new Expression( "1e-2" ).Evaluate() );
+        Assert.AreEqual( 0.001d,       new Expression( ".1e-2" ).Evaluate() );
         Assert.AreEqual( 10000000000d, new Expression( "1e10" ).Evaluate() );
     }
 
@@ -74,19 +74,19 @@ public class TestCalcEvaluate
     [Test]
     public void ExpressionShouldEvaluate()
     {
-        Assert.AreEqual( 10, new Expression( "2 + 3 + 5" ).Evaluate() );
-        Assert.AreEqual( 16, new Expression( "2 * (3 + 5)" ).Evaluate() );
-        Assert.AreEqual( 24, new Expression( "2 * (2*(2*(2+1)))" ).Evaluate() );
-        Assert.AreEqual( 1, new Expression( "10 % 3" ).Evaluate() );
-        Assert.AreEqual( true, new Expression( "true or false" ).Evaluate() );
+        Assert.AreEqual( 10,    new Expression( "2 + 3 + 5" ).Evaluate() );
+        Assert.AreEqual( 16,    new Expression( "2 * (3 + 5)" ).Evaluate() );
+        Assert.AreEqual( 24,    new Expression( "2 * (2*(2*(2+1)))" ).Evaluate() );
+        Assert.AreEqual( 1,     new Expression( "10 % 3" ).Evaluate() );
+        Assert.AreEqual( true,  new Expression( "true or false" ).Evaluate() );
         Assert.AreEqual( false, new Expression( "!true" ).Evaluate() );
-        Assert.AreEqual( true, new Expression( "false || not (false and true)" ).Evaluate() );
-        Assert.AreEqual( true, new Expression( "3 > 2 and 1 <= (3-2)" ).Evaluate() );
+        Assert.AreEqual( true,  new Expression( "false || not (false and true)" ).Evaluate() );
+        Assert.AreEqual( true,  new Expression( "3 > 2 and 1 <= (3-2)" ).Evaluate() );
         Assert.AreEqual( false, new Expression( "3 % 2 != 10 % 3" ).Evaluate() );
 
-        Assert.AreEqual( true, new Expression( "1=2 || 3==3" ).Evaluate() );
+        Assert.AreEqual( true,  new Expression( "1=2 || 3==3" ).Evaluate() );
         Assert.AreEqual( false, new Expression( "1==2 && 3==3" ).Evaluate() );
-        Assert.AreEqual( true, new Expression( "!(1=2) && 3==3" ).Evaluate() );
+        Assert.AreEqual( true,  new Expression( "!(1=2) && 3==3" ).Evaluate() );
 
         Assert.AreEqual( 25, new Expression( "5 ^ 2" ).Evaluate() );
         //Assert.Throws<Exception>( () => new Expression( "true ^ false" ).Evaluate() );
@@ -95,21 +95,20 @@ public class TestCalcEvaluate
     [Test]
     public void ShouldEscapeCharacters()
     {
-        Assert.AreEqual( "'hello'", new Expression( @"'\'hello\''" ).Evaluate() );
+        Assert.AreEqual( "'hello'",      new Expression( @"'\'hello\''" ).Evaluate() );
         Assert.AreEqual( " ' hel lo ' ", new Expression( @"' \' hel lo \' '" ).Evaluate() );
-//        Assert.AreEqual( "hel\nlo", new Expression( @"'hel\nlo'" ).Evaluate() );
     }
 
 
     [Test]
     public void ShouldHandleOperatorsPriority()
     {
-        Assert.AreEqual( 8, new Expression( "2+2+2+2" ).Evaluate() );
-        Assert.AreEqual( 16, new Expression( "2*2*2*2" ).Evaluate() );
-        Assert.AreEqual( 6, new Expression( "2*2+2" ).Evaluate() );
-        Assert.AreEqual( 6, new Expression( "2+2*2" ).Evaluate() );
+        Assert.AreEqual( 8,    new Expression( "2+2+2+2" ).Evaluate() );
+        Assert.AreEqual( 16,   new Expression( "2*2*2*2" ).Evaluate() );
+        Assert.AreEqual( 6,    new Expression( "2*2+2" ).Evaluate() );
+        Assert.AreEqual( 6,    new Expression( "2+2*2" ).Evaluate() );
 
-        Assert.AreEqual( 9d, new Expression( "1 + 2 + 3 * 4 / 2" ).Evaluate() );
+        Assert.AreEqual( 9d,   new Expression( "1 + 2 + 3 * 4 / 2" ).Evaluate() );
         Assert.AreEqual( 13.5, new Expression( "18/2/2*3" ).Evaluate() );
     }
 
@@ -129,19 +128,19 @@ public class TestCalcEvaluate
     [Test]
     public void ExpressionShouldEvaluateParameters()
     {
-        var expr = new Expression( "x * x" );
+        var expr =    new Expression( "x * x" );
         var context = new EvaluationContext();
 
         context.EvaluateParameter = ( name, ctx ) => { Assert.AreEqual( "x", name ); return 3; };
         Assert.AreEqual( 9, expr.Evaluate( context ) );
 
-        context.EvaluateParameter = (name, ctx) => 4;
+        context.EvaluateParameter = ( name, ctx ) => 4;
         Assert.AreEqual( 16, expr.Evaluate( context ) ); // multiple invocations, same expression ...
 
         // negate
         Assert.AreEqual( -16, new Expression( "-x * x" ).Evaluate( context ) );
         Assert.AreEqual( -16, new Expression( "x * -x" ).Evaluate( context ) );
-        Assert.AreEqual( 16, new Expression( "-x * -x" ).Evaluate( context ) );
+        Assert.AreEqual( 16,  new Expression( "-x * -x" ).Evaluate( context ) );
     }
 
     [Test]
@@ -155,14 +154,14 @@ public class TestCalcEvaluate
 
             if( args.Length == 2 )
             {
-                return Convert.ToInt32( args[0].Evaluate( ctx ) ) + Convert.ToInt32( args[1].Evaluate( ctx ) );
+                return Convert.ToInt32( args[ 0 ].Evaluate( ctx ) ) + Convert.ToInt32( args[ 1 ].Evaluate( ctx ) );
             }
 
             return 3;
         };
 
-        Assert.AreEqual( 9, new Expression( "fn() * fn()" ).Evaluate( context ) );
-        Assert.AreEqual( 3, new Expression( "fn(1,2)" ).Evaluate( context ) );
+        Assert.AreEqual( 9,  new Expression( "fn() * fn()" ).Evaluate( context ) );
+        Assert.AreEqual( 3,  new Expression( "fn(1,2)" ).Evaluate( context ) );
         Assert.AreEqual( 32, new Expression( "fn(1+2*3,5*5)" ).Evaluate( context ) );
     }
 

@@ -19,10 +19,10 @@ namespace gw.unium
 
             public SocketCommands( UniumSocket socket ) { mSocket = socket; }
 
-            public void stop( string id )       { mSocket.Stop( id ); }
-            public void unbind( string id )     { mSocket.Unbind( id ); }
-            public void ping()                  { mSocket.Pong(); }
-            public int  repeaterCount           { get { return mSocket.mRepeaters.Count; } }
+            public void stop( string id ) { mSocket.Stop( id ); }
+            public void unbind( string id ) { mSocket.Unbind( id ); }
+            public void ping() { mSocket.Pong(); }
+            public int repeaterCount { get { return mSocket.mRepeaters.Count; } }
         }
     }
 

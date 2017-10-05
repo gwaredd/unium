@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using gw.proto.utils;
+﻿using gw.proto.utils;
+using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
@@ -34,4 +34,3 @@ public class Pickup : MonoBehaviour
         Destroy( gameObject );
     }
 }
-

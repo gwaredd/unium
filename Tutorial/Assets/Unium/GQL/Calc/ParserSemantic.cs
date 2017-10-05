@@ -27,8 +27,8 @@ namespace gw.gql.calc
 
             int numOutput = 0;
 
-            Expression  = expr;
-            mStack      = new Stack<Token>( 16 );
+            Expression = expr;
+            mStack = new Stack<Token>( 16 );
 
 
             // read tokens
@@ -47,11 +47,11 @@ namespace gw.gql.calc
                     case Token.Double:
                     case Token.String:
                     case Token.Variable:
-                    {
-                        numOutput++;
-                        output( token );
-                    }
-                    break;
+                        {
+                            numOutput++;
+                            output( token );
+                        }
+                        break;
 
 
                     // operators
@@ -72,129 +72,129 @@ namespace gw.gql.calc
                     case Token.Exp:
                     case Token.NOT:
                     case Token.Negate:
-                    {
-                        var p1 = token.Precedence();
-                        var left_associative = !token.IsUnaryOperator() && token.Type != Token.Exp;
-
-                        // while there is an operator (o2) token at the top of the operator stack ...
-
-                        while( mStack.Count > 0 )
                         {
-                            // o1 is right associative and has precedence less than that of o2, or
-                            // o1 is  left associative and has precedence less than or equal to that of o2
+                            var p1 = token.Precedence();
+                            var left_associative = !token.IsUnaryOperator() && token.Type != Token.Exp;
 
-                            var p2 = mStack.Peek().Precedence();
+                            // while there is an operator (o2) token at the top of the operator stack ...
 
-                            if( p1 < p2 || ( left_associative && p1 == p2 ) )
+                            while( mStack.Count > 0 )
                             {
-                                // pop o2 off the operator stack, onto the output queue
-                                numOutput++;
-                                output( mStack.Pop() );
+                                // o1 is right associative and has precedence less than that of o2, or
+                                // o1 is  left associative and has precedence less than or equal to that of o2
+
+                                var p2 = mStack.Peek().Precedence();
+
+                                if( p1 < p2 || ( left_associative && p1 == p2 ) )
+                                {
+                                    // pop o2 off the operator stack, onto the output queue
+                                    numOutput++;
+                                    output( mStack.Pop() );
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
-                            else
-                            {
-                                break;
-                            }
+
+                            // push on to stack
+                            mStack.Push( token );
                         }
-
-                        // push on to stack
-                        mStack.Push( token );
-                    }
-                    break;
+                        break;
 
 
                     // functions
 
                     case Token.LPAREN:
-                    {
-                        // remember number of output tokens (if this changes before a right parenthesis we must have at least one argument)
-                        token.OutputSize = numOutput;
+                        {
+                            // remember number of output tokens (if this changes before a right parenthesis we must have at least one argument)
+                            token.OutputSize = numOutput;
 
-                        // push on to stack
-                        mStack.Push( token );
-                    }
-                    break;
+                            // push on to stack
+                            mStack.Push( token );
+                        }
+                        break;
 
                     case Token.Function:
-                    {
-                        // push on to stack
-                        mStack.Push( token );
-                    }
-                    break;
+                        {
+                            // push on to stack
+                            mStack.Push( token );
+                        }
+                        break;
 
                     case Token.Comma:
-                    {
-                        // until the token at the top of the stack is a left parenthesis
-
-                        while( mStack.Count > 0 && mStack.Peek().Type != Token.LPAREN )
                         {
-                            // pop operators off the stack onto the output queue
-                            numOutput++;
-                            output( mStack.Pop() );
-                        }
+                            // until the token at the top of the stack is a left parenthesis
 
-                        // if no left parentheses are encountered, either the separator was misplaced or parentheses were mismatched
+                            while( mStack.Count > 0 && mStack.Peek().Type != Token.LPAREN )
+                            {
+                                // pop operators off the stack onto the output queue
+                                numOutput++;
+                                output( mStack.Pop() );
+                            }
 
-                        if( mStack.Peek().Type == Token.LPAREN )
-                        {
-                            // increment number of arguments this function call has
-                            mStack.Peek().NumCommas++;
+                            // if no left parentheses are encountered, either the separator was misplaced or parentheses were mismatched
+
+                            if( mStack.Peek().Type == Token.LPAREN )
+                            {
+                                // increment number of arguments this function call has
+                                mStack.Peek().NumCommas++;
+                            }
+                            else
+                            {
+                                throw new FormatException( "Mismatched parentheses or misplaced comma" );
+                            }
                         }
-                        else
-                        {
-                            throw new FormatException( "Mismatched parentheses or misplaced comma" );
-                        }
-                    }
-                    break;
+                        break;
 
 
                     case Token.RPAREN:
-                    {
-                        // until the token at the top of the stack is a left parenthesis
-
-                        while( mStack.Count > 0 && mStack.Peek().Type != Token.LPAREN )
                         {
-                            // pop operators off the stack onto the output queue
-                            numOutput++;
-                            output( mStack.Pop() );
-                        }
+                            // until the token at the top of the stack is a left parenthesis
 
-                        if( mStack.Count > 0 && mStack.Peek().Type == Token.LPAREN )
-                        {
-                            // pop the left parenthesis from the stack, but not onto the output queue
-
-                            var lparen = mStack.Pop();
-
-
-                            // if the token at the top of the stack is a function token, pop it onto the output queue
-
-                            if( mStack.Count > 0 && mStack.Peek().Type == Token.Function )
+                            while( mStack.Count > 0 && mStack.Peek().Type != Token.LPAREN )
                             {
-                                var func = mStack.Pop();
-
-                                // update number of arguments to function
-                                func.Args = numOutput > lparen.OutputSize ? 1 : 0;
-                                func.Args += lparen.NumCommas;
-
+                                // pop operators off the stack onto the output queue
                                 numOutput++;
-                                output( func );
+                                output( mStack.Pop() );
+                            }
+
+                            if( mStack.Count > 0 && mStack.Peek().Type == Token.LPAREN )
+                            {
+                                // pop the left parenthesis from the stack, but not onto the output queue
+
+                                var lparen = mStack.Pop();
+
+
+                                // if the token at the top of the stack is a function token, pop it onto the output queue
+
+                                if( mStack.Count > 0 && mStack.Peek().Type == Token.Function )
+                                {
+                                    var func = mStack.Pop();
+
+                                    // update number of arguments to function
+                                    func.Args = numOutput > lparen.OutputSize ? 1 : 0;
+                                    func.Args += lparen.NumCommas;
+
+                                    numOutput++;
+                                    output( func );
+                                }
+                            }
+                            else
+                            {
+                                // if the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
+                                throw new FormatException( "Mismatched parentheses" );
                             }
                         }
-                        else
-                        {
-                            // if the stack runs out without finding a left parenthesis, then there are mismatched parentheses.
-                            throw new FormatException( "Mismatched parentheses" );
-                        }
-                    }
-                    break;
+                        break;
 
                     // unknown
 
                     default:
                     case Token.Unknown:
-                    {
-                        throw new FormatException( "Unknown symbol in input stream" );
-                    }
+                        {
+                            throw new FormatException( "Unknown symbol in input stream" );
+                        }
                 }
 
                 token = GetNextToken();

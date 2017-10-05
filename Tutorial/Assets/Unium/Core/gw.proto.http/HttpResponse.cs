@@ -15,10 +15,11 @@ namespace gw.proto.http
         Stream          mStream         = null;
         bool            mHeadersWritten = false;
 
-        public bool     IsClosed        { get; private set; }
         public Encoding Encoding        = Encoding.UTF8;
         public int      Code            = 200;
         public string   Reason          = "OK";
+
+        public bool     IsClosed        { get; private set; }
 
         public Dictionary<string,string> Headers = new Dictionary<string, string>();
 
@@ -36,10 +37,10 @@ namespace gw.proto.http
 
         public void Response( ResponseCode code, string reason = null )
         {
-            Code = (int) code;
+            Code   = (int) code;
             Reason = reason != null ? reason : HttpUtils.CodeToString( code );
         }
-            
+
         public void Close()
         {
             if( mHeadersWritten == false )
@@ -128,7 +129,7 @@ namespace gw.proto.http
 
         public void Redirect( string url )
         {
-            Code   = (int) ResponseCode.MovedPermanently;
+            Code = (int) ResponseCode.MovedPermanently;
             Reason = HttpUtils.CodeToString( ResponseCode.MovedPermanently );
 
             Headers[ "Location" ] = url;
@@ -141,7 +142,7 @@ namespace gw.proto.http
 
         public void Reject( ResponseCode code )
         {
-            Code   = (int) code;
+            Code = (int) code;
             Reason = HttpUtils.CodeToString( code );
 
             Headers[ "Connection" ] = "close";

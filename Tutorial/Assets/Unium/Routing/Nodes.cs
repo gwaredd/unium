@@ -13,10 +13,10 @@ namespace gw.unium
     {
         public static Stats Singleton = new Stats();
 
-        public float    FPS             { get { return 1.0f / Time.smoothDeltaTime; } }
-        public float    RunningTime     { get { return Time.realtimeSinceStartup; } }
-        public float    LevelTime       { get { return Time.timeSinceLevelLoad; } }
-        public string   Scene           { get { return SceneManager.GetActiveScene().name; } }
+        public float FPS { get { return 1.0f / Time.smoothDeltaTime; } }
+        public float RunningTime { get { return Time.realtimeSinceStartup; } }
+        public float LevelTime { get { return Time.timeSinceLevelLoad; } }
+        public string Scene { get { return SceneManager.GetActiveScene().name; } }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,9 +53,10 @@ namespace gw.unium
                 return;
             }
 
-            sceneLoaded( new {
+            sceneLoaded( new
+            {
                 name = scene.name
-            });
+            } );
         }
 
         private void OnLogMessage( string condition, string stackTrace, LogType type )
@@ -65,11 +66,12 @@ namespace gw.unium
                 return;
             }
 
-            debug( new {
+            debug( new
+            {
                 message = condition,
-                type    = type.ToString(),
+                type = type.ToString(),
                 //stack   = stackTrace
-            });
+            } );
         }
     }
 }

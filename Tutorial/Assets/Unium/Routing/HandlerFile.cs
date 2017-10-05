@@ -21,7 +21,7 @@ namespace gw.unium
     public static class HandlerFile
     {
         private static Dictionary<string,string> sPaths = new Dictionary<string, string>();
-        
+
         private static IDictionary<string, string> sExtToMimeType = new Dictionary<string, string>( StringComparer.InvariantCultureIgnoreCase )
         {
             { ".bmp",   "image/bmp" },
@@ -114,7 +114,7 @@ namespace gw.unium
             if( ( File.GetAttributes( filepath ) & FileAttributes.Directory ) == FileAttributes.Directory )
             {
                 // list contents of directory
-                
+
                 var files = from c in Directory.GetFileSystemEntries( filepath ) select Path.GetFileName( c );
                 req.Respond( JsonReflector.Reflect( files.ToArray() ) );
             }
@@ -136,7 +136,7 @@ namespace gw.unium
             {
                 // remove initial /
 
-                if( path[0] == '/' )
+                if( path[ 0 ] == '/' )
                 {
                     path = path.Substring( 1 );
                 }
@@ -151,7 +151,7 @@ namespace gw.unium
                     if( path.StartsWith( key + "/" ) )
                     {
                         drive = sPaths[ key ];
-                        path  = path.Substring( key.Length + 1 );
+                        path = path.Substring( key.Length + 1 );
                         break;
                     }
                 }
@@ -176,7 +176,7 @@ namespace gw.unium
             {
                 req.Reject( ResponseCode.NotFound );
             }
-        }        
+        }
     }
 }
 

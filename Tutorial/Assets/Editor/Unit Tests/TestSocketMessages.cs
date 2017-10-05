@@ -38,10 +38,10 @@ public class TestSocketMessages
         Assert.IsNull( msg.id );
         Assert.IsNotNull( msg.repeat );
 
-        Assert.AreEqual( repeatDefault.skip,      msg.repeat.skip );
-        Assert.AreEqual( repeatDefault.samples,   msg.repeat.samples );
-        Assert.AreEqual( repeatDefault.freq,      msg.repeat.freq );
-        Assert.AreEqual( repeatDefault.cache,     msg.repeat.cache );
+        Assert.AreEqual( repeatDefault.skip, msg.repeat.skip );
+        Assert.AreEqual( repeatDefault.samples, msg.repeat.samples );
+        Assert.AreEqual( repeatDefault.freq, msg.repeat.freq );
+        Assert.AreEqual( repeatDefault.cache, msg.repeat.cache );
 
 
         msg = @"{""q"":""/q/"",""repeat"":{""skip"":5}}".FromJson<UniumSocket.Message>();
@@ -49,10 +49,10 @@ public class TestSocketMessages
         Assert.IsNull( msg.id );
         Assert.IsNotNull( msg.repeat );
 
-        Assert.AreEqual( 5,                         msg.repeat.skip );
-        Assert.AreEqual( repeatDefault.samples,   msg.repeat.samples );
-        Assert.AreEqual( repeatDefault.freq,      msg.repeat.freq );
-        Assert.AreEqual( repeatDefault.cache,     msg.repeat.cache );
+        Assert.AreEqual( 5, msg.repeat.skip );
+        Assert.AreEqual( repeatDefault.samples, msg.repeat.samples );
+        Assert.AreEqual( repeatDefault.freq, msg.repeat.freq );
+        Assert.AreEqual( repeatDefault.cache, msg.repeat.cache );
 
 
         msg = @"{""q"":""/q/"",""repeat"":{""skip"":4,""samples"":10,""freq"":3.4, ""batch"":true, ""cache"":true, ""ignore"":7}}".FromJson<UniumSocket.Message>();
@@ -60,12 +60,11 @@ public class TestSocketMessages
         Assert.IsNull( msg.id );
         Assert.IsNotNull( msg.repeat );
 
-        Assert.AreEqual( 4,     msg.repeat.skip );
-        Assert.AreEqual( 10,    msg.repeat.samples );
-        Assert.AreEqual( 3.4f,  msg.repeat.freq );
-        Assert.AreEqual( true,  msg.repeat.cache );
+        Assert.AreEqual( 4, msg.repeat.skip );
+        Assert.AreEqual( 10, msg.repeat.samples );
+        Assert.AreEqual( 3.4f, msg.repeat.freq );
+        Assert.AreEqual( true, msg.repeat.cache );
     }
 }
 
 #endif
-

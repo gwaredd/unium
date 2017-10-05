@@ -6,7 +6,7 @@ using gw.gql.calc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-[TestFixture, Category("Calc")]
+[TestFixture, Category( "Calc" )]
 public class TestCalcToken
 {
     [Test]

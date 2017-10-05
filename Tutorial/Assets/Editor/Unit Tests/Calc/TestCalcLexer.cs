@@ -20,7 +20,7 @@ public static class CalcExtensions
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-[TestFixture, Category("Calc")]
+[TestFixture, Category( "Calc" )]
 public class TestCalcLexer
 {
     //----------------------------------------------------------------------------------------------------

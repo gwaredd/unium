@@ -11,11 +11,11 @@ namespace gw.unium
 {
     public static class HandlerSocketBind
     {
-        #if NET_2_0
+#if NET_2_0
             static Regex sMatchQuery = new Regex( @"/.*\.\w+$", RegexOptions.Compiled );
-        #else
-            static Regex sMatchQuery = new Regex( @"/.*\.\w+$" );
-        #endif
+#else
+        static Regex sMatchQuery = new Regex( @"/.*\.\w+$" );
+#endif
 
         public static void HandleBind( RequestAdapter req, string path )
         {
@@ -24,7 +24,7 @@ namespace gw.unium
                 req.Reject( ResponseCode.BadRequest );
                 return;
             }
-                        
+
             // select events
 
             var query = new Query( path + "=event", Unium.Root ).Select();

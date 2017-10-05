@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Animate : MonoBehaviour
 {
@@ -18,4 +16,3 @@ public class Animate : MonoBehaviour
         transform.position = new Vector3( transform.position.x, y, transform.position.z );
     }
 }
-

@@ -7,13 +7,14 @@ public class Tutorial : MonoBehaviour
     public bool OpenBrowser = true;
     public Text PickupText;
 
-    static bool OpenOnce = true;
-    int NumPickups = 0;
+    static bool OpenOnce    = true;
+
+    int         mNumPickups = 0;
 
     // exposed event for tutorial script to hook into
     public event Action<object> OnPickupCollected;
 
-	void Start()
+    void Start()
     {
         if( OpenBrowser && OpenOnce )
         {
@@ -24,14 +25,14 @@ public class Tutorial : MonoBehaviour
 
     void PickupCreated()
     {
-        NumPickups++;
-        PickupText.text = NumPickups.ToString();
+        mNumPickups++;
+        PickupText.text = mNumPickups.ToString();
     }
 
     void PickupCollected()
     {
-        NumPickups--;
-        PickupText.text = NumPickups.ToString();
+        mNumPickups--;
+        PickupText.text = mNumPickups.ToString();
 
         GetComponent<AudioSource>().Play();
 
@@ -48,4 +49,3 @@ public class Tutorial : MonoBehaviour
         Debug.Log( "Hello from Unium" );
     }
 }
-

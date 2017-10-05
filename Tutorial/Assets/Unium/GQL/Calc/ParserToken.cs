@@ -63,22 +63,22 @@ namespace gw.gql.calc
 
         public bool IsOperand()
         {
-            return (Type & 0x0010) != 0x0000;
+            return ( Type & 0x0010 ) != 0x0000;
         }
 
         public bool IsOperator()
         {
-            return (Type & 0x0F00) != 0x0000;
+            return ( Type & 0x0F00 ) != 0x0000;
         }
 
         public bool IsUnaryOperator()
         {
-            return (Type & 0x0800) != 0x0000;
+            return ( Type & 0x0800 ) != 0x0000;
         }
 
         public bool IsBinaryOperator()
         {
-            return (Type & 0x0700) != 0x0000;
+            return ( Type & 0x0700 ) != 0x0000;
         }
 
         static public bool IsBooleanOperator( int Type )

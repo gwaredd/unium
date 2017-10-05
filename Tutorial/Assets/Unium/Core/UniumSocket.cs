@@ -32,10 +32,10 @@ namespace gw.unium
 
             public EventListener( Message msg, object target, EventInfo eventInfo )
             {
-                Message     = msg;
-                EventInfo   = eventInfo;
-                Target      = target;
-                Delegate    = Delegate.CreateDelegate( eventInfo.EventHandlerType, Message, "Reply" );
+                Message = msg;
+                EventInfo = eventInfo;
+                Target = target;
+                Delegate = Delegate.CreateDelegate( eventInfo.EventHandlerType, Message, "Reply" );
 
                 eventInfo.AddEventHandler( Target, Delegate );
 
@@ -70,9 +70,9 @@ namespace gw.unium
 
         public UniumSocket( WebSocket ws )
         {
-            mSocket             = ws;
-            mSocket.User        = this;
-            mSocket.OnMessage   = OnMessage;
+            mSocket = ws;
+            mSocket.User = this;
+            mSocket.OnMessage = OnMessage;
 
             mSocketMessage.id = "socket";
             mSocketMessage.Socket = this;

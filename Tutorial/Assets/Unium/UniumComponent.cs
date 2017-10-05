@@ -70,8 +70,8 @@ public class UniumComponent : MonoBehaviour
         var root = Path.Combine( Application.streamingAssetsPath, StaticFiles != null ? StaticFiles : "" );
 
         HandlerFile.Mount( "persistent", Application.persistentDataPath );
-        HandlerFile.Mount( "streaming",  Application.streamingAssetsPath );
-        HandlerFile.Mount( "root",       root );
+        HandlerFile.Mount( "streaming", Application.streamingAssetsPath );
+        HandlerFile.Mount( "root", root );
 
 
         Application.logMessageReceivedThreaded += HandlerUtils.LogMessage;
@@ -120,8 +120,8 @@ public class UniumComponent : MonoBehaviour
 
         mServer.Settings.Port = Port;
 
-        mServer.Dispatcher.OnWebRequest     = OnWebRequest;
-        mServer.Dispatcher.OnSocketRequest  = OnSocketOpen;
+        mServer.Dispatcher.OnWebRequest = OnWebRequest;
+        mServer.Dispatcher.OnSocketRequest = OnSocketOpen;
         mServer.Dispatcher.OnSocketClose += OnWebSocketClose;
 
         mServer.Start();
@@ -191,7 +191,7 @@ public class UniumComponent : MonoBehaviour
 
         req.Response.Headers[ "Access-Control-Allow-Origin" ] = "*";
         req.Response.Headers[ "Cache-Control" ] = "no-store, must-revalidate";
-        req.Response.Headers[ "Content-Type" ]  = "application/json";
+        req.Response.Headers[ "Content-Type" ] = "application/json";
 
 
         // handle request
@@ -307,10 +307,10 @@ public class UniumComponent : MonoBehaviour
 
         switch( type )
         {
-            case LogType.Log:       UnityEngine.Debug.Log( str ); break;
-            case LogType.Warning:   UnityEngine.Debug.LogWarning( str ); break;
+            case LogType.Log: UnityEngine.Debug.Log( str ); break;
+            case LogType.Warning: UnityEngine.Debug.LogWarning( str ); break;
             default:
-            case LogType.Error:     UnityEngine.Debug.LogError( str ); break;
+            case LogType.Error: UnityEngine.Debug.LogError( str ); break;
         }
     }
 
@@ -326,4 +326,3 @@ public class UniumComponent : MonoBehaviour
         Log( msg, LogType.Error );
     }
 }
-

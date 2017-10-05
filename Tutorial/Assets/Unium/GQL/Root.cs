@@ -47,8 +47,8 @@ namespace gw.gql
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
-    
-    public class InterpreterSearchRoot  : InterpreterDefault
+
+    public class InterpreterSearchRoot : InterpreterDefault
     {
         override public Child[] Children( object obj )
         {
@@ -58,6 +58,3 @@ namespace gw.gql
 
 #endif
 }
-
-
-        

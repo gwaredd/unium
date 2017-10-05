@@ -1,9 +1,8 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 
+using gw.proto.http;
 using System;
 using System.Collections.Generic;
-
-using gw.proto.http;
 
 namespace gw.unium
 {
@@ -61,14 +60,14 @@ namespace gw.unium
         {
             if( mSorted == false )
             {
-                mRoutes.Sort( (a,b) => b.Path.Length - a.Path.Length ); // sort by reverse string length - cheesy solution!
+                mRoutes.Sort( ( a, b ) => b.Path.Length - a.Path.Length ); // sort by reverse string length - cheesy solution!
                 mSorted = true;
             }
 
             foreach( var route in mRoutes )
             {
                 // path filter
-                
+
                 var path = route.Path;
 
                 if( url.Length < path.Length )
@@ -122,14 +121,13 @@ namespace gw.unium
         public Route AddImmediate( string path, Route.RouteHandler handler )
         {
             var route = Add( path, handler );
-            route.DispatchOnGameThread  = false;
+            route.DispatchOnGameThread = false;
             return route;
         }
-            
+
         public void Remove( string path )
         {
             mRoutes.RemoveAll( route => route.Path == path );
         }
     }
 }
-

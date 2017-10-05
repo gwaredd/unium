@@ -8,7 +8,7 @@ using gw.gql.calc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-[TestFixture, Category("Calc")]
+[TestFixture, Category( "Calc" )]
 public class TestCalcSemantic
 {
     //----------------------------------------------------------------------------------------------------
@@ -28,22 +28,22 @@ public class TestCalcSemantic
     {
         // basics
 
-        Assert.AreEqual( "1 2 + ",                      Parse( "1 + 2" ) );             // basic
-        Assert.AreEqual( "1 2 3 * + ",                  Parse( "1 + 2 * 3" ) );         // precedence
-        Assert.AreEqual( "1 2 + 3 * ",                  Parse( "( 1 + 2 ) * 3" ) );     // precedence
-        Assert.AreEqual( "1 2 + 3 == ",                 Parse( "1 + 2 == 3" ) );        // precedence
-        Assert.AreEqual( "3 x - + ",                    Parse( "3 + -x" ) );            // unary
-        Assert.AreEqual( "a b ! c = & ",                Parse( "a & !b = c" ) );        // unary
+        Assert.AreEqual( "1 2 + ",                     Parse( "1 + 2" ) );             // basic
+        Assert.AreEqual( "1 2 3 * + ",                 Parse( "1 + 2 * 3" ) );         // precedence
+        Assert.AreEqual( "1 2 + 3 * ",                 Parse( "( 1 + 2 ) * 3" ) );     // precedence
+        Assert.AreEqual( "1 2 + 3 == ",                Parse( "1 + 2 == 3" ) );        // precedence
+        Assert.AreEqual( "3 x - + ",                   Parse( "3 + -x" ) );            // unary
+        Assert.AreEqual( "a b ! c = & ",               Parse( "a & !b = c" ) );        // unary
 
 
         // examples
 
-        Assert.AreEqual( "3 4 2 1 - * + ",              Parse( "3 + 4 * ( 2 - 1 )" ) );
-        Assert.AreEqual( "3 4 2 * 1 5 - 2 3 ^ ^ / + ",  Parse( "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3" ) );
-        Assert.AreEqual( "2 3 max 3 / 3.1415 * sin ",   Parse( "sin( max( 2, 3 ) / 3 * 3.1415 )" ) );
-        Assert.AreEqual( "2 3 | 4 5 * 7 8 ! / max ",    Parse( "max( 2 | 3, 4 * 5, 7 / !8 )" ) );
-        Assert.AreEqual( "false false true and ! or ",  Parse( "false or ! (false and true)" ) );
-        Assert.AreEqual( "3 2 % 10 3 % != ",            Parse( "3 % 2 != 10 % 3" ) );
+        Assert.AreEqual( "3 4 2 1 - * + ",             Parse( "3 + 4 * ( 2 - 1 )" ) );
+        Assert.AreEqual( "3 4 2 * 1 5 - 2 3 ^ ^ / + ", Parse( "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3" ) );
+        Assert.AreEqual( "2 3 max 3 / 3.1415 * sin ",  Parse( "sin( max( 2, 3 ) / 3 * 3.1415 )" ) );
+        Assert.AreEqual( "2 3 | 4 5 * 7 8 ! / max ",   Parse( "max( 2 | 3, 4 * 5, 7 / !8 )" ) );
+        Assert.AreEqual( "false false true and ! or ", Parse( "false or ! (false and true)" ) );
+        Assert.AreEqual( "3 2 % 10 3 % != ",           Parse( "3 % 2 != 10 % 3" ) );
 
         // Assert.AreEqual( "3 2 > 1 3 2 - <= && ",        Parse( "3 > 2 && 1 <= (3-2)" ) );
         //"3 2 1 && > 3 2 - <= "
@@ -67,4 +67,3 @@ public class TestCalcSemantic
 }
 
 #endif
-

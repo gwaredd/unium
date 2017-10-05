@@ -32,15 +32,15 @@ namespace gw.unium
         HttpRequest mRequest;
         string      mPath;
 
-        public RequestAdapterHTTP( HttpRequest req ) { mRequest = req; mPath = WWW.UnEscapeURL( req.URL ); }
+        public RequestAdapterHTTP( HttpRequest req )           { mRequest = req; mPath = WWW.UnEscapeURL( req.URL ); }
 
-        public override String Path { get { return mPath; } }
-        public override byte[] Body { get { return mRequest.Method == "POST" ? mRequest.Body : null; } }
+        public override String Path                            { get { return mPath; } }
+        public override byte[] Body                            { get { return mRequest.Method == "POST" ? mRequest.Body : null; } }
 
-        public override void Reject( ResponseCode code ) { mRequest.Reject( code ); }
-        public override void Redirect( string url ) { mRequest.Redirect( url ); }
-        public override void Respond( string data ) { mRequest.Send( data ); }
-        public override void Respond( byte[] data ) { mRequest.Send( data ); }
+        public override void Reject( ResponseCode code )       { mRequest.Reject( code ); }
+        public override void Redirect( string url )            { mRequest.Redirect( url ); }
+        public override void Respond( string data )            { mRequest.Send( data ); }
+        public override void Respond( byte[] data )            { mRequest.Send( data ); }
 
         public override void SetContentType( string mimetype ) { mRequest.Response.Headers[ "Content-Type" ] = mimetype; }
     }
@@ -75,6 +75,31 @@ namespace gw.unium
         public override void        Respond( byte[] data )            { throw new NotImplementedException(); } // binary data
 
         public void                 Info( string msg )                { mMessage.Info( msg ); }
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public class RequestAdapterMemory : RequestAdapter
+    {
+        public RequestAdapterMemory( string path )                    { mPath = path; }
+
+        public override String Path                                   { get { return mPath; } }
+
+        public override void Reject( ResponseCode code )              { mCode = code; }
+        public override void Redirect( string url )                   { mCode = ResponseCode.MovedPermanently; }
+        public override void Respond( string data )                   { mResult = data; }
+        public override void Respond( byte[] data )                   {}
+
+        public override void SetContentType( string mimetype )        {}
+
+        string       mPath      = "";
+        string       mResult    = null;
+        ResponseCode mCode      = ResponseCode.OK;
+
+        public bool     IsError { get { return mCode != ResponseCode.OK || mResult == null; } }
+        public string   Data    { get { return mResult; } }
+
     }
 
 #endif

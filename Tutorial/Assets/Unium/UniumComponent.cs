@@ -2,7 +2,6 @@
 
 using UnityEngine;
 
-using System;
 using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,7 +13,7 @@ using gw.unium;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// UniumComponent 
+// UniumComponent
 
 public class UniumComponent : MonoBehaviour
 {
@@ -120,9 +119,9 @@ public class UniumComponent : MonoBehaviour
 
         mServer.Settings.Port = Port;
 
-        mServer.Dispatcher.OnWebRequest = OnWebRequest;
-        mServer.Dispatcher.OnSocketRequest = OnSocketOpen;
-        mServer.Dispatcher.OnSocketClose += OnWebSocketClose;
+        mServer.Dispatcher.OnWebRequest     = OnWebRequest;
+        mServer.Dispatcher.OnSocketRequest  = OnSocketOpen;
+        mServer.Dispatcher.OnSocketClose   += OnWebSocketClose;
 
         mServer.Start();
 

@@ -93,6 +93,8 @@ namespace gw.proto.http
 
         //------------------------------------------------------------------------------
 
+        // incoming
+
         public WebSocket( HttpRequest request )
         {
             mRequest    = request;
@@ -102,6 +104,27 @@ namespace gw.proto.http
 
             IsServer    = true;
             Connection  = State.Connecting;
+        }
+
+        // outgoing
+
+        public WebSocket( string url )
+        {
+            mRequest    = null;
+            ID          = 0;
+            URL         = url;
+            mDispatcher = null;
+
+            IsServer    = false;
+            Connection  = State.Connecting;
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////////////
+
+        public void Connect()
+        {
+            throw new NotImplementedException();
         }
 
 

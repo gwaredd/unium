@@ -1,11 +1,12 @@
 #--------------------------------------------------------------------------------
 
-express   = require 'express'
-http      = require 'http'
-morgan    = require 'morgan'
-WebSocket = require 'ws'
-options   = require 'optimist'
-_         = require 'underscore'
+express     = require 'express'
+http        = require 'http'
+morgan      = require 'morgan'
+WebSocket   = require 'ws'
+options     = require 'optimist'
+bodyParser  = require 'body-parser'
+_           = require 'underscore'
 
 
 config    = require './config'
@@ -33,13 +34,13 @@ if argv.help?
   options.showHelp()
   process.exit 0
 
+logger.colours = !argv.nc?
+
 
 #--------------------------------------------------------------------------------
 
 minions   = []
 clients   = []
-
-logger.colours = !argv.nc?
 
 broadcast = (id, data) ->
   msg = JSON.stringify id:id, data:data
@@ -97,8 +98,13 @@ app     = express()
 server  = http.createServer app
 
 app.use morgan '[:date[iso]] :remote-addr :status :method :url'
+app.use bodyParser.raw type: '*/*'
 app.use express.static config.root
 
+
+app.post '/minion', (req, res) ->
+  logger.log null, "Minion Registered: " + req.body.toString 'utf8'
+  res.sendStatus 200
 
 
 #--------------------------------------------------------------------------------

@@ -10,9 +10,11 @@
     "start": "node ./node_modules/coffeescript/bin/coffee ./src/server/index.coffee",
     "build": "node ./node_modules/webpack/bin/webpack.js --progress --colors -d",
     "watch": "node ./node_modules/webpack/bin/webpack.js --progress --colors --watch",
-    "release": "node ./node_modules/webpack/bin/webpack.js --progress --colors -p"
+    "release": "node ./node_modules/webpack/bin/webpack.js --progress --colors -p",
+    "mock": "node ./node_modules/coffeescript/bin/coffee ./src/test/mock_minion.coffee"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "chalk": "^2.1.0",
     "coffeescript": "^2.0.1",

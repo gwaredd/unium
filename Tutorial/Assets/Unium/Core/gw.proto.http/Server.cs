@@ -53,27 +53,28 @@ namespace gw.proto.http
 
 
     ////////////////////////////////////////////////////////////////////////////////
-    // 
+    //
 
     public class Server
     {
-        public Settings Settings { get; private set; }
+        public Settings Settings     { get; private set; }
         public Dispatcher Dispatcher { get; private set; }
 
-        public Logger Log { get { return Dispatcher.Log; } }
-        public string Address { get { return mListener != null ? mListener.LocalEndpoint.ToString() : null; } }
-        public bool IsListening { get { return mListener != null; } }
+        public Logger Log            { get { return Dispatcher.Log; } }
+        public string Address        { get { return mListener != null ? mListener.LocalEndpoint.ToString() : null; } }
+        public bool IsListening      { get { return mListener != null; } }
 
-        protected TcpListener mListener = null;
-        protected List<WebSocket> mWebSockets = new List<WebSocket>();
+        protected TcpListener       mListener   = null;
+        protected List<WebSocket>   mWebSockets = new List<WebSocket>();
+
 
         public Server( Settings settings = null, Dispatcher dispatcher = null )
         {
-            Settings = settings != null ? settings : new Settings();
-            Dispatcher = dispatcher != null ? dispatcher : new Dispatcher();
+            Settings    = settings != null ? settings : new Settings();
+            Dispatcher  = dispatcher != null ? dispatcher : new Dispatcher();
 
-            Dispatcher.OnSocketOpen = OnSocketOpen;
-            Dispatcher.OnSocketClose = OnSocketClose;
+            Dispatcher.OnSocketOpen   = OnSocketOpen;
+            Dispatcher.OnSocketClose  = OnSocketClose;
 
             HttpRequest.LimitPostSize = Settings.PostLimit;
         }
@@ -88,6 +89,7 @@ namespace gw.proto.http
                 Settings.Address = address;
             }
         }
+
 
         ////////////////////////////////////////////////////////////////////////////////
 
@@ -120,7 +122,7 @@ namespace gw.proto.http
 
 
         ////////////////////////////////////////////////////////////////////////////////
-        /// 
+        ///
 
         public void Stop()
         {
@@ -144,7 +146,7 @@ namespace gw.proto.http
 
 
         ////////////////////////////////////////////////////////////////////////////////
-        /// 
+        ///
 
         public void Tick()
         {
@@ -172,6 +174,7 @@ namespace gw.proto.http
                 mWebSockets.Remove( ws );
             }
         }
+
 
         ////////////////////////////////////////////////////////////////////////////////
         // asychronous accept - happens on ThreadPool

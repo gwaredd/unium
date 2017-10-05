@@ -24,9 +24,12 @@ echo.
 echo *** Copy tutorial
 echo.
 
-REM rmdir /s /q Tutorial\Assets\StreamingAssets\tutorial
 set TUT=Tutorial\Assets\StreamingAssets\tutorial
+
+REM delete everything except meta files
+
+REM rmdir /s /q Tutorial\Assets\StreamingAssets\tutorial
 for /f %%F in ('dir %TUT% /b /a-d /b /a-d ^| findstr /vile ".meta"') do del %TUT%\%%F
 
-call robocopy Dev\tutorial\root Tutorial\Assets\StreamingAssets\tutorial
-call robocopy Extras\examples Tutorial\Assets\StreamingAssets\tutorial
+call robocopy Dev\tutorial\root %TUT%
+call robocopy Extras\examples %TUT%

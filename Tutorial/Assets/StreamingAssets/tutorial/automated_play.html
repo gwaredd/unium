@@ -61,9 +61,11 @@
       Code
       -------------------------------------------------------------------------------- -->
 
-    <script id='sample' type="text/javascript">function Log( txt ) {
+<script id='sample' type="text/javascript">
+function Log( txt ) {
   document.getElementById( 'output' ).innerHTML += txt + "\n";
 }
+
 
 var itr = null; // our 'generator' iterator
 var ws  = null; // the WebSocket
@@ -113,12 +115,10 @@ function* PlayTutorial() {
     }
     
     Log( "Reload scene" );
-    yield* Get( "sceneLoaded", "/bind/events.sceneLoaded" );
-    yield* Get( "reload", "/utils/scene/Tutorial" );
-
-    timeout = setTimeout( onTimeOut, 5000 );
-    yield; // wait for sceneLoaded event
-    clearTimeout( timeout );
+    var scene = (yield* Get( "reload", "/utils/scene/Tutorial" ));
+    if( !scene || !scene.data ) {
+      throw new Error( "Failed to load scene" );
+    }
 
     Log( "Scene reloaded, collecting pickups" );
     yield* Get( "onpickup", "/bind/scene/Game.Tutorial.OnPickupCollected" );
@@ -155,7 +155,8 @@ function* PlayTutorial() {
 
 itr = PlayTutorial();
 itr.next();
-    </script>
+
+</script>
 
 
     <!-- --------------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Tabs, Tab, Glyphicon } from 'react-bootstrap'
+import _ from 'lodash'
 
 import AcGrid from './AcGrid.jsx'
 import * as Actions from '../model/Actions.jsx'
@@ -20,8 +21,8 @@ export default class AcTabs extends React.Component {
   constructor( props ) {
     super( props )
     this.state = {
-      curIndex  : 0,
-      curId     : 0
+      curKey  : 0,
+      curId   : 0
     }
   }
 
@@ -42,17 +43,28 @@ export default class AcTabs extends React.Component {
     this.props.dispatch( action )
   }
 
-  onEnterTab = (index, id) => {
-    this.setState({
-      curIndex  : index,
-      curId     : id
-    })
+  onAddTabConfirm = () => {
+    var id = _.max( _.keys( this.props.tabs.byId ) ) + 1
+    const action = Actions.tabAdd( id, 'test' )
+    return this.props.dispatch( action )
+  }
+
+  onEnterTab = (id) => {
+    this.setState({ curId: id })
+  }
+
+  onSelectTab = (key) => {
+    if( key == 999999 ) {
+      const action = Actions.appDialogAdd( 'Add Tab', this.onAddTabConfirm )
+      return this.props.dispatch( action )
+    }
+    this.setState({ curKey: key })
   }
 
   //-------------------------------------------------------------------------------
 
   title = (name,index) => {
-    if( this.state.curIndex == index ) {
+    if( this.state.curKey == index ) {
       return (
         <span>
           { name } &nbsp; <Glyphicon glyph="remove" style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
@@ -72,7 +84,7 @@ export default class AcTabs extends React.Component {
         key     = { index }
         eventKey= { index }
         title   = { this.title( tab.name, index ) }
-        onEnter = { () => { this.onEnterTab( index, id ) } }
+        onEnter = { () => { this.onEnterTab( id ) } }
         mountOnEnter
       >
         <AcGrid tabId={id} />
@@ -82,12 +94,15 @@ export default class AcTabs extends React.Component {
 
   //-------------------------------------------------------------------------------
 
-  componentWillMount() {
-  }
-
   render() {
     return (
-      <Tabs animation={true} id="tabs" className='acTabs'>
+      <Tabs
+        id        = "tabs"
+        className = 'acTabs'
+        animation = {true}
+        onSelect  = {this.onSelectTab}
+        activeKey = {this.state.curKey}
+      >
         { Object.keys( this.props.tabs.byId ).map( this.createTab ) }
         <Tab eventKey={999999} title="+" />
       </Tabs>      

@@ -19,6 +19,15 @@ export function appConfirm( title, question, callback ) {
   }
 }
 
+export function appDialogAdd( title, callback ) {
+  return {
+    type: "APP_DIALOG_ADD",
+    payload : {
+      title     : title,
+      callback  : callback
+    }
+  }
+}
 
 export function appCancelDialog() {
   return {
@@ -37,6 +46,7 @@ export function tabRemove( id ) {
     }
   }
 }
+
 
 export function tabAdd( id, name ) {
   return {

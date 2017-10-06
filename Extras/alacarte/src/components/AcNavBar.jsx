@@ -19,6 +19,9 @@ export default class AcNavBar extends React.Component {
     this.props.dispatch( Actions.appScreenshot( true ))
   }
 
+  onAddPanel = () => {
+  }
+
   render() {
     return (
       <Navbar fixedTop inverse>
@@ -34,7 +37,7 @@ export default class AcNavBar extends React.Component {
           <NavItem eventKey={5} onClick={this.onScreenshot}>
             <Glyphicon glyph='camera'/>
           </NavItem>
-          <NavItem eventKey={6} href="#">
+          <NavItem eventKey={6} onClick={this.onAddPanel}>
             <Glyphicon glyph='plus'/>
           </NavItem>
         </Nav>

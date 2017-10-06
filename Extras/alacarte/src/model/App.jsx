@@ -3,7 +3,8 @@
 
 const initial_state = {
   screenshot  : false,
-  confirm     : null
+  confirm     : null,
+  dlgAdd      : null
 }
 
 export default function App( state=initial_state, action ) {
@@ -18,8 +19,12 @@ export default function App( state=initial_state, action ) {
       state = {...state, confirm: action.payload }
       break
 
+    case 'APP_DIALOG_ADD':
+      state = {...state, dlgAdd: action.payload }
+      break
+
     case 'APP_CANCEL_DIALOG':
-      state = {...state, confirm: null, screenshot: false }
+      state = {...state, confirm: null, dlgAdd: null, screenshot: false }
       break
   }
 

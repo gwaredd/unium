@@ -4,9 +4,24 @@ import { combineReducers } from 'redux'
 import _ from 'lodash'
 
 
+const initial_state = {
+  1: {
+    id    : 1,
+    name  : 'Tab A'
+  },
+  2: {
+    id    : 2,
+    name  : 'Tab B'
+  },
+  3: {
+    id    : 3,
+    name  : 'Tab C'
+  },
+}
+
 //-------------------------------------------------------------------------------
 
-function reduceById( state={}, action ) {
+function reduceById( state=initial_state, action ) {
 
   switch( action.type ) {
     
@@ -62,6 +77,6 @@ function reduceAllIds( state=[], action ) {
 //-------------------------------------------------------------------------------
 
 export default combineReducers({
-  byId    : reduceById,
-  allIds  : reduceAllIds
+  byId    : reduceById
+  //allIds  : reduceAllIds
 })

@@ -8,19 +8,14 @@ export function appScreenshot( state ) {
 }
 
 
-export function appConfirm( type ) {
-
-  var payload = null
-
-  if( type != null ) {
-    payload = {
-      type: type
-    }
-  }
-
+export function appConfirm( title, question, callback ) {
   return {
-    type: "APP_CONFIRM",
-    payload: payload
+    type    : "APP_CONFIRM",
+    payload : {
+      title     : title,
+      question  : question,
+      callback  : callback
+    }
   }
 }
 
@@ -33,6 +28,15 @@ export function appCancelDialog() {
 
 
 //-------------------------------------------------------------------------------
+
+export function tabRemove( id ) {
+  return {
+    type    : "TAB_REMOVE",
+    payload : {
+      id    : id
+    }
+  }
+}
 
 export function tabAdd( id, name ) {
   return {

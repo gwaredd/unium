@@ -1,12 +1,12 @@
 //-------------------------------------------------------------------------------
 // reducer
 
-export const initial_state = {
+const initial_state = {
   screenshot  : false,
   confirm     : null
 }
 
-export function reducer( state=initial_state, action ) {
+export default function App( state=initial_state, action ) {
 
   switch( action.type ) {
 

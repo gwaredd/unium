@@ -4,18 +4,18 @@ import { combineReducers, applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
-import * as App from './App.jsx'
+import App from './App.jsx'
 import Tabs from './Tabs.jsx'
-import * as Panels from './Panels.jsx'
-import * as Widgets from './Widgets.jsx'
+import Panels from './Panels.jsx'
+import Widgets from './Widgets.jsx'
 
 //-------------------------------------------------------------------------------
 
 const reducers = combineReducers({
-  app     : App.reducer,
+  app     : App,
   tabs    : Tabs,
-  panels  : Panels.reducer,
-  widgets : Widgets.reducer,
+  panels  : Panels,
+  widgets : Widgets,
 })
 
 const middleware = applyMiddleware(

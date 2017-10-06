@@ -1,18 +1,18 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
+import { connect } from 'react-redux'
 import { Tabs, Tab, Glyphicon } from 'react-bootstrap'
 
 import AcGrid from './AcGrid.jsx'
-
-import { connect } from 'react-redux'
-
 import * as Actions from '../model/Actions.jsx'
 
 
+//-------------------------------------------------------------------------------
+
 @connect( (store) => {
   return {
-    app: store.app
+    tabs: store.tabs
   }
 })
 export default class AcTabs extends React.Component {
@@ -20,23 +20,42 @@ export default class AcTabs extends React.Component {
   constructor( props ) {
     super( props )
     this.state = {
-      active: 1
+      curIndex  : 0,
+      curId     : 0
     }
   }
 
-  onRemoveTab = () => {
-    this.props.dispatch( Actions.appConfirm( 'remove_tab' ) )
+  //-------------------------------------------------------------------------------
+
+  onConfirmRemoveTab = () => {
+    var action = Actions.tabRemove( this.state.curId )
+    this.props.dispatch( action )
   }
 
-  onEnterTab = (index) => {
-    this.setState({active:index})
+  onRemoveTab = () => {
+    var action = Actions.appConfirm(
+      'Remove Tab',
+      'Are you sure you want to remmove the tab',
+      this.onConfirmRemoveTab
+    )
+
+    this.props.dispatch( action )
   }
+
+  onEnterTab = (index, id) => {
+    this.setState({
+      curIndex  : index,
+      curId     : id
+    })
+  }
+
+  //-------------------------------------------------------------------------------
 
   title = (name,index) => {
-    if( this.state.active == index ) {
+    if( this.state.curIndex == index ) {
       return (
         <span>
-          {name} &nbsp; <Glyphicon glyph="remove" style={{fontSize:'10px'}} onClick={this.onRemoveTab}/>
+          { name } &nbsp; <Glyphicon glyph="remove" style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
         </span>
       )
     } else {
@@ -44,22 +63,33 @@ export default class AcTabs extends React.Component {
     }
   }
 
-  render() {
+  createTab = (id, index) => {
+
+    var tab = this.props.tabs.byId[ id ]
 
     return (
+      <Tab
+        key     = { index }
+        eventKey= { index }
+        title   = { this.title( tab.name, index ) }
+        onEnter = { () => { this.onEnterTab( index, id ) } }
+        mountOnEnter
+      >
+        <AcGrid tabId={id} />
+      </Tab>
+    )
+  }
 
+  //-------------------------------------------------------------------------------
+
+  componentWillMount() {
+  }
+
+  render() {
+    return (
       <Tabs animation={true} id="tabs" className='acTabs'>
-        <Tab eventKey={1} title={this.title('Tab 1',1)} mountOnEnter onEnter={()=>{this.onEnterTab(1)}}>
-          <AcGrid/>
-        </Tab>
-        <Tab eventKey={2} title={this.title('Tab 2',2)} mountOnEnter onEnter={()=>{this.onEnterTab(2)}}>
-          <AcGrid items={20}/>
-        </Tab>
-        <Tab eventKey={3} title={this.title('Tab 3',3)} mountOnEnter onEnter={()=>{this.onEnterTab(3)}}>
-          <AcGrid/>
-        </Tab>
-        <Tab eventKey={4} title="+">
-        </Tab>
+        { Object.keys( this.props.tabs.byId ).map( this.createTab ) }
+        <Tab eventKey={999999} title="+" />
       </Tabs>      
     )
   }

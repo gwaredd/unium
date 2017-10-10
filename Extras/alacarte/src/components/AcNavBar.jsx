@@ -54,9 +54,6 @@ export default class AcNavBar extends React.Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav pullRight>
-          <NavItem eventKey={4} href="#">
-            <Glyphicon glyph='cog'/>
-          </NavItem>
           <NavItem eventKey={5} onClick={this.onScreenshot}>
             <Glyphicon glyph='camera'/>
           </NavItem>

@@ -49,6 +49,23 @@ function reduceById( state=initial_state, action ) {
 
 //-------------------------------------------------------------------------------
 
+function reduceState( state={ curTab: 1 }, action ) {
+
+  switch( action.type ) {
+    case 'TAB_SELECT': {
+      const { payload } = action
+      const { id }      = payload
+      return {...state, curTab: id }
+    }
+  }
+
+  return state
+}
+  
+
+//-------------------------------------------------------------------------------
+
 export default combineReducers({
-  byId    : reduceById
+  byId    : reduceById,
+  state   : reduceState
 })

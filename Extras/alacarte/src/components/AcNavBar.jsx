@@ -13,7 +13,8 @@ import { connect } from 'react-redux'
 
 @connect( (store) => {
   return {
-    app: store.app
+    app: store.app,
+    panels: store.panels
   }
 })
 export default class AcNavBar extends React.Component {
@@ -24,9 +25,13 @@ export default class AcNavBar extends React.Component {
     this.props.dispatch( Actions.Screenshot() )
   }
 
-  onAddPanelConfirm = (p) => {
-    //ActionsTab.PanelCreate()
-    console.log( p )
+  onAddPanelConfirm = ( d ) => {
+
+    var { dispatch, panels } = this.props
+
+    var keys = _.map( _.keys( panels.byId ), (k) => parseInt(k) )
+    var id = _.max( keys ) + 1
+    dispatch( ActionsTab.PanelCreate({...d, id: id }) )
   }
 
   onAddPanel = () => {

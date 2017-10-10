@@ -19,25 +19,15 @@ export default class AcPanel extends React.Component {
 
   //-------------------------------------------------------------------------------
 
-  onRemovePanelConfirm = ( id ) => {
+  onRemovePanel = () => {
 
-    console.log( id )
+    var { panel, dispatch } = this.props
 
-    //this.props.dispatch( PanelRemove( id ) )
-  }
-
-  onRemovePanel = ( id ) => {
-
-    var panel = this.props.panels.byId[ id ]
-
-    var action = Actions.Confirm(
+    dispatch( Actions.Confirm(
       'Remove Panel',
       "Are you sure you want to remove '" + panel.name + "'",
-      this.onRemovePanelConfirm,
-      id
-    )
-
-    this.props.dispatch( action )
+      () => dispatch( PanelRemove( panel.id ) )
+    ))
   }
 
   //-------------------------------------------------------------------------------
@@ -46,13 +36,11 @@ export default class AcPanel extends React.Component {
 
     const panel = this.props.panel
 
-    // var panel = _.find( this.props.panels.byId, (p) => p.id == panelId )
-
     var title = (
       <div>
         { panel.name }
         <div className='pull-right'>
-          <Glyphicon className='acPanelIcon' glyph="remove" style={{fontSize:'10px'}} onClick={()=>this.onRemovePanel(panel.id)}/>
+          <Glyphicon className='acPanelIcon' glyph="remove" style={{fontSize:'10px'}} onClick={this.onRemovePanel}/>
         </div>
       </div>
     )

@@ -20,56 +20,55 @@ import * as Actions from '../actions/Tabs.jsx'
 })
 export default class AcTabs extends React.Component {
 
-  constructor( props ) {
-    super( props )
-    this.state = {
-      curKey  : 0,
-      curId   : 0
-    }
-  }
-
   //-------------------------------------------------------------------------------
-
-  onConfirmRemoveTab = () => {
-    this.props.dispatch( Actions.TabRemove( this.state.curId ) )
-  }
 
   onRemoveTab = () => {
     
-    var id = this.state.curId
-    var tab = this.props.tabs.byId[ id ]
+    var { dispatch, tabs } = this.props
+    var curTab = tabs.state.curTab
+    var tab = tabs.byId[ curTab ]
 
-    var action = App.Confirm(
+    dispatch( App.Confirm(
       'Remove Tab',
       "Are you sure you want to remove '" + tab.name + "'",
-      this.onConfirmRemoveTab
-    )
-
-    this.props.dispatch( action )
-  }
-
-  onAddTabConfirm = ( s ) => {
-    var keys = _.keys( this.props.tabs.byId )
-    var id = _.max( keys ) + 1
-    this.props.dispatch( Actions.TabCreate( id, s.name ) )
-  }
-
-  onEnterTab = (id) => {
-    this.setState({ curId: id })
-  }
-
-  onSelectTab = (key) => {
-    if( key == 999999 ) {
-      const action = App.AddTab( this.onAddTabConfirm )
-      return this.props.dispatch( action )
-    }
-    this.setState({ curKey: key })
+      (id) => dispatch( Actions.TabRemove( id ) ),
+      curTab
+    ))
   }
 
   //-------------------------------------------------------------------------------
 
-  title = (name,index) => {
-    if( this.state.curKey != index ) {
+  onAddTabConfirm = ( s ) => {
+    
+    var { dispatch, tabs } = this.props
+    
+    var keys = _.map( _.keys( tabs.byId ), (k) => parseInt(k) )
+    var id = _.max( keys ) + 1
+        
+    dispatch( Actions.TabCreate( id, s.name ) )
+  }
+    
+  onSelectTab = (id) => {
+
+    var { dispatch } = this.props
+
+    if( id == -1 ) {
+      dispatch( App.AddTab( this.onAddTabConfirm ) )
+    } else {
+      dispatch( Actions.TabSelect( id ) )
+    }
+  }
+
+
+  //-------------------------------------------------------------------------------
+
+  title = (name,id) => {
+
+    var { tabs } = this.props
+    var curTab = tabs.state.curTab
+
+
+    if( curTab != id ) {
       return <span>{name}</span>
     }
 
@@ -80,16 +79,15 @@ export default class AcTabs extends React.Component {
     )
   }
 
-  createTab = (id, index) => {
+  createTab = (id) => {
 
     var tab = this.props.tabs.byId[ id ]
 
     return (
       <Tab
-        key     = { index }
-        eventKey= { index }
-        title   = { this.title( tab.name, index ) }
-        onEnter = { () => { this.onEnterTab( id ) } }
+        key     = { id }
+        eventKey= { id }
+        title   = { this.title( tab.name, id ) }
         mountOnEnter
       >
         <AcGrid tabId={id} />
@@ -97,19 +95,24 @@ export default class AcTabs extends React.Component {
     )
   }
 
+
   //-------------------------------------------------------------------------------
 
   render() {
+
+    var { tabs } = this.props
+    var curTab = tabs.state.curTab
+
     return (
       <Tabs
         id        = "tabs"
         className = 'acTabs'
         animation = {true}
         onSelect  = {this.onSelectTab}
-        activeKey = {this.state.curKey}
+        activeKey = {curTab}
       >
-        { Object.keys( this.props.tabs.byId ).map( this.createTab ) }
-        <Tab eventKey={999999} title="+" />
+        { Object.keys( tabs.byId ).map( this.createTab ) }
+        <Tab eventKey={-1} title="+" />
       </Tabs>      
     )
   }

@@ -1,15 +1,4 @@
-
 //-------------------------------------------------------------------------------
-
-export function TabRemove( id ) {
-  return {
-    type    : "TAB_REMOVE",
-    payload : {
-      id    : id
-    }
-  }
-}
-
 
 export function TabCreate( id, name ) {
   return {
@@ -21,13 +10,33 @@ export function TabCreate( id, name ) {
   }
 }
 
-export function PanelCreate( id, name, type ) {
+export function TabRemove( id ) {
+  return {
+    type    : "TAB_REMOVE",
+    payload : {
+      id    : id
+    }
+  }
+}
+
+export function TabSelect( id ) {
+  return {
+    type: "TAB_SELECT",
+    payload: {
+      id: id
+    }
+  }
+}
+
+//-------------------------------------------------------------------------------
+
+export function PanelCreate( d ) {
   return {
     type: "PANEL_CREATE",
     payload: {
-      id    : id,
-      type  : type,
-      name  : name
+      id    : d.id,
+      type  : d.type,
+      name  : d.name
     }
   }
 

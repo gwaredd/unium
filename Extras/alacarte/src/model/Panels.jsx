@@ -46,7 +46,7 @@ function reduceById( state=initial_state, action ) {
       // return { ...state, [id] : entry }
     }
 
-    case 'PANEL_CREATE': {
+    case 'PANEL_REMOVE': {
 
       const { payload } = action
       const { id }      = payload

@@ -12,6 +12,7 @@ import AcModalScreenshot from './components/AcModalScreenshot.jsx'
 import AcModalConfirm from './components/AcModalConfirm.jsx'
 import AcModalAddTab from './components/AcModalAddTab.jsx'
 import AcModalAddPanel from './components/AcModalAddPanel.jsx'
+import AcModalAddWidget from './components/AcModalAddWidget.jsx'
 import AcOutput from './components/AcOutput.jsx'
 
 import Style from './style.css'
@@ -31,6 +32,7 @@ ReactDOM.render(
       <AcModalConfirm/>
       <AcModalAddTab/>
       <AcModalAddPanel/>
+      <AcModalAddWidget/>
     </div>
   </Provider>,
 

@@ -4,19 +4,45 @@ import { combineReducers } from 'redux'
 import _ from 'lodash'
 
 
-const initial_state = {}
+const initial_state = {
+  1: {
+    id      : 1,
+    panel   : 1,
+    name    : 'Widget 1-1',
+    style   : 'primary'
+  },
+  2: {
+    id      : 2,
+    panel   : 1,
+    name    : 'Widget 2-1',
+    style   : 'warning'
+  }
+
+}
 
 //-------------------------------------------------------------------------------
 
 function reduceById( state=initial_state, action ) {
 
-  return state
-}
+  switch( action.type ) {
+    
+    case 'WIDGET_CREATE': {
 
+      const { payload } = action
+      const { id }      = payload
+      const widget      = { ...payload }
 
-//-------------------------------------------------------------------------------
+      return { ...state, [id] : widget }
+    }
 
-function reduceAllIds( state=[], action ) {  
+    case 'WIDGET_REMOVE': {
+
+      const { payload } = action
+      const { id }      = payload
+
+      return _.omit( state, id )
+    }
+  }
 
   return state
 }
@@ -26,5 +52,4 @@ function reduceAllIds( state=[], action ) {
 
 export default combineReducers({
   byId    : reduceById
-  //allIds  : reduceAllIds
 })

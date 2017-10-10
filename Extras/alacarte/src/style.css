@@ -7,6 +7,10 @@ body {
   height: inherit;
 }
 
+.acPanelIcon {
+  font-size: 10px;
+}
+
 .acPanelIcon:hover {
   color: black;
   font-weight: bold;

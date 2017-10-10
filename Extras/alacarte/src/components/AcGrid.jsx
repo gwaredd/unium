@@ -2,14 +2,14 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import RGL, { WidthProvider } from 'react-grid-layout'
+import RGL, { Responsive, WidthProvider } from 'react-grid-layout'
 import GridStyle from 'react-grid-layout/css/styles.css'
 import ResizeStyle from 'react-resizable/css/styles.css'
 import _ from 'lodash'
 
 import AcPanel from './AcPanel.jsx'
 
-
+const ResponsiveReactGridLayout = WidthProvider( Responsive )
 const ReactGridLayout = WidthProvider( RGL )
 
 
@@ -36,15 +36,18 @@ export default class AcGrid extends React.PureComponent {
     var tabId  = this.props.tabId
     var panels = _.filter( this.props.panels.byId, (v) => v.tab == tabId )
 
-    var dom = _.map( panels, (p,i) =>
+    var contents = _.map( panels, (p,i) =>
       <div key={i} data-grid={p.layout}>
         <AcPanel panel={p} />
       </div>
     )
     
     return (
-      <ReactGridLayout {...this.props}>
-        { dom }
+      <ReactGridLayout
+        breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
+        {...this.props}
+      >
+        { contents }
       </ReactGridLayout>
     )
   }

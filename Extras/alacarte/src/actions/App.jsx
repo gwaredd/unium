@@ -43,6 +43,15 @@ export function AddPanel( callback ) {
   }
 }
 
+export function AddWidget( callback ) {
+  return {
+    type    : "APP_DAILOG_SHOW",
+    payload : {
+      modal     : 'addWidget',
+      callback  : callback
+    }
+  }
+}
 
 export function CancelDialog() {
   return {

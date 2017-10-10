@@ -52,3 +52,22 @@ export function PanelRemove( id ) {
   }  
 }
 
+//-------------------------------------------------------------------------------
+
+export function WidgetCreate( v ) {
+  return {
+    type    : "WIDGET_CREATE",
+    payload : v
+  }  
+}
+
+
+export function WidgetRemove( id ) {
+  return {
+    type    : "WIDGET_REMOVE",
+    payload : {
+      id    : id
+    }
+  }  
+}
+

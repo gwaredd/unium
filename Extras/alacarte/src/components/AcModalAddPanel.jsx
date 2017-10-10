@@ -29,7 +29,7 @@ import { CancelDialog } from '../actions/App.jsx'
     app: store.app
   }
 })
-export default class AcModalAdd extends React.Component {
+export default class AcModalAddPanel extends React.Component {
 
   onCancel = () => {
     this.props.dispatch( CancelDialog() )

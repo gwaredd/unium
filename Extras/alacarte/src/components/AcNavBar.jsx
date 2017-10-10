@@ -14,7 +14,8 @@ import { connect } from 'react-redux'
 @connect( (store) => {
   return {
     app: store.app,
-    panels: store.panels
+    panels: store.panels,
+    tabs: store.tabs
   }
 })
 export default class AcNavBar extends React.Component {
@@ -27,11 +28,14 @@ export default class AcNavBar extends React.Component {
 
   onAddPanelConfirm = ( d ) => {
 
-    var { dispatch, panels } = this.props
+    var { dispatch, panels, tabs } = this.props
+    var tab = tabs.state.curTab
 
-    var keys = _.map( _.keys( panels.byId ), (k) => parseInt(k) )
-    var id = _.max( keys ) + 1
-    dispatch( ActionsTab.PanelCreate({...d, id: id }) )
+    const keys    = _.map( _.keys( panels.byId ), (k) => parseInt(k) )
+    const id      = _.max( keys ) + 1
+    const payload = {...d, id: id, tab: tab }
+
+    dispatch( ActionsTab.PanelCreate( payload ) )
   }
 
   onAddPanel = () => {

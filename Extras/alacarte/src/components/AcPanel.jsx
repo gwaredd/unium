@@ -46,7 +46,7 @@ export default class AcPanel extends React.Component {
     )
 
     return (
-      <Panel className="acPanel" header={title}>
+      <Panel className="acPanel" header={title} bsStyle={ panel.type }>
         Panel content
       </Panel>
     )

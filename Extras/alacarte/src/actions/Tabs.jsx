@@ -36,7 +36,8 @@ export function PanelCreate( d ) {
     payload: {
       id    : d.id,
       type  : d.type,
-      name  : d.name
+      name  : d.name,
+      tab   : parseInt( d.tab )
     }
   }
 

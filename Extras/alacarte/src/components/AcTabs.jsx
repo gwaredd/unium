@@ -42,8 +42,8 @@ export default class AcTabs extends React.Component {
     
     var { dispatch, tabs } = this.props
     
-    var keys = _.map( _.keys( tabs.byId ), (k) => parseInt(k) )
-    var id = _.max( keys ) + 1
+    var keys  = _.map( _.keys( tabs.byId ), (k) => parseInt(k) )
+    var id    = _.max( keys ) + 1
         
     dispatch( Actions.TabCreate( id, s.name ) )
   }
@@ -62,32 +62,22 @@ export default class AcTabs extends React.Component {
 
   //-------------------------------------------------------------------------------
 
-  title = (name,id) => {
+  createTab = ( id ) => {
 
-    var { tabs } = this.props
-    var curTab = tabs.state.curTab
+    var { tabs }    = this.props
+    var { curTab }  = tabs.state
+    var tab         = tabs.byId[ id ]
 
-
-    if( curTab != id ) {
-      return <span>{name}</span>
+    var title = <span>{ tab.name } &nbsp; { id == curTab &&
+      <Glyphicon glyph="remove" style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
     }
-
-    return (
-      <span>
-        { name } &nbsp; <Glyphicon glyph="remove" style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
-      </span>
-    )
-  }
-
-  createTab = (id) => {
-
-    var tab = this.props.tabs.byId[ id ]
+    </span>
 
     return (
       <Tab
         key     = { id }
         eventKey= { id }
-        title   = { this.title( tab.name, id ) }
+        title   = { title }
         mountOnEnter
       >
         <AcGrid tabId={id} />

@@ -6,7 +6,9 @@ import { Tabs, Tab, Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 
 import AcGrid from './AcGrid.jsx'
-import * as Actions from '../model/Actions.jsx'
+
+import * as App from '../actions/App.jsx'
+import * as Actions from '../actions/Tabs.jsx'
 
 
 //-------------------------------------------------------------------------------
@@ -29,24 +31,27 @@ export default class AcTabs extends React.Component {
   //-------------------------------------------------------------------------------
 
   onConfirmRemoveTab = () => {
-    var action = Actions.tabRemove( this.state.curId )
-    this.props.dispatch( action )
+    this.props.dispatch( Actions.TabRemove( this.state.curId ) )
   }
 
   onRemoveTab = () => {
-    var action = Actions.appConfirm(
+    
+    var id = this.state.curId
+    var tab = this.props.tabs.byId[ id ]
+
+    var action = App.Confirm(
       'Remove Tab',
-      'Are you sure you want to remmove the tab',
+      "Are you sure you want to remove '" + tab.name + "'",
       this.onConfirmRemoveTab
     )
 
     this.props.dispatch( action )
   }
 
-  onAddTabConfirm = () => {
-    var id = _.max( _.keys( this.props.tabs.byId ) ) + 1
-    const action = Actions.tabAdd( id, 'test' )
-    return this.props.dispatch( action )
+  onAddTabConfirm = ( s ) => {
+    var keys = _.keys( this.props.tabs.byId )
+    var id = _.max( keys ) + 1
+    this.props.dispatch( Actions.TabCreate( id, s.name ) )
   }
 
   onEnterTab = (id) => {
@@ -55,7 +60,7 @@ export default class AcTabs extends React.Component {
 
   onSelectTab = (key) => {
     if( key == 999999 ) {
-      const action = Actions.appDialogAdd( 'Add Tab', this.onAddTabConfirm )
+      const action = App.AddTab( this.onAddTabConfirm )
       return this.props.dispatch( action )
     }
     this.setState({ curKey: key })
@@ -64,15 +69,15 @@ export default class AcTabs extends React.Component {
   //-------------------------------------------------------------------------------
 
   title = (name,index) => {
-    if( this.state.curKey == index ) {
-      return (
-        <span>
-          { name } &nbsp; <Glyphicon glyph="remove" style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
-        </span>
-      )
-    } else {
+    if( this.state.curKey != index ) {
       return <span>{name}</span>
     }
+
+    return (
+      <span>
+        { name } &nbsp; <Glyphicon glyph="remove" style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
+      </span>
+    )
   }
 
   createTab = (id, index) => {

@@ -4,9 +4,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Glyphicon } from 'react-bootstrap'
 
-import * as Actions from '../model/Actions.jsx'
+import * as Actions from '../actions/App.jsx'
+import * as ActionsTab from '../actions/Tabs.jsx'
 
 import { connect } from 'react-redux'
+
+//-------------------------------------------------------------------------------
 
 @connect( (store) => {
   return {
@@ -15,12 +18,23 @@ import { connect } from 'react-redux'
 })
 export default class AcNavBar extends React.Component {
 
+  //-------------------------------------------------------------------------------
+
   onScreenshot = () => {
-    this.props.dispatch( Actions.appScreenshot( true ))
+    this.props.dispatch( Actions.Screenshot() )
+  }
+
+  onAddPanelConfirm = (p) => {
+    //ActionsTab.PanelCreate()
+    console.log( p )
   }
 
   onAddPanel = () => {
+    this.props.dispatch( Actions.AddPanel( this.onAddPanelConfirm ) )
   }
+
+
+  //-------------------------------------------------------------------------------
 
   render() {
     return (

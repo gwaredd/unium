@@ -25,7 +25,7 @@ function reduceById( state=initial_state, action ) {
 
   switch( action.type ) {
     
-    case 'TAB_ADD': {
+    case 'TAB_CREATE': {
 
       const { payload } = action
       const { id }      = payload
@@ -49,34 +49,6 @@ function reduceById( state=initial_state, action ) {
 
 //-------------------------------------------------------------------------------
 
-function reduceAllIds( state=[], action ) {  
-
-  switch( action.type ) {
-
-    case 'TAB_ADD': {
-
-      const { payload } = action
-      const { id }      = payload
-
-      return state.concat( id )
-    }
-
-    case 'TAB_REMOVE': {
-
-      const { payload } = action
-      const { id }      = payload
-
-      return state.filter( (item) => item !== id )
-    }
-  }
-
-  return state
-}
-
-
-//-------------------------------------------------------------------------------
-
 export default combineReducers({
   byId    : reduceById
-  //allIds  : reduceAllIds
 })

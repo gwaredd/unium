@@ -4,7 +4,7 @@ import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
-import { appCancelDialog } from '../model/Actions.jsx'
+import { CancelDialog } from '../actions/App.jsx'
 
 
 //-------------------------------------------------------------------------------
@@ -17,34 +17,34 @@ import { appCancelDialog } from '../model/Actions.jsx'
 export default class AcModalConfirm extends React.Component {
 
   onCancel = () => {
-    this.props.dispatch( appCancelDialog() )
+    this.props.dispatch( CancelDialog() )
   }
 
   onOK = () => {
-    this.props.app.confirm.callback()
+    this.props.app.dialog.callback( this.props.app.dialog.data )
     this.onCancel()
   }
 
   render() {
 
-    var app = this.props.app
-    var { confirm } = app
+    var { app } = this.props
+    var { dialog } = app
 
-    if( confirm == null ) {
-      return <div/>
+    if( dialog == null || dialog.modal != "confirm" ) {
+      return null
     }
 
     return (
       <Modal show={true} bsSize="large" onHide={this.onCancel}>
           <Modal.Header closeButton>
-            <Modal.Title>{ confirm.title }</Modal.Title>
+            <Modal.Title>{ dialog.title }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>{ confirm.question }</h4>
+            <h4>{ dialog.question }</h4>
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle="default" onClick={this.onCancel}>Cancel</Button>
-            <Button bsStyle="danger" onClick={this.onOK}>OK</Button>
+            <Button bsStyle="danger" onClick={this.onOK}>Confirm</Button>
           </Modal.Footer>          
       </Modal>
     )

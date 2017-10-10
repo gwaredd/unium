@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { Glyphicon, Button, Panel } from 'react-bootstrap'
 
 
-import * as Actions from '../model/Actions.jsx'
-
+import * as Actions from '../actions/App.jsx'
+import { PanelRemove } from '../actions/Tabs.jsx'
 
 //-------------------------------------------------------------------------------
 
@@ -19,8 +19,25 @@ export default class AcPanel extends React.Component {
 
   //-------------------------------------------------------------------------------
 
-  onRemovePanel = () => {
-    this.props.dispatch( Actions.appConfirm( 'Remove Panel', 'Are you sure?', null ) )
+  onRemovePanelConfirm = ( id ) => {
+
+    console.log( id )
+
+    //this.props.dispatch( PanelRemove( id ) )
+  }
+
+  onRemovePanel = ( id ) => {
+
+    var panel = this.props.panels.byId[ id ]
+
+    var action = Actions.Confirm(
+      'Remove Panel',
+      "Are you sure you want to remove '" + panel.name + "'",
+      this.onRemovePanelConfirm,
+      id
+    )
+
+    this.props.dispatch( action )
   }
 
   //-------------------------------------------------------------------------------
@@ -35,7 +52,7 @@ export default class AcPanel extends React.Component {
       <div>
         { panel.name }
         <div className='pull-right'>
-          <Glyphicon className='acPanelIcon' glyph="remove" style={{fontSize:'10px'}} onClick={this.onRemovePanel}/>
+          <Glyphicon className='acPanelIcon' glyph="remove" style={{fontSize:'10px'}} onClick={()=>this.onRemovePanel(panel.id)}/>
         </div>
       </div>
     )

@@ -35,21 +35,34 @@ const initial_state = {
 
 function reduceById( state=initial_state, action ) {
 
+  switch( action.type ) {
+    
+    case 'PANEL_CREATE': {
+
+      // const { payload } = action
+      // const { id }      = payload
+      // const entry       = { ...payload }
+
+      // return { ...state, [id] : entry }
+    }
+
+    case 'PANEL_CREATE': {
+
+      const { payload } = action
+      const { id }      = payload
+
+      return _.omit( state, id )
+    }
+  }
+  
   return state
 }
 
-
-//-------------------------------------------------------------------------------
-
-function reduceAllIds( state=[], action ) {  
-
-  return state
-}
 
 
 //-------------------------------------------------------------------------------
 
 export default combineReducers({
   byId    : reduceById
-  //allIds  : reduceAllIds
 })
+

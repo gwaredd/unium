@@ -4,7 +4,7 @@ import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
-import * as Actions from '../model/Actions.jsx'
+import { CancelDialog } from '../actions/App.jsx'
 
 
 //-------------------------------------------------------------------------------
@@ -17,15 +17,19 @@ import * as Actions from '../model/Actions.jsx'
 export default class AcModalScreenshot extends React.Component {
 
   onClose = () => {
-    this.props.dispatch( Actions.appCancelDialog() )
+    this.props.dispatch( CancelDialog() )
   }
 
   render() {
 
-    var app = this.props.app
+    var { app } = this.props
+
+    if( app.dialog == null || app.dialog.modal != "screenshot" ) {
+      return null
+    }
 
     return (
-      <Modal show={app.screenshot} bsSize="large" onHide={this.onClose}>
+      <Modal show={true} bsSize="large" onHide={this.onClose}>
           <Modal.Header closeButton>
             <Modal.Title>Take Screenshot</Modal.Title>
           </Modal.Header>

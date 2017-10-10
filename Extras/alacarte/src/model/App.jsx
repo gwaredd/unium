@@ -2,29 +2,19 @@
 // reducer
 
 const initial_state = {
-  screenshot  : false,
-  confirm     : null,
-  dlgAdd      : null
+  dialog  : null
 }
 
 export default function App( state=initial_state, action ) {
 
   switch( action.type ) {
 
-    case 'APP_SCREENSHOT':
-      state = {...state, screenshot: action.payload }
+    case 'APP_DAILOG_SHOW':
+      state = {...state, dialog: action.payload }
       break
 
-    case 'APP_CONFIRM':
-      state = {...state, confirm: action.payload }
-      break
-
-    case 'APP_DIALOG_ADD':
-      state = {...state, dlgAdd: action.payload }
-      break
-
-    case 'APP_CANCEL_DIALOG':
-      state = {...state, confirm: null, dlgAdd: null, screenshot: false }
+    case 'APP_DIALOG_CANCEL':
+      state = {...state, dialog: null }
       break
   }
 

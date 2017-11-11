@@ -1,13 +1,9 @@
 
-add/remove panel
-add/remove widget
-move/copy widget
-
-config panel
-  - colour
-  - name
-
-add debug area
-
-screenshot button
+screenshot
+connected / disconnected
+debug output
+exectue button widget
+other kinds of widgets
+load/save layout
+reactive layout for panels - mobile friendly!
 

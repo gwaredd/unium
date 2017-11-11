@@ -1,7 +1,6 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
-import { connect } from 'react-redux'
 
 import {
   Modal,
@@ -19,8 +18,6 @@ import {
 } from 'react-bootstrap'
 
 
-import { CancelDialog } from '../actions/App.jsx'
-
 const initialState = {
   name      : '',
   style     : 'Default',
@@ -31,27 +28,7 @@ const initialState = {
 
 //-------------------------------------------------------------------------------
 
-@connect( (store) => {
-  return {
-    app: store.app
-  }
-})
 export default class AcModalAddWidget extends React.Component {
-
-  onCancel = () => {
-    this.props.dispatch( CancelDialog() )
-  }
-
-  onOK = () => {
-    if( this.state.name != '' ) {
-      this.props.app.dialog.callback( { ...this.state, style: this.state.style.toLowerCase() } )
-    }
-    this.state = { ...initialState }
-    this.onCancel()
-  }
-
-
-  //-------------------------------------------------------------------------------
 
   constructor( props ) {
     super( props )
@@ -68,15 +45,20 @@ export default class AcModalAddWidget extends React.Component {
 
   render() {
 
-    var { app } = this.props
-    var { dialog } = app
+    const { dialog, onCancel } = this.props
 
-    if( dialog == null || dialog.modal != "addWidget" ) {
-      return null
+    const onOK = () => {
+
+      if( this.state.name != '' ) {
+        dialog.callback( { ...this.state, style: this.state.style.toLowerCase() } )
+      }
+
+      this.state = { ...initialState }
+      onCancel()
     }
-    
+
     return (
-      <Modal show={true} onHide={this.onCancel}>
+      <Modal show={true} onHide={onCancel}>
           <Modal.Header closeButton>
             <Modal.Title>Add Widget</Modal.Title>
           </Modal.Header>
@@ -158,8 +140,8 @@ export default class AcModalAddWidget extends React.Component {
 
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="default" onClick={this.onCancel}>Cancel</Button>
-            <Button bsStyle="success" onClick={this.onOK}>Create Widget</Button>
+            <Button bsStyle="default" onClick={onCancel}>Cancel</Button>
+            <Button bsStyle="success" onClick={onOK}>Create Widget</Button>
           </Modal.Footer>          
       </Modal>
     )

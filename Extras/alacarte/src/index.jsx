@@ -8,11 +8,7 @@ import Store from './model/Store.jsx'
 
 import AcNavBar from './components/AcNavBar.jsx'
 import AcTabs from './components/AcTabs.jsx'
-import AcModalScreenshot from './components/AcModalScreenshot.jsx'
-import AcModalConfirm from './components/AcModalConfirm.jsx'
-import AcModalAddTab from './components/AcModalAddTab.jsx'
-import AcModalAddPanel from './components/AcModalAddPanel.jsx'
-import AcModalAddWidget from './components/AcModalAddWidget.jsx'
+import AcDialogs from './components/AcDialogs.jsx'
 import AcOutput from './components/AcOutput.jsx'
 
 import Style from './style.css'
@@ -27,12 +23,7 @@ ReactDOM.render(
       <AcNavBar/>
       <AcTabs/>
       <AcOutput/>
-      
-      <AcModalScreenshot/>
-      <AcModalConfirm/>
-      <AcModalAddTab/>
-      <AcModalAddPanel/>
-      <AcModalAddWidget/>
+      <AcDialogs/>
     </div>
   </Provider>,
 

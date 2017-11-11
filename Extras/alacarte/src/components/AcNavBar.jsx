@@ -47,7 +47,7 @@ export default class AcNavBar extends React.Component {
 
   render() {
     return (
-      <Navbar fixedTop inverse>
+      <Navbar fixedTop>
         <Navbar.Header>
           <Navbar.Brand>
             Unium: À La Carte

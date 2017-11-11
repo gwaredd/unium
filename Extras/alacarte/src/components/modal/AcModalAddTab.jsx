@@ -1,7 +1,6 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
-import { connect } from 'react-redux'
 
 import {
   Modal,
@@ -19,32 +18,9 @@ import {
 } from 'react-bootstrap'
 
 
-import { CancelDialog } from '../actions/App.jsx'
-
-
 //-------------------------------------------------------------------------------
 
-@connect( (store) => {
-  return {
-    app: store.app
-  }
-})
 export default class AcModalAddTab extends React.Component {
-
-  onCancel = () => {
-    this.props.dispatch( CancelDialog() )
-  }
-
-  onOK = () => {
-    if( this.state.name != '' ) {
-      this.props.app.dialog.callback( this.state )
-      this.state = {name:''}
-    }
-    this.onCancel()
-  }
-
-
-  //-------------------------------------------------------------------------------
 
   constructor( props ) {
     super( props )
@@ -53,24 +29,27 @@ export default class AcModalAddTab extends React.Component {
     }
   }
 
-  onChangeName = (e) => {
-    this.setState({ name: e.target.value });
-  }
+  onChangeName = (e) => { this.setState({ name: e.target.value }); }
 
 
   //-------------------------------------------------------------------------------
 
   render() {
 
-    var { app } = this.props
-    var { dialog } = app
-
-    if( dialog == null || dialog.modal != "addTab" ) {
-      return null
-    }
+    const { dialog, onCancel } = this.props
     
+    const onOK = () => {
+
+      if( this.state.name != '' ) {
+        dialog.callback( this.state )
+      }
+
+      this.state = { name: '' }
+      onCancel()
+    }
+        
     return (
-      <Modal show={true} onHide={this.onCancel}>
+      <Modal show={true} onHide={onCancel}>
           <Modal.Header closeButton>
             <Modal.Title>Create a New Tab</Modal.Title>
           </Modal.Header>
@@ -94,8 +73,8 @@ export default class AcModalAddTab extends React.Component {
 
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="default" onClick={this.onCancel}>Cancel</Button>
-            <Button bsStyle="success" onClick={this.onOK}>Create Tab</Button>
+            <Button bsStyle="default" onClick={onCancel}>Cancel</Button>
+            <Button bsStyle="success" onClick={onOK}>Create Tab</Button>
           </Modal.Footer>          
       </Modal>
     )

@@ -1,7 +1,6 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
-import { connect } from 'react-redux'
 
 import {
   Modal,
@@ -19,36 +18,10 @@ import {
 } from 'react-bootstrap'
 
 
-import { CancelDialog } from '../actions/App.jsx'
-
 
 //-------------------------------------------------------------------------------
 
-@connect( (store) => {
-  return {
-    app: store.app
-  }
-})
 export default class AcModalAddPanel extends React.Component {
-
-  onCancel = () => {
-    this.props.dispatch( CancelDialog() )
-  }
-
-  onOK = () => {
-    if( this.state.name != '' ) {
-      this.state.type = this.state.type.toLowerCase()
-      this.props.app.dialog.callback( this.state )
-    }
-    this.state = {
-      name  : '',
-      type  : 'Default'
-    }
-    this.onCancel()
-  }
-
-
-  //-------------------------------------------------------------------------------
 
   constructor( props ) {
     super( props )
@@ -58,28 +31,34 @@ export default class AcModalAddPanel extends React.Component {
     }
   }
 
-  onChangeName = (e) => {
-    this.setState({ name: e.target.value });
-  }
-
-  onChangeType = (v) => {
-    this.setState({ type: v });
-  }
+  onChangeName = (e) => { this.setState({ name: e.target.value }); }
+  onChangeType = (v) => { this.setState({ type: v }); }
 
 
   //-------------------------------------------------------------------------------
 
   render() {
 
-    var { app } = this.props
-    var { dialog } = app
+    const { dialog, onCancel } = this.props
+    
+    const onOK = () => {
 
-    if( dialog == null || dialog.modal != "addPanel" ) {
-      return null
+      if( this.state.name != '' ) {
+        this.state.type = this.state.type.toLowerCase()
+        dialog.callback( this.state )
+      }
+
+      this.state = {
+        name  : '',
+        type  : 'Default'
+      }
+
+      onCancel()
     }
+
     
     return (
-      <Modal show={true} onHide={this.onCancel}>
+      <Modal show={true} onHide={onCancel}>
           <Modal.Header closeButton>
             <Modal.Title>Add Panel</Modal.Title>
           </Modal.Header>
@@ -132,8 +111,8 @@ export default class AcModalAddPanel extends React.Component {
 
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="default" onClick={this.onCancel}>Cancel</Button>
-            <Button bsStyle="success" onClick={this.onOK}>Create Panel</Button>
+            <Button bsStyle="default" onClick={onCancel}>Cancel</Button>
+            <Button bsStyle="success" onClick={onOK}>Create Panel</Button>
           </Modal.Footer>          
       </Modal>
     )

@@ -1,7 +1,6 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
-import Axios from 'axios'
 
 import {
   Alert,
@@ -14,16 +13,23 @@ import {
 
 export default class AcModalScreenshot extends React.Component {
 
+  constructor( props ) {
+    super( props )
+    this.state = {
+      loaded  : false,
+      error   : null,
+      data    : null
+    }
+  }
+
+  onSuccess = (e) => { this.setState({ loaded: true, error: null }) }
+  onError   = (e) => { this.setState({ loaded: false, error: "Failed to load image" }) }
+
   render() {
 
-    const { dialog, onCancel } = this.props
+    const { dialog, appConfig, onCancel } = this.props
 
-    const onSuccess = (res) => console.log( res )
-    const onError = (err) => console.log( err )
-    
-    Axios.get( 'http://localhost:8342/utils/screenshot' )
-      .then( onSuccess )
-      .catch( onError )
+    const src = appConfig.api + 'utils/screenshot'
   
     
     return (
@@ -32,13 +38,31 @@ export default class AcModalScreenshot extends React.Component {
             <Modal.Title>Screenshot</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Alert bsStyle="info">
-              <h4>Taking Screenshot</h4>
-              <p>Please wait ...</p>
-            </Alert>
+
+            { !this.state.loaded && this.state.error == null &&
+              <Alert bsStyle="info">
+                <h4>Taking Screenshot</h4>
+                <p>Please wait ...</p>
+              </Alert>
+            }
+
+            { !this.state.loaded && this.state.error != null &&
+              <Alert bsStyle="danger">
+                <h4>Failed</h4>
+                <p>{ this.state.error }</p>
+              </Alert>
+            }
+
+            <center>
+              <img
+                src={src}
+                onLoad={this.onSuccess}
+                onError={this.onError}
+              />
+            </center>
+
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="default" onClick={onCancel}>Save</Button>
             <Button bsStyle="success" onClick={onCancel}>Close</Button>
           </Modal.Footer>          
       </Modal>

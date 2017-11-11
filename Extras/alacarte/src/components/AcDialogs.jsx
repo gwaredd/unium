@@ -36,14 +36,14 @@ export default class AcDialogs extends React.Component {
 
   render() {
 
-    const { dialog } = this.props.app
+    const { dialog, config } = this.props.app
 
     if( dialog == null || !(dialog.modal in DialogComponents) ) {
       return null
     }
 
     const $component = DialogComponents[ dialog.modal ]
-    return <$component onCancel={ this.onCancel } dialog={ dialog } />
+    return <$component onCancel={ this.onCancel } dialog={ dialog } appConfig={ config } />
   }
 }
 

@@ -2,7 +2,10 @@
 // reducer
 
 const initial_state = {
-  dialog  : null
+  dialog  : null,
+  config  : {
+    api: 'http://localhost:8342/' // TODO: get automatically
+  }
 }
 
 

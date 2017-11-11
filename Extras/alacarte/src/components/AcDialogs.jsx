@@ -9,8 +9,6 @@ import AcModalAddTab from './modal/AcModalAddTab.jsx'
 import AcModalAddPanel from './modal/AcModalAddPanel.jsx'
 import AcModalAddWidget from './modal/AcModalAddWidget.jsx'
 
-import { CancelDialog } from '../actions/App.jsx'
-
 const DialogComponents = {
   'screenshot': AcModalScreenshot,
   'confirm'   : AcModalConfirm,
@@ -18,6 +16,9 @@ const DialogComponents = {
   'addPanel'  : AcModalAddPanel,
   'addWidget' : AcModalAddWidget,
 }
+
+import { CancelDialog } from '../actions/App.jsx'
+
 
 //-------------------------------------------------------------------------------
 

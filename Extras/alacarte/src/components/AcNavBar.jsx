@@ -2,29 +2,35 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Glyphicon } from 'react-bootstrap'
 
 import * as Actions from '../actions/App.jsx'
 import * as ActionsTab from '../actions/Tabs.jsx'
 
 import { connect } from 'react-redux'
 
+import { 
+  Navbar,
+  Nav,
+  NavItem,
+  NavDropdown,
+  MenuItem,
+  Glyphicon,
+  Label
+} from 'react-bootstrap'
+
+
 //-------------------------------------------------------------------------------
 
 @connect( (store) => {
   return {
-    app: store.app,
-    panels: store.panels,
-    tabs: store.tabs
+    app    : store.app,
+    panels : store.panels,
+    tabs   : store.tabs
   }
 })
 export default class AcNavBar extends React.Component {
 
   //-------------------------------------------------------------------------------
-
-  onScreenshot = () => {
-    this.props.dispatch( Actions.Screenshot() )
-  }
 
   onAddPanelConfirm = ( d ) => {
 
@@ -38,14 +44,18 @@ export default class AcNavBar extends React.Component {
     dispatch( ActionsTab.PanelCreate( payload ) )
   }
 
-  onAddPanel = () => {
-    this.props.dispatch( Actions.AddPanel( this.onAddPanelConfirm ) )
-  }
+  onScreenshot  = () => this.props.dispatch( Actions.Screenshot() )
+  onAddPanel    = () => this.props.dispatch( Actions.AddPanel( this.onAddPanelConfirm ) )
+  onConnect     = () => this.props.dispatch( Actions.Connect() )
+  onDisconnect  = () => this.props.dispatch( Actions.Disconnect() )
 
 
   //-------------------------------------------------------------------------------
 
   render() {
+
+    const isConnected = this.props.app.connected
+
     return (
       <Navbar fixedTop>
         <Navbar.Header>
@@ -54,10 +64,19 @@ export default class AcNavBar extends React.Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav pullRight>
-          <NavItem eventKey={5} onClick={this.onScreenshot}>
+          { isConnected ?
+            <NavItem eventKey={1} onClick={this.onDisconnect}>
+              <Label bsStyle="success">Connected</Label>
+              </NavItem>
+          :
+            <NavItem eventKey={2} onClick={this.onConnect}>
+              <Label bsStyle="warning">Not Connected</Label>
+            </NavItem>
+          }
+          <NavItem eventKey={3} onClick={this.onScreenshot}>
             <Glyphicon glyph='camera'/>
           </NavItem>
-          <NavItem eventKey={6} onClick={this.onAddPanel}>
+          <NavItem eventKey={4} onClick={this.onAddPanel}>
             <Glyphicon glyph='plus'/>
           </NavItem>
         </Nav>

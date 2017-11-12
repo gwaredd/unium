@@ -9,7 +9,7 @@ export default class AcPanel extends React.Component {
 
     var title = (
       <div className='clearfix'>
-        Debug Output
+        Output
         <div className='pull-right'>
           <Glyphicon glyph="chevron-up" />
           <Glyphicon glyph="chevron-down" />

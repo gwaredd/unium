@@ -8,6 +8,8 @@ import App from './App.jsx'
 import Tabs from './Tabs.jsx'
 import Panels from './Panels.jsx'
 import Widgets from './Widgets.jsx'
+import Connection from './Connection.jsx'
+
 
 //-------------------------------------------------------------------------------
 
@@ -18,10 +20,14 @@ const reducers = combineReducers({
   widgets : Widgets,
 })
 
-const middleware = applyMiddleware(
-  thunk,
-  createLogger()
-)
+var middlewareArgs = [ thunk, Connection ]
+
+if( DEVSERVER ) {
+  middlewareArgs.push( createLogger() )
+}
+
+const middleware = applyMiddleware( ...middlewareArgs )
+
 
 //-------------------------------------------------------------------------------
 

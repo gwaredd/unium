@@ -7,9 +7,9 @@
   "license": "MIT",
   "repository": "https://github.com/gwaredd/unium.git",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "build": "node ./node_modules/webpack/bin/webpack.js --progress --colors -d",
-    "release": "node ./node_modules/webpack/bin/webpack.js --progress --colors -p",
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --env.devserver",
+    "build": "node ./node_modules/webpack/bin/webpack.js --progress --colors -d --env.development",
+    "release": "node ./node_modules/webpack/bin/webpack.js --progress --colors -p --env.production",
     "watch": "node ./node_modules/webpack/bin/webpack.js --progress --colors --watch"
   },
   "dependencies": {
@@ -28,6 +28,7 @@
     "react-dom": "^15.6.1",
     "react-grid-layout": "^0.15.3",
     "react-redux": "^5.0.6",
+    "react-toastify": "^2.2.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",

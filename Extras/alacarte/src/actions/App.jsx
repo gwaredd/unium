@@ -1,4 +1,78 @@
 //-------------------------------------------------------------------------------
+// misc
+
+export function Info( msg ) {
+  return {
+    type    : "APP_INFO",
+    payload : msg
+  }
+}
+
+export function Success( msg ) {
+  return {
+    type    : "APP_SUCCESS",
+    payload : msg
+  }
+}
+
+export function Warning( msg ) {
+  return {
+    type    : "APP_WARNING",
+    payload : msg
+  }
+}
+
+export function Error( msg ) {
+  return {
+    type    : "APP_ERROR",
+    payload : msg
+  }
+}
+
+
+
+//-------------------------------------------------------------------------------
+// websocket connection
+
+export function Connect() {
+  return {
+    type: "CON_CONNECT",
+  }
+}
+
+export function Disconnect() {
+  return {
+    type: "CON_DISCONNECT",
+  }
+}
+
+export function ConnectionState( state ) {
+  return {
+    type    : "APP_CONNECTED",
+    payload : state
+  }
+}
+
+export function ConnectionSend( id, data ) {
+  return {
+    type    : "CON_SEND",
+    payload : {
+      id    : id,
+      data  : data
+    }
+  }
+}
+
+export function ConnectionError( msg ) {
+  return {
+    type    : "CON_ERROR",
+    payload : msg
+  }
+}
+
+
+//-------------------------------------------------------------------------------
+// dialogs
 
 export function Screenshot() {
   return {

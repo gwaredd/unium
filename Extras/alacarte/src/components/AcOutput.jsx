@@ -1,13 +1,43 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
-import { Navbar, Glyphicon, PanelGroup, Button, Panel } from 'react-bootstrap'
+import _ from 'lodash'
 
-export default class AcPanel extends React.Component {
+import {
+  Navbar,
+  Glyphicon,
+  PanelGroup,
+  Button,
+  Panel
+} from 'react-bootstrap'
+
+import * as App from '../actions/App.jsx'
+
+import { connect } from 'react-redux'
+
+
+//-------------------------------------------------------------------------------
+
+@connect( (store) => {
+  return {
+    output  : store.output
+  }
+})
+export default class AcOutput extends React.Component {
 
   render() {
 
-    var title = (
+    const { output } = this.props
+
+    var contents = null
+
+    if( output.length > 0 ) {
+      contents = _.map( output, (o,i) =>  <p key={i} className={'text-' + o.type}>{ o.text }</p> )
+    } else {
+      contents = "No output"
+    }    
+
+   var title = (
       <div className='clearfix'>
         Output
         <div className='pull-right'>
@@ -19,7 +49,9 @@ export default class AcPanel extends React.Component {
 
     return (
       <div className='debugOutput'>
-        <Panel collapsible header={title} eventKey="1" style={{margin:'0px'}}>Panel 1 content</Panel>
+        <Panel collapsible header={title} eventKey="1" style={{margin:'0px'}}>
+          { contents }
+        </Panel>
       </div>
    )
   }

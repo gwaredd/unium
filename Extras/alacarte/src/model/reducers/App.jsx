@@ -1,18 +1,22 @@
 //-------------------------------------------------------------------------------
 
-import { toast } from 'react-toastify'
+var server = document.location.host
 
-
-//-------------------------------------------------------------------------------
-// reducer
+if( DEVSERVER ) {
+  server = server.replace( /:\d+/, ':8342' )
+}
 
 const initial_state = {
   dialog    : null,
   connected : false,
   config    : {
-    api     : document.location.protocol + '//' + document.location.host
+    api     : document.location.protocol + '//' + server,
+    ws      : "ws://" + server + "/ws"
   }
 }
+
+
+//-------------------------------------------------------------------------------
 
 export default function App( state=initial_state, action ) {
 
@@ -28,22 +32,6 @@ export default function App( state=initial_state, action ) {
 
     case 'APP_DIALOG_CANCEL':
       state = {...state, dialog: null }
-      break
-
-    case 'APP_INFO':
-      toast.info( action.payload )
-      break
-
-    case 'APP_SUCCESS':
-      toast.success( action.payload )
-      break
-
-    case 'APP_WARNING':
-      toast.warn( action.payload )
-      break
-
-    case 'APP_ERROR':
-      toast.error( action.payload )
       break
   }
 

@@ -29,7 +29,9 @@ export default class AcModalScreenshot extends React.Component {
 
     const { dialog, appConfig, onCancel } = this.props
 
-    const src = appConfig.api + 'utils/screenshot'
+    const src = appConfig.api + '/utils/screenshot'
+
+    console.log( src )
   
     
     return (

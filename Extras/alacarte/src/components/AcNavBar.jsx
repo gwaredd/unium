@@ -3,6 +3,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import * as Connection from '../actions/Connection.jsx'
 import * as Actions from '../actions/App.jsx'
 import * as ActionsTab from '../actions/Tabs.jsx'
 
@@ -46,8 +47,8 @@ export default class AcNavBar extends React.Component {
 
   onScreenshot  = () => this.props.dispatch( Actions.Screenshot() )
   onAddPanel    = () => this.props.dispatch( Actions.AddPanel( this.onAddPanelConfirm ) )
-  onConnect     = () => this.props.dispatch( Actions.Connect() )
-  onDisconnect  = () => this.props.dispatch( Actions.Disconnect() )
+  onConnect     = () => this.props.dispatch( Connection.Connect() )
+  onDisconnect  = () => this.props.dispatch( Connection.Disconnect() )
 
 
   //-------------------------------------------------------------------------------

@@ -11,7 +11,7 @@ import {
   Panel
 } from 'react-bootstrap'
 
-import * as App from '../actions/App.jsx'
+import * as App from '../../actions/App.jsx'
 
 import { connect } from 'react-redux'
 

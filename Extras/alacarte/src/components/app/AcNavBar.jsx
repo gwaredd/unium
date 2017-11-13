@@ -3,9 +3,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import * as Connection from '../actions/Connection.jsx'
-import * as Actions from '../actions/App.jsx'
-import * as ActionsTab from '../actions/Tabs.jsx'
+import * as Connection from '../../actions/Connection.jsx'
+import * as Actions from '../../actions/App.jsx'
+import * as ActionsTab from '../../actions/Tabs.jsx'
 
 import { connect } from 'react-redux'
 

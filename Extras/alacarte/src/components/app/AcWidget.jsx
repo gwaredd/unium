@@ -4,8 +4,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Glyphicon } from 'react-bootstrap'
 
-import * as Actions from '../actions/App.jsx'
-import { WidgetRemove } from '../actions/Tabs.jsx'
+import * as Actions from '../../actions/App.jsx'
+import { WidgetRemove } from '../../actions/Tabs.jsx'
 
 //-------------------------------------------------------------------------------
 

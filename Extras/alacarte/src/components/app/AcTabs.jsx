@@ -7,8 +7,8 @@ import _ from 'lodash'
 
 import AcGrid from './AcGrid.jsx'
 
-import * as App from '../actions/App.jsx'
-import * as Actions from '../actions/Tabs.jsx'
+import * as App from '../../actions/App.jsx'
+import * as Actions from '../../actions/Tabs.jsx'
 
 
 //-------------------------------------------------------------------------------

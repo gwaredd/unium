@@ -6,8 +6,8 @@ import { Glyphicon, Button, Panel } from 'react-bootstrap'
 
 
 import AcWidget from './AcWidget.jsx'
-import * as Actions from '../actions/App.jsx'
-import { WidgetCreate, PanelRemove } from '../actions/Tabs.jsx'
+import * as Actions from '../../actions/App.jsx'
+import { WidgetCreate, PanelRemove } from '../../actions/Tabs.jsx'
 
 //-------------------------------------------------------------------------------
 

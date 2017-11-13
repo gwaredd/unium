@@ -3,11 +3,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import AcModalScreenshot from './dialogs/AcModalScreenshot.jsx'
-import AcModalConfirm from './dialogs/AcModalConfirm.jsx'
-import AcModalAddTab from './dialogs/AcModalAddTab.jsx'
-import AcModalAddPanel from './dialogs/AcModalAddPanel.jsx'
-import AcModalAddWidget from './dialogs/AcModalAddWidget.jsx'
+import AcModalScreenshot from '../dialogs/AcModalScreenshot.jsx'
+import AcModalConfirm from '../dialogs/AcModalConfirm.jsx'
+import AcModalAddTab from '../dialogs/AcModalAddTab.jsx'
+import AcModalAddPanel from '../dialogs/AcModalAddPanel.jsx'
+import AcModalAddWidget from '../dialogs/AcModalAddWidget.jsx'
 
 const DialogComponents = {
   'screenshot': AcModalScreenshot,
@@ -17,7 +17,7 @@ const DialogComponents = {
   'addWidget' : AcModalAddWidget,
 }
 
-import { CancelDialog } from '../actions/App.jsx'
+import { CancelDialog } from '../../actions/App.jsx'
 
 
 //-------------------------------------------------------------------------------

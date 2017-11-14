@@ -49,7 +49,7 @@ function reduceById( state=initial_state, action ) {
 
 //-------------------------------------------------------------------------------
 
-function reduceState( state={ curTab: 0 }, action ) {
+function reduceState( state={ curTab: 1 }, action ) {
 
   switch( action.type ) {
     case 'TAB_SELECT': {

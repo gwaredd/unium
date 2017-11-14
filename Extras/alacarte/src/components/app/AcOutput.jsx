@@ -43,19 +43,27 @@ export default class AcOutput extends React.Component {
     }
   }
 
-  onExpand = () => {
+  onExpand = (e) => {
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
     this.setState({size: this.state.size + 1})
   }
 
-  onCollapse = () => {
+  onCollapse = (e) => {
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
     this.setState({size: this.state.size - 1})
   }
 
-  onToggle = () => {
+  onToggle = (e) => {
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
     this.setState({size: this.state.size <= 0 ? 1 : this.state.size - 1 })
   }
 
-  onLock = () => {
+  onLock = (e) => {
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
     this.setState({locked: !this.state.locked })
   }
 
@@ -78,12 +86,10 @@ export default class AcOutput extends React.Component {
 
       <div className='acOutput'>
 
-        <div className='acOutputH'>
+        <div className='acOutputH' onClick={this.onToggle}>
           <Glyphicon className={locked_class} glyph='lock' onClick={this.onLock} />
           &nbsp;
-          <span onClick={this.onToggle}>
-            Output
-          </span>
+          Output
           <div className='pull-right'>
             { this.state.size < 2 && 
               <Glyphicon glyph="chevron-up" onClick={this.onExpand} />

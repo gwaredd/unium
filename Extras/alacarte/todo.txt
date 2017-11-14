@@ -1,6 +1,4 @@
 bugs
-
-  can't create more than 1 widget?
   default tab not selected on startup
 
 load/save layout

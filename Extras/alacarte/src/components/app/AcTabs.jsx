@@ -43,7 +43,7 @@ export default class AcTabs extends React.Component {
     var { dispatch, tabs } = this.props
     
     var keys  = _.map( _.keys( tabs.byId ), (k) => parseInt(k) )
-    var id    = _.max( keys ) + 1
+    var id    = keys.length == 0 ? 1 : _.max( keys ) + 1
         
     dispatch( Actions.TabCreate( id, s.name ) )
   }
@@ -91,7 +91,7 @@ export default class AcTabs extends React.Component {
   render() {
 
     var { tabs } = this.props
-    var curTab = tabs.state.curTab
+    var { curTab } = tabs.state
 
     return (
       <Tabs
@@ -100,6 +100,7 @@ export default class AcTabs extends React.Component {
         animation = {true}
         onSelect  = {this.onSelectTab}
         activeKey = {curTab}
+        defaultActiveKey = {curTab}
       >
         { Object.keys( tabs.byId ).map( this.createTab ) }
         <Tab eventKey={-1} title="+" />

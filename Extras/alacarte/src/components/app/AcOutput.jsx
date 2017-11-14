@@ -8,7 +8,8 @@ import {
   Glyphicon,
   PanelGroup,
   Button,
-  Panel
+  Panel,
+  Collapse
 } from 'react-bootstrap'
 
 import * as App from '../../actions/App.jsx'
@@ -25,6 +26,33 @@ import { connect } from 'react-redux'
 })
 export default class AcOutput extends React.Component {
 
+  constructor(...args) {
+    super(...args);
+
+    this.state = {
+      size: 0
+    }
+  }
+
+
+  componentDidUpdate () {
+    var el = this.refs.output;
+    el.scrollTop = el.scrollHeight;
+  }
+
+  onExpand = () => {
+    this.setState({size: this.state.size + 1})
+  }
+
+  onCollapse = () => {
+    this.setState({size: this.state.size - 1})
+  }
+
+  onToggle = () => {
+    this.setState({size: this.state.size <= 0 ? 1 : this.state.size - 1 })
+  }
+
+    
   render() {
 
     const { output } = this.props
@@ -32,26 +60,32 @@ export default class AcOutput extends React.Component {
     var contents = null
 
     if( output.length > 0 ) {
-      contents = _.map( output, (o,i) =>  <p key={i} className={'text-' + o.type}>{ o.text }</p> )
+      contents = _.map( output, (o,i) =>  <p key={i} className={'text-' + o.type}>[{o.timestamp}] { o.text }</p> )
     } else {
       contents = "No output"
     }    
 
-   var title = (
-      <div className='clearfix'>
-        Output
-        <div className='pull-right'>
-          <Glyphicon glyph="chevron-up" />
-          <Glyphicon glyph="chevron-down" />
-        </div>
-      </div>
-    )
-
     return (
-      <div className='debugOutput'>
-        <Panel collapsible header={title} eventKey="1" style={{margin:'0px'}}>
+
+      <div className='acOutput'>
+
+        <div className='acOutputH'>
+          <span onClick={this.onToggle}>
+            Output
+          </span>
+          <div className='pull-right'>
+            { this.state.size < 2 && 
+              <Glyphicon glyph="chevron-up" onClick={this.onExpand} />
+            }
+            { this.state.size > 0 && 
+              <Glyphicon glyph="chevron-down" onClick={this.onCollapse} />
+            }
+          </div>
+        </div>
+
+        <div ref='output' className={'acOutputX acOutput' + this.state.size}>
           { contents }
-        </Panel>
+        </div>
       </div>
    )
   }

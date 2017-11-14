@@ -1,9 +1,9 @@
 
-export function Print( type, msg ) {
+export function Print( msg ) {
   return {
-    type    : "LOG_OUTPUT",
+    type    : "LOG",
     payload : {
-      type  : type,
+      type  : 'default',
       text  : msg
     }
   }
@@ -11,29 +11,40 @@ export function Print( type, msg ) {
   
 export function Info( msg ) {
   return {
-    type    : "LOG_INFO",
-    payload : msg
+    type    : "LOG",
+    payload : {
+      type  : 'info',
+      text  : msg
+    }
   }
 }
 
 export function Success( msg ) {
   return {
-    type    : "LOG_SUCCESS",
-    payload : msg
+    type    : "LOG",
+    payload : {
+      type  : 'success',
+      text  : msg
+    }
   }
 }
 
 export function Warning( msg ) {
   return {
-    type    : "LOG_WARNING",
-    payload : msg
+    type    : "LOG",
+    payload : {
+      type  : 'warning',
+      text  : msg
+    }
   }
 }
 
 export function Error( msg ) {
   return {
-    type    : "LOG_ERROR",
-    payload : msg
+    type    : "LOG",
+    payload : {
+      type  : 'danger',
+      text  : msg
+    }
   }
 }
-

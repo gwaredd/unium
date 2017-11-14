@@ -29,11 +29,3 @@ export function Send( id, q ) {
     }
   }
 }
-
-export function Error( msg ) {
-  return {
-    type    : "CON_ERROR",
-    payload : msg
-  }
-}
-

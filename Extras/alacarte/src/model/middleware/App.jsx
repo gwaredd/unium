@@ -12,49 +12,47 @@ import * as Log from '../../actions/Logging.jsx'
 export default (function(){ 
 
   return store => next => action => {
-    
+
     switch( action.type ) {
 
-      case 'LOG_INFO':
-        toast.info( action.payload )
-        break
+      case 'LOG':
 
-      case 'LOG_SUCCESS':
-        toast.success( action.payload )
-        break
+        const { type, text } = action.payload
 
-      case 'LOG_WARNING':
-        toast.warn( action.payload )
-        break
-
-      case 'CON_ERROR':
-      case 'LOG_ERROR':
-        toast.error( action.payload )
-        break
+        switch( type ) {
+          case 'info':    toast.info( text ); break
+          case 'success': toast.success( text ); break
+          case 'warning': toast.warn( text ); break
+          case 'danger':  toast.error( text ); break
+        }
         
+        break
+
+      case 'CON_CONNECTED':
+        if( action.payload ) {
+          store.dispatch( Log.Print( "Connected" ) )
+          store.dispatch( Connection.Send( 'debug', '/bind/events.debug' ) )
+        } else {
+          store.dispatch( Log.Print( "Disconnected" ) )
+        }
+        break
+
       case 'SOCK_DEBUG':
 
         var msg = action.payload
 
         if( "info" in msg ) {
-          store.dispatch( Log.Info( "Now receiving debug messages" ) )
+          store.dispatch( Log.Info( "Debug messages bound" ) )
         } else if( "error" in msg ) {
           store.dispatch( Log.Error( msg.error ) )
         } else {
-          console.log( msg.data )
+          store.dispatch( Log.Print( msg.data.message ) )
         }
 
         break
-
-      case 'CON_CONNECTED':
-        if( action.payload ) {
-          store.dispatch( Connection.Send( 'debug', '/bind/events.debug' ) )
-        }
-        return next( action )
-        
-      default:
-        return next( action )
     }
+
+    return next( action )
   }
 
 })()

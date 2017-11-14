@@ -1,13 +1,26 @@
 //-------------------------------------------------------------------------------
 
+import moment from 'moment'
+
 export default function( state=[], action ) {
 
-  if( action.type === 'APP_OUTPUT' ) {
+  switch( action.type ) {
+    
+    case 'LOG':
+
+      const { payload } = action
+
+      const log = {
+        ...payload,
+        timestamp : moment().format( 'hh:mm:ss.SS' )
+      }
+      
       var output = state.slice()
-      output.push( action.payload )
+      output.push( log )
+
       return output
-  }
+  } 
 
   return state
 }
-  
+

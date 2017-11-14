@@ -1,7 +1,4 @@
 
-debug output
-   * optional scroll to bottom on input
-
 exectue button widget
 load/save layout
 reactive layout for panels - mobile friendly!

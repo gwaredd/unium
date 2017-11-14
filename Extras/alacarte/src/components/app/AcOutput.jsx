@@ -72,14 +72,14 @@ export default class AcOutput extends React.Component {
       contents = "No output"
     }    
 
-    const locked = this.state.locked ? 'danger' : 'info'
+    const locked_class = this.state.locked ? 'text-danger' : 'text-info'
 
     return (
 
       <div className='acOutput'>
 
         <div className='acOutputH'>
-          <Glyphicon className={'text-' + locked} glyph="lock" onClick={this.onLock} />
+          <Glyphicon className={locked_class} glyph='lock' onClick={this.onLock} />
           &nbsp;
           <span onClick={this.onToggle}>
             Output

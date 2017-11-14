@@ -19,10 +19,10 @@ import {
 
 
 const initialState = {
-  name      : '',
+  name      : 'Widget Name',
   style     : 'Default',
-  query     : '/q/scene',
-  logOutput : false
+  behaviour : 'Silent',
+  query     : '/about',
 }
 
 
@@ -37,9 +37,11 @@ export default class AcModalAddWidget extends React.Component {
 
   onChangeName      = (e) => { this.setState({ name: e.target.value }) }
   onChangeStyle     = (e) => { this.setState({ style: e }) }
+  onChangeBehaviour = (e) => { this.setState({ behaviour: e }) }
   onChangeQuery     = (e) => { this.setState({ query: e.target.value }) }
   onChangeLogOutput = (e) => { this.setState({ logOutput: e.target.checked }) }
-
+  onChangeNotify    = (e) => { this.setState({ notify: e.target.checked }) }
+  
 
   //-------------------------------------------------------------------------------
 
@@ -58,7 +60,7 @@ export default class AcModalAddWidget extends React.Component {
     }
 
     return (
-      <Modal show={true} onHide={onCancel}>
+      <Modal show={true} onHide={onCancel} bsSize="large">
           <Modal.Header closeButton>
             <Modal.Title>Add Widget</Modal.Title>
           </Modal.Header>
@@ -66,7 +68,7 @@ export default class AcModalAddWidget extends React.Component {
 
           <Form horizontal>
 
-            <FormGroup controlId="formName">
+            <FormGroup>
               <Col componentClass={ControlLabel} sm={2}>
                 Name
               </Col>
@@ -79,6 +81,19 @@ export default class AcModalAddWidget extends React.Component {
               </Col>
             </FormGroup>
 
+            <FormGroup>
+              <Col componentClass={ControlLabel} sm={2}>
+                Query
+              </Col>
+              <Col sm={10}>
+                <FormControl
+                  type="text"
+                  value={this.state.query}
+                  onChange={this.onChangeQuery}
+                />
+              </Col>
+            </FormGroup>
+
             <FormGroup controlId="formType">
               <Col componentClass={ControlLabel} sm={2}>
                 Style
@@ -87,9 +102,9 @@ export default class AcModalAddWidget extends React.Component {
               <Col sm={10}>
                 <DropdownButton
                     componentClass={InputGroup.Button}
-                    id="formType"
                     title={this.state.style}
-                  >
+                    id='formStyle'
+                    >
                     <MenuItem key="1" onSelect={()=>this.onChangeStyle('Default')}>
                       <Panel header="Default"/>
                     </MenuItem>
@@ -112,27 +127,29 @@ export default class AcModalAddWidget extends React.Component {
               </Col>
             </FormGroup>
 
-            <FormGroup controlId="formName">
+            <FormGroup>
               <Col componentClass={ControlLabel} sm={2}>
-                Query
+                Behaviour
               </Col>
               <Col sm={10}>
-                <FormControl
-                  type="text"
-                  value={this.state.query}
-                  onChange={this.onChangeQuery}
-                />
-              </Col>
-            </FormGroup>
-
-            <FormGroup controlId="formName">
-              <Col componentClass={ControlLabel} sm={2}>
-                Log Output
-              </Col>
-              <Col sm={10}>
-                <Checkbox
-                  value={this.state.logOutput}
-                  onChange={this.onChangeLogOutput} />
+                <DropdownButton
+                    componentClass={InputGroup.Button}
+                    title={this.state.behaviour}
+                    id='formBehaviour'
+                  >
+                    <MenuItem key="1" onSelect={()=>this.onChangeBehaviour('Silent')}>
+                      Silent
+                    </MenuItem>
+                    <MenuItem key="2" onSelect={()=>this.onChangeBehaviour('Log')}>
+                      Log Output
+                    </MenuItem>
+                    <MenuItem key="3" onSelect={()=>this.onChangeBehaviour('Notify')}>
+                      Notify
+                    </MenuItem>
+                    <MenuItem key="4" onSelect={()=>this.onChangeBehaviour('LogNotify')}>
+                      Log &amp; Notify
+                    </MenuItem>
+                  </DropdownButton>
               </Col>
             </FormGroup>
 

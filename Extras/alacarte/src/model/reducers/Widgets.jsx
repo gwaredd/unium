@@ -5,19 +5,6 @@ import _ from 'lodash'
 
 
 const initial_state = {
-  1: {
-    id      : 1,
-    panel   : 1,
-    name    : 'Widget 1-1',
-    style   : 'primary'
-  },
-  2: {
-    id      : 2,
-    panel   : 1,
-    name    : 'Widget 2-1',
-    style   : 'warning'
-  }
-
 }
 
 //-------------------------------------------------------------------------------

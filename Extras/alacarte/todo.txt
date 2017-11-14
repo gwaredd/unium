@@ -1,5 +1,8 @@
+bugs
 
-exectue button widget
+  can't create more than 1 widget?
+  default tab not selected on startup
+
 load/save layout
 reactive layout for panels - mobile friendly!
 other kinds of widgets

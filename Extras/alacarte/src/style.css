@@ -42,8 +42,11 @@ body {
   font-family: monospace;
 }
 
-.acOutputX P {
-  margin: 0px;  
+.acOutputX pre {
+  margin: 0px; 
+  padding: 0px;
+  background-color: white;
+  border: none;
   -moz-transition: height 0.25s ease-out;
   -webkit-transition: height 0.25s ease-out;
   -o-transition: height 0.25s ease-out;

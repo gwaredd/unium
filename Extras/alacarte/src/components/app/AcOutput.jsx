@@ -67,7 +67,7 @@ export default class AcOutput extends React.Component {
     var contents = null
 
     if( output.length > 0 ) {
-      contents = _.map( output, (o,i) =>  <p key={i} className={'text-' + o.type}>[{o.timestamp}] { o.text }</p> )
+      contents = _.map( output, (o,i) =>  <pre key={i} className={'text-' + o.type}>[{o.timestamp}] { o.text }</pre> )
     } else {
       contents = "No output"
     }    

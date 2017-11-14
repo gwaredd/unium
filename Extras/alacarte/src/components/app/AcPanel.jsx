@@ -13,7 +13,8 @@ import { WidgetCreate, PanelRemove } from '../../actions/Tabs.jsx'
 
 @connect( (store) => {
   return {
-    widgets: store.widgets
+    widgets : store.widgets,
+    app     : store.app
   }
 })
 export default class AcPanel extends React.Component {
@@ -46,7 +47,7 @@ export default class AcPanel extends React.Component {
 
   render() {
 
-    const { widgets, panel } = this.props
+    const { widgets, dispatch, app, panel } = this.props
     const panelWidgets = _.filter( widgets.byId, (p) => p.panel == panel.id )
 
     var title = (
@@ -61,7 +62,7 @@ export default class AcPanel extends React.Component {
 
     return (
       <Panel className="acPanel" header={title} bsStyle={ panel.type }>
-        { _.map( panelWidgets, (w) => <AcWidget key={w.id} widget={w}/> ) }
+        { _.map( panelWidgets, (w) => <AcWidget key={w.id} widget={w} dispatch={dispatch} appConfig={app.config}/> ) }
       </Panel>
     )
   }

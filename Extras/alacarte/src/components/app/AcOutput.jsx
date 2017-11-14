@@ -30,14 +30,17 @@ export default class AcOutput extends React.Component {
     super(...args);
 
     this.state = {
-      size: 0
+      size: 0,
+      locked: false
     }
   }
 
 
   componentDidUpdate () {
-    var el = this.refs.output;
-    el.scrollTop = el.scrollHeight;
+    if( !this.state.locked ) {
+      var el = this.refs.output;
+      el.scrollTop = el.scrollHeight;
+    }
   }
 
   onExpand = () => {
@@ -50,6 +53,10 @@ export default class AcOutput extends React.Component {
 
   onToggle = () => {
     this.setState({size: this.state.size <= 0 ? 1 : this.state.size - 1 })
+  }
+
+  onLock = () => {
+    this.setState({locked: !this.state.locked })
   }
 
     
@@ -65,11 +72,15 @@ export default class AcOutput extends React.Component {
       contents = "No output"
     }    
 
+    const locked = this.state.locked ? 'danger' : 'info'
+
     return (
 
       <div className='acOutput'>
 
         <div className='acOutputH'>
+          <Glyphicon className={'text-' + locked} glyph="lock" onClick={this.onLock} />
+          &nbsp;
           <span onClick={this.onToggle}>
             Output
           </span>

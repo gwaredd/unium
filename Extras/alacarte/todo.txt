@@ -1,8 +1,5 @@
 
 debug output
-   * two sizes
-   * scrollable input
-   * date/time? & error type (optional?)
    * optional scroll to bottom on input
 
 exectue button widget

@@ -22,7 +22,7 @@ export default function App( state=initial_state, action ) {
 
   switch( action.type ) {
 
-    case 'APP_CONNECTED':
+    case 'CON_CONNECTED':
       state = {...state, connected: action.payload }
       break
 

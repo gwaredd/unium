@@ -29,11 +29,10 @@ class Connection
   onMessage = () => {
     var store = this.store
     return (e) => {
-      // TODO: ... handle errors?
       const msg = JSON.parse( e.data )
       store.dispatch({
         type    : "SOCK_" + msg.id.toUpperCase(),
-        payload : msg.data
+        payload : msg
       })
     }
   }
@@ -41,7 +40,6 @@ class Connection
   onError = () => {
     var store = this.store
     return (e) => {
-      console.error( e )
       store.dispatch( Log.Error( "Failed to connect to game" ) )
     }
   }
@@ -73,7 +71,7 @@ class Connection
   }
 
   send( data ) {
-    socket.send( JSON.stringify( data ) )
+    this.socket.send( JSON.stringify( data ) )
   }
 }
 
@@ -87,16 +85,6 @@ function ConnectionMiddleware() {
   return store => next => action => {
     
     switch( action.type ) {
-
-      case 'APP_CONNECTED':
-
-        if( action.payload ) {
-          // TODO: register for debug output? - action.payload
-          //store.dispatch( App.ConnectionSend() )
-        }
-
-        return next( action )
-      
 
       case 'CON_CONNECT':
         if( gConnection === null ) {
@@ -115,14 +103,6 @@ function ConnectionMiddleware() {
         if( gConnection !== null ) {
           gConnection.send( action.payload )
         }
-        break
-
-      case 'CON_ERROR':
-        store.dispatch( Log.Error( action.payload ) )
-        break
-
-      case 'SOCK_DEBUG':
-        // TODO: ... store.dispatch( App.Print() )
         break
 
       default:

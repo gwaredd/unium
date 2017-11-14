@@ -1,7 +1,7 @@
 
 export function Print( type, msg ) {
   return {
-    type    : "APP_OUTPUT",
+    type    : "LOG_OUTPUT",
     payload : {
       type  : type,
       text  : msg
@@ -11,28 +11,28 @@ export function Print( type, msg ) {
   
 export function Info( msg ) {
   return {
-    type    : "APP_INFO",
+    type    : "LOG_INFO",
     payload : msg
   }
 }
 
 export function Success( msg ) {
   return {
-    type    : "APP_SUCCESS",
+    type    : "LOG_SUCCESS",
     payload : msg
   }
 }
 
 export function Warning( msg ) {
   return {
-    type    : "APP_WARNING",
+    type    : "LOG_WARNING",
     payload : msg
   }
 }
 
 export function Error( msg ) {
   return {
-    type    : "APP_ERROR",
+    type    : "LOG_ERROR",
     payload : msg
   }
 }

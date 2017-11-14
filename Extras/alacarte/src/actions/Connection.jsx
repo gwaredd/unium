@@ -15,17 +15,17 @@ export function Disconnect() {
 
 export function SetState( state ) {
   return {
-    type    : "APP_CONNECTED",
+    type    : "CON_CONNECTED",
     payload : state
   }
 }
 
-export function Send( id, data ) {
+export function Send( id, q ) {
   return {
     type    : "CON_SEND",
     payload : {
       id    : id,
-      data  : data
+      q     : q
     }
   }
 }

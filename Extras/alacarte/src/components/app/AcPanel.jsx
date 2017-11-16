@@ -3,6 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Glyphicon, Button, Panel } from 'react-bootstrap'
+import FontAwesome from 'react-fontawesome'
 
 
 import AcWidget from './AcWidget.jsx'
@@ -43,26 +44,38 @@ export default class AcPanel extends React.Component {
     this.props.dispatch( Actions.AddWidget( this.onAddWidgetConfirm ) )
   }
 
+  onToggleLock = () => {
+    const { panel, isLocked } = this.props
+    this.props.dispatch( Actions.EditPanel( isLocked ? panel.id : 0 ) )
+  }
+
   //-------------------------------------------------------------------------------
 
   render() {
 
-    const { widgets, dispatch, app, panel } = this.props
+    const { widgets, dispatch, app, panel, isLocked } = this.props
     const panelWidgets = _.filter( widgets.byId, (p) => p.panel == panel.id )
 
     var title = (
       <div>
         { panel.name }
-        <div className='pull-right'>
-          <Glyphicon className='acPanelIcon' glyph="plus" onClick={this.onAddWidget}/> &nbsp;
-          <Glyphicon className='acPanelIcon' glyph="remove" onClick={this.onRemovePanel}/>
-        </div>
+        { isLocked ? (
+          <div className='pull-right'>
+            <FontAwesome className='acPanelIcon' name='lock'  onClick={this.onToggleLock} /> &nbsp;
+          </div>
+        ):(
+          <div className='pull-right'>
+            <FontAwesome className='acPanelIcon' name='plus' onClick={this.onAddWidget} /> &nbsp;
+            <FontAwesome className='acPanelIcon' name='trash-o' onClick={this.onRemovePanel} /> &nbsp;
+            <FontAwesome className='acPanelIcon' name='unlock' onClick={this.onToggleLock}  /> &nbsp;
+          </div>
+        )}
       </div>
     )
 
     return (
       <Panel className="acPanel" header={title} bsStyle={ panel.type }>
-        { _.map( panelWidgets, (w) => <AcWidget key={w.id} widget={w} dispatch={dispatch} appConfig={app.config}/> ) }
+        { _.map( panelWidgets, (w) => <AcWidget key={w.id} widget={w} dispatch={dispatch} appConfig={app.config} isLocked={isLocked} /> ) }
       </Panel>
     )
   }

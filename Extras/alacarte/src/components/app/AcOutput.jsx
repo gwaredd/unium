@@ -1,6 +1,8 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
+import FontAwesome from 'react-fontawesome'
+
 import _ from 'lodash'
 
 import {
@@ -80,14 +82,16 @@ export default class AcOutput extends React.Component {
       contents = "No output"
     }    
 
-    const locked_class = this.state.locked ? 'text-danger' : 'text-info'
-
     return (
 
       <div className='acOutput'>
 
-        <div className='acOutputH' onClick={this.onToggle}>
-          <Glyphicon className={locked_class} glyph='lock' onClick={this.onLock} />
+        <div className='acOutputTitle' onClick={this.onToggle}>
+          <FontAwesome
+            className={ this.state.locked ? 'text-danger' : 'text-info' }
+            name={ this.state.locked ? 'lock' : 'unlock' }
+            onClick={this.onLock}
+          />
           &nbsp;
           Output
           <div className='pull-right'>
@@ -100,7 +104,7 @@ export default class AcOutput extends React.Component {
           </div>
         </div>
 
-        <div ref='output' className={'acOutputX acOutput' + this.state.size}>
+        <div ref='output' className={'acOutputContent acOutputSize' + this.state.size}>
           { contents }
         </div>
       </div>

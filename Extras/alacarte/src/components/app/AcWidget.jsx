@@ -1,7 +1,8 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
-import { Button, Glyphicon } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
+import FontAwesome from 'react-fontawesome'
 import Axios from 'axios'
 
 import * as Actions from '../../actions/App.jsx'
@@ -64,10 +65,14 @@ export default class AcWidget extends React.Component {
 
     return (
       <Button bsStyle={ widget.style } block onClick={this.onClick}>
-        { widget.name }
-        <div className='pull-right'>
-          <Glyphicon className='acPanelIcon' glyph="remove" onClick={this.onRemoveWidget}/>
-        </div>
+        <span>
+          { widget.name }
+        </span>
+        { !this.props.isLocked && 
+          <div className='pull-right'>
+            <FontAwesome className='acPanelIcon' name='times' onClick={this.onRemoveWidget} />
+          </div>
+        }
       </Button>
     )
   }

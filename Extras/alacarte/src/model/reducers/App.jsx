@@ -21,7 +21,7 @@ const initial_state = {
 export default function App( state=initial_state, action ) {
 
   switch( action.type ) {
-
+    
     case 'CON_CONNECTED':
       state = {...state, connected: action.payload }
       break

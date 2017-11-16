@@ -43,6 +43,15 @@ export function AddPanel( callback ) {
   }
 }
 
+export function EditPanel( id ) {
+  return {
+    type    : "APP_PANEL_STATE",
+    payload : {
+      edit : id
+    }
+  }
+}
+
 export function AddWidget( callback ) {
   return {
     type    : "APP_DAILOG_SHOW",

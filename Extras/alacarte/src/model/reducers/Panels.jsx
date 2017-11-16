@@ -63,10 +63,22 @@ function reduceById( state=initial_state, action ) {
 }
 
 
+function reduceState( state={}, action ) {
+
+  switch( action.type ) {
+    case "APP_PANEL_STATE":
+      return { ...state, ...action.payload }
+      break
+  }
+
+  return state
+}
+
 
 //-------------------------------------------------------------------------------
 
 export default combineReducers({
-  byId    : reduceById
+  byId    : reduceById,
+  state   : reduceState
 })
 

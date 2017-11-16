@@ -7,12 +7,8 @@ body {
   height: inherit;
 }
 
-.acPanelIcon {
-  font-size: 10px;
-}
-
 .acPanelIcon:hover {
-  color: black;
+  color: #EC3F00;
   font-weight: bold;
 }
 
@@ -29,14 +25,14 @@ body {
   background-color: #f5f5f5;
 }
 
-.acOutputH {
+.acOutputTitle {
   font-size: 16px;
   padding: 10px;
   padding-bottom: 0px;
 }
 
 
-.acOutputX {
+.acOutputContent {
   overflow: scroll;
   background-color: white;
   border: 1px solid #dddddd;
@@ -44,7 +40,7 @@ body {
   margin: 10px;
 }
 
-.acOutputX pre {
+.acOutputContent pre {
   margin: 0px; 
   padding: 0px;
   background-color: white;
@@ -55,7 +51,7 @@ body {
   transition: height 0.25s ease-out;
 }
 
-.acOutput0 {
+.acOutputSize0 {
   height: 0vh;
   -moz-transition: height 0.25s ease-out;
   -webkit-transition: height 0.25s ease-out;
@@ -63,7 +59,7 @@ body {
   transition: height 0.25s ease-out;
 }
 
-.acOutput1 {
+.acOutputSize1 {
   height: 20vh;
   -moz-transition: height 0.25s ease-out;
   -webkit-transition: height 0.25s ease-out;
@@ -71,8 +67,8 @@ body {
   transition: height 0.25s ease-out;
 }
 
-.acOutput2 {
-  height: 80vh;
+.acOutputSize2 {
+  height: 70vh;
   -moz-transition: height 0.25s ease-out;
   -webkit-transition: height 0.25s ease-out;
   -o-transition: height 0.25s ease-out;

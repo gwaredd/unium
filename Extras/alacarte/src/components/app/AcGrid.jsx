@@ -33,12 +33,14 @@ export default class AcGrid extends React.PureComponent {
 
   render() {
 
-    var tabId  = this.props.tabId
-    var panels = _.filter( this.props.panels.byId, (v) => v.tab == tabId )
+    const { panels, tabId }  = this.props
 
-    var contents = _.map( panels, (p,i) =>
+    const unlocked  = "edit" in panels.state ? panels.state.edit : 0
+    const panelList = _.filter( panels.byId, (v) => v.tab == tabId )
+
+    var contents = _.map( panelList, (p,i) =>
       <div key={i} data-grid={p.layout}>
-        <AcPanel panel={p} />
+        <AcPanel panel={p} isLocked={p.id != unlocked} />
       </div>
     )
     

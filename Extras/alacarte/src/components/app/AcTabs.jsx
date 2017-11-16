@@ -2,7 +2,8 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Tabs, Tab, Glyphicon } from 'react-bootstrap'
+import { Tabs, Tab, Nav, NavItem, Glyphicon, Row, Col } from 'react-bootstrap'
+import FontAwesome from 'react-fontawesome'
 import _ from 'lodash'
 
 import AcGrid from './AcGrid.jsx'
@@ -19,8 +20,6 @@ import * as Actions from '../../actions/Tabs.jsx'
   }
 })
 export default class AcTabs extends React.Component {
-
-  //-------------------------------------------------------------------------------
 
   onRemoveTab = () => {
     
@@ -69,7 +68,7 @@ export default class AcTabs extends React.Component {
     var tab         = tabs.byId[ id ]
 
     var title = <span>{ tab.name } &nbsp; { id == curTab &&
-      <Glyphicon glyph="remove" style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
+      <FontAwesome name='times' style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
     }
     </span>
 
@@ -98,9 +97,7 @@ export default class AcTabs extends React.Component {
         id        = "tabs"
         className = 'acTabs'
         animation = {true}
-        onSelect  = {this.onSelectTab}
-        activeKey = {curTab}
-        defaultActiveKey = {curTab}
+        onSelect  = { this.onSelectTab }
       >
         { Object.keys( tabs.byId ).map( this.createTab ) }
         <Tab eventKey={-1} title="+" />
@@ -108,3 +105,4 @@ export default class AcTabs extends React.Component {
     )
   }
 }
+

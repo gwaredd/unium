@@ -15,7 +15,6 @@ import AcOutput from './components/app/AcOutput.jsx'
 import 'react-toastify/dist/ReactToastify.min.css'
 import Style from './style.css'
 
-
 //-------------------------------------------------------------------------------
 
 ReactDOM.render(
@@ -39,4 +38,6 @@ ReactDOM.render(
 
   document.getElementById( 'root' )
 )
+
+Store.dispatch( { type: 'APP_LOAD' } )
 

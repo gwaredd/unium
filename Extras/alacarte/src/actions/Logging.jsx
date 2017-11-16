@@ -1,4 +1,10 @@
 
+export function Clear() {
+  return {
+    type    : "LOG_CLEAR"
+  }
+}
+
 export function Print( msg ) {
   return {
     type    : "LOG",

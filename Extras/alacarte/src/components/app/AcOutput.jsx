@@ -3,6 +3,8 @@
 import React from 'react'
 import FontAwesome from 'react-fontawesome'
 
+import * as Log from '../../actions/Logging.jsx'
+
 import _ from 'lodash'
 
 import {
@@ -69,6 +71,12 @@ export default class AcOutput extends React.Component {
     this.setState({locked: !this.state.locked })
   }
 
+  onClear = (e) => {
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
+    this.props.dispatch( Log.Clear() )
+  }
+
     
   render() {
 
@@ -92,6 +100,8 @@ export default class AcOutput extends React.Component {
             name={ this.state.locked ? 'lock' : 'unlock' }
             onClick={this.onLock}
           />
+          &nbsp;
+          <FontAwesome name='trash' onClick={this.onClear} />
           &nbsp;
           Output
           <div className='pull-right'>

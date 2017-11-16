@@ -1,7 +1,8 @@
-bugs
-  default tab not selected on startup
+bug
+  save panel layouts
+  bug delete widgets when tab removed
 
-load/save layout
 reactive layout for panels - mobile friendly!
 other kinds of widgets
+output - dragable height
 

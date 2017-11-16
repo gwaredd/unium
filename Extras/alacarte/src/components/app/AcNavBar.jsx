@@ -2,6 +2,7 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import FontAwesome from 'react-fontawesome'
 
 import * as Connection from '../../actions/Connection.jsx'
 import * as Actions from '../../actions/App.jsx'
@@ -47,6 +48,7 @@ export default class AcNavBar extends React.Component {
 
   onScreenshot  = () => this.props.dispatch( Actions.Screenshot() )
   onAddPanel    = () => this.props.dispatch( Actions.AddPanel( this.onAddPanelConfirm ) )
+  onSave        = () => this.props.dispatch( Actions.Save() )
   onConnect     = () => this.props.dispatch( Connection.Connect() )
   onDisconnect  = () => this.props.dispatch( Connection.Disconnect() )
 
@@ -74,11 +76,14 @@ export default class AcNavBar extends React.Component {
               <Label bsStyle="warning">Not Connected</Label>
             </NavItem>
           }
+          <NavItem eventKey={3} onClick={this.onSave}>
+            <FontAwesome name='floppy-o' />
+          </NavItem>
           <NavItem eventKey={3} onClick={this.onScreenshot}>
-            <Glyphicon glyph='camera'/>
+            <FontAwesome name='camera' />
           </NavItem>
           <NavItem eventKey={4} onClick={this.onAddPanel}>
-            <Glyphicon glyph='plus'/>
+            <FontAwesome name='plus' />
           </NavItem>
         </Nav>
       </Navbar>

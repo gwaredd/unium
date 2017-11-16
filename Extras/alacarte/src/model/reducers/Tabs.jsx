@@ -4,26 +4,31 @@ import { combineReducers } from 'redux'
 import _ from 'lodash'
 
 
-const initial_state = {
-  1: {
-    id    : 1,
-    name  : 'Tab A'
-  },
-  2: {
-    id    : 2,
-    name  : 'Tab B'
-  },
-  3: {
-    id    : 3,
-    name  : 'Tab C'
-  },
-}
+const initial_state = {}
+
+//   1: {
+//     id    : 1,
+//     name  : 'Tab A'
+//   },
+//   2: {
+//     id    : 2,
+//     name  : 'Tab B'
+//   },
+//   3: {
+//     id    : 3,
+//     name  : 'Tab C'
+//   },
+// }
 
 //-------------------------------------------------------------------------------
 
 function reduceById( state=initial_state, action ) {
 
   switch( action.type ) {
+
+    case 'CONFIG_IMPORT': {
+      return { ...action.payload.tabs.byId }
+    }
     
     case 'TAB_CREATE': {
 
@@ -52,6 +57,11 @@ function reduceById( state=initial_state, action ) {
 function reduceState( state={ curTab: 1 }, action ) {
 
   switch( action.type ) {
+
+    case 'CONFIG_IMPORT': {
+      return { ...action.payload.tabs.state }
+    }
+    
     case 'TAB_SELECT': {
       const { payload } = action
       const { id }      = payload

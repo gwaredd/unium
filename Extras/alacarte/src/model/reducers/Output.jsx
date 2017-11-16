@@ -5,8 +5,12 @@ import moment from 'moment'
 export default function( state=[], action ) {
 
   switch( action.type ) {
+
+    case 'LOG_CLEAR': {
+      return []
+    }
     
-    case 'LOG':
+    case 'LOG': {
 
       const { payload } = action
 
@@ -19,6 +23,7 @@ export default function( state=[], action ) {
       output.push( log )
 
       return output
+    }
   } 
 
   return state

@@ -10,6 +10,12 @@ export function Screenshot() {
   }
 }
 
+export function Save() {
+  return {
+    type    : "APP_SAVE"
+  }
+}
+
 export function Confirm( title, question, callback, data ) {
   return {
     type    : "APP_DAILOG_SHOW",

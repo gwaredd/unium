@@ -13,6 +13,10 @@ function reduceById( state=initial_state, action ) {
 
   switch( action.type ) {
     
+    case 'CONFIG_IMPORT': {
+      return { ...action.payload.widgets.byId }
+    }
+
     case 'WIDGET_CREATE': {
 
       const { payload } = action
@@ -28,6 +32,15 @@ function reduceById( state=initial_state, action ) {
       const { id }      = payload
 
       return _.omit( state, id )
+    }
+
+    case 'PANEL_REMOVE': {
+
+      const { payload } = action
+      const { id }      = payload
+      
+      return _.reject( state, (p) => p.panel == id )
+      
     }
   }
 

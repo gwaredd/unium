@@ -1,10 +1,15 @@
 //-------------------------------------------------------------------------------
 // websocket connection to game as redux middleware
 
+import Axios from 'axios'
 import { toast } from 'react-toastify'
 
 import * as Connection from '../../actions/Connection.jsx'
 import * as Log from '../../actions/Logging.jsx'
+
+const customSave = '/file/persistent/alacarte.json'
+const staticSave = '/file/streaming/alacarte.json'
+
 
 //-------------------------------------------------------------------------------
 // redux middleware
@@ -15,6 +20,41 @@ export default (function(){
 
     switch( action.type ) {
 
+      case 'APP_LOAD': {
+
+        const { api } = store.getState().app.config
+
+        Axios.get( api + customSave )
+          .then( (res) => {
+            store.dispatch( { type: 'CONFIG_IMPORT', payload: res.data } )
+            store.dispatch( Log.Success( 'Custom config loaded' ) )
+          })
+          .catch( (err) => {
+            store.dispatch( Log.Warning( 'No custom config found' ) )
+          })
+
+        return
+      }
+
+      case 'APP_SAVE': {
+        var state = { ...store.getState() }
+        const { api } = state.app.config
+
+
+        delete state['output']
+        
+
+        Axios.post( api + customSave, JSON.stringify( state ) )
+          .then( (res) => {
+            store.dispatch( Log.Success( 'Config saved' ) )
+          })
+          .catch( (err) => {
+            store.dispatch( Log.Error( 'Failed to save config: ' + err.toString() ) )
+          })
+  
+        return
+      }
+          
       case 'LOG':
 
         const { type, text } = action.payload

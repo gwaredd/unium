@@ -38,7 +38,9 @@ export default class AcModalAddTab extends React.Component {
 
     const { dialog, onCancel } = this.props
     
-    const onOK = () => {
+    const onOK = (e) => {
+
+      e.preventDefault()
 
       if( this.state.name != '' ) {
         dialog.callback( this.state )
@@ -55,7 +57,7 @@ export default class AcModalAddTab extends React.Component {
           </Modal.Header>
           <Modal.Body>
 
-          <Form horizontal>
+          <Form horizontal onSubmit={onOK} >
             <FormGroup controlId="formName">
               <Col componentClass={ControlLabel} sm={2}>
                 Name
@@ -65,6 +67,7 @@ export default class AcModalAddTab extends React.Component {
                   type="text"
                   value={this.state.name}
                   onChange={this.onChangeName}
+                  autoFocus={true}
                 />
               </Col>
             </FormGroup>

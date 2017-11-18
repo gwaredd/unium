@@ -40,7 +40,7 @@ export default class AcNavBar extends React.Component {
     var tab = tabs.state.curTab
 
     const keys    = _.map( _.keys( panels.byId ), (k) => parseInt(k) )
-    const id      = _.max( keys ) + 1
+    const id      = keys.length == 0 ? 1 : _.max( keys ) + 1    
     const payload = {...d, id: id, tab: tab }
 
     dispatch( ActionsTab.PanelCreate( payload ) )
@@ -65,27 +65,30 @@ export default class AcNavBar extends React.Component {
           <Navbar.Brand>
             Unium: À La Carte
           </Navbar.Brand>
+          <Navbar.Toggle />
         </Navbar.Header>
-        <Nav pullRight>
-          { isConnected ?
-            <NavItem eventKey={1} onClick={this.onDisconnect}>
-              <Label bsStyle="success">Connected</Label>
+        <Navbar.Collapse>
+          <Nav pullRight>
+            { isConnected ?
+              <NavItem eventKey={1} onClick={this.onDisconnect}>
+                <Label bsStyle="success">Connected</Label>
+                </NavItem>
+            :
+              <NavItem eventKey={2} onClick={this.onConnect}>
+                <Label bsStyle="warning">Not Connected</Label>
               </NavItem>
-          :
-            <NavItem eventKey={2} onClick={this.onConnect}>
-              <Label bsStyle="warning">Not Connected</Label>
+            }
+            <NavItem eventKey={3} onClick={this.onSave}>
+              <FontAwesome name='floppy-o' />
             </NavItem>
-          }
-          <NavItem eventKey={3} onClick={this.onSave}>
-            <FontAwesome name='floppy-o' />
-          </NavItem>
-          <NavItem eventKey={3} onClick={this.onScreenshot}>
-            <FontAwesome name='camera' />
-          </NavItem>
-          <NavItem eventKey={4} onClick={this.onAddPanel}>
-            <FontAwesome name='plus' />
-          </NavItem>
-        </Nav>
+            <NavItem eventKey={3} onClick={this.onScreenshot}>
+              <FontAwesome name='camera' />
+            </NavItem>
+            <NavItem eventKey={4} onClick={this.onAddPanel}>
+              <FontAwesome name='plus' />
+            </NavItem>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
     )
   }

@@ -36,8 +36,8 @@ export default class AcPanel extends React.Component {
   onAddWidgetConfirm = ( v ) => {
     var { widgets, panel, dispatch } = this.props
     var keys  = _.map( _.keys( widgets.byId ), (k) => parseInt(k) )
-    var id    = keys.length == 0 ? 1 : _.max( keys ) + 1    
-    dispatch( WidgetCreate( { ...v, id: id, panel: panel.id } ))
+    var id    = keys.length == 0 ? 1 : _.max( keys ) + 1
+    dispatch( WidgetCreate( { ...v, id: id, panel: panel.id, tab: panel.tab } ))
   }
 
   onAddWidget = () => {

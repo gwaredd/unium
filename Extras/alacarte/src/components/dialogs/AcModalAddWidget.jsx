@@ -49,7 +49,9 @@ export default class AcModalAddWidget extends React.Component {
 
     const { dialog, onCancel } = this.props
 
-    const onOK = () => {
+    const onOK = (e) => {
+
+      e.preventDefault()
 
       if( this.state.name != '' ) {
         dialog.callback( { ...this.state, style: this.state.style.toLowerCase() } )
@@ -66,7 +68,7 @@ export default class AcModalAddWidget extends React.Component {
           </Modal.Header>
           <Modal.Body>
 
-          <Form horizontal>
+          <Form horizontal onSubmit={onOK}>
 
             <FormGroup>
               <Col componentClass={ControlLabel} sm={2}>
@@ -77,7 +79,8 @@ export default class AcModalAddWidget extends React.Component {
                   type="text"
                   value={this.state.name}
                   onChange={this.onChangeName}
-                />
+                  autoFocus={true}
+                  />
               </Col>
             </FormGroup>
 

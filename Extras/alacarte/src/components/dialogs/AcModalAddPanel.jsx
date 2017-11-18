@@ -41,8 +41,10 @@ export default class AcModalAddPanel extends React.Component {
 
     const { dialog, onCancel } = this.props
     
-    const onOK = () => {
+    const onOK = (e) => {
 
+      e.preventDefault()
+      
       if( this.state.name != '' ) {
         this.state.type = this.state.type.toLowerCase()
         dialog.callback( this.state )
@@ -64,7 +66,7 @@ export default class AcModalAddPanel extends React.Component {
           </Modal.Header>
           <Modal.Body>
 
-          <Form horizontal>
+          <Form horizontal onSubmit={onOK}>
             <FormGroup controlId="formName">
               <Col componentClass={ControlLabel} sm={2}>
                 Name
@@ -74,6 +76,7 @@ export default class AcModalAddPanel extends React.Component {
                   type="text"
                   value={this.state.name}
                   onChange={this.onChangeName}
+                  autoFocus={true}
                 />
               </Col>
             </FormGroup>

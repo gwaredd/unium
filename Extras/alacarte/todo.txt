@@ -1,8 +1,8 @@
 bug
   save panel layouts
-  bug delete widgets when tab removed
 
 reactive layout for panels - mobile friendly!
+tidy up add widget dialog
 other kinds of widgets
 output - dragable height
 

@@ -96,7 +96,7 @@ export default class AcTabs extends React.Component {
       <Tabs
         id        = "tabs"
         className = 'acTabs'
-        animation = {true}
+        animation = { true }
         onSelect  = { this.onSelectTab }
       >
         { Object.keys( tabs.byId ).map( this.createTab ) }

@@ -42,6 +42,15 @@ function reduceById( state=initial_state, action ) {
       return _.reject( state, (p) => p.panel == id )
       
     }
+
+    case 'TAB_REMOVE': {
+
+      const { payload } = action
+      const { id }      = payload
+      
+      return _.reject( state, (p) => p.tab == id )
+      
+    }
   }
 
   return state

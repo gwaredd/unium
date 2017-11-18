@@ -4,8 +4,9 @@ export function TabCreate( id, name ) {
   return {
     type: "TAB_CREATE",
     payload: {
-      id    : id,
-      name  : name
+      id      : id,
+      name    : name,
+      layout  : {}
     }
   }
 }
@@ -24,6 +25,16 @@ export function TabSelect( id ) {
     type: "TAB_SELECT",
     payload: {
       id: id
+    }
+  }
+}
+
+export function TabLayout( id, layout ) {
+  return {
+    type: "TAB_LAYOUT",
+    payload: {
+      id: id,
+      layout: layout
     }
   }
 }

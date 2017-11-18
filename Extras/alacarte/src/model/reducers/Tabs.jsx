@@ -4,25 +4,9 @@ import { combineReducers } from 'redux'
 import _ from 'lodash'
 
 
-const initial_state = {}
-
-//   1: {
-//     id    : 1,
-//     name  : 'Tab A'
-//   },
-//   2: {
-//     id    : 2,
-//     name  : 'Tab B'
-//   },
-//   3: {
-//     id    : 3,
-//     name  : 'Tab C'
-//   },
-// }
-
 //-------------------------------------------------------------------------------
 
-function reduceById( state=initial_state, action ) {
+function reduceById( state={}, action ) {
 
   switch( action.type ) {
 
@@ -45,6 +29,17 @@ function reduceById( state=initial_state, action ) {
       const { id }      = payload
 
       return _.omit( state, id )
+    }
+
+    case 'TAB_LAYOUT': {
+
+      const { payload }     = action
+      const { id, layout }  = payload
+
+      if( id in state ) {
+        const tab = {...state[id], layout: layout }
+        return { ...state, [id] : tab }
+      }
     }
   }
 

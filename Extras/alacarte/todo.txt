@@ -1,7 +1,7 @@
 bug
   save panel layouts
+  local storage option?
 
-reactive layout for panels - mobile friendly!
 tidy up add widget dialog
 other kinds of widgets
 output - dragable height

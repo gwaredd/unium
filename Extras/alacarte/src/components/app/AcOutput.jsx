@@ -13,7 +13,8 @@ import {
   PanelGroup,
   Button,
   Panel,
-  Collapse
+  Collapse,
+  Label
 } from 'react-bootstrap'
 
 import * as App from '../../actions/App.jsx'
@@ -25,6 +26,7 @@ import { connect } from 'react-redux'
 
 @connect( (store) => {
   return {
+    app     : store.app,
     output  : store.output
   }
 })
@@ -80,7 +82,9 @@ export default class AcOutput extends React.Component {
     
   render() {
 
-    const { output } = this.props
+    const { output, app } = this.props
+    const isConnected = app.connected
+    
 
     var contents = null
 

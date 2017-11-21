@@ -79,7 +79,7 @@ export default class AcTabs extends React.Component {
         title   = { title }
         mountOnEnter
       >
-        <AcGrid tabId={id} />
+        <AcGrid tabId={id} layout={tab.layout} />
       </Tab>
     )
   }

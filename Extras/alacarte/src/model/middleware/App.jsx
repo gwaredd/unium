@@ -3,12 +3,14 @@
 
 import Axios from 'axios'
 import { toast } from 'react-toastify'
+import _ from 'lodash'
 
 import * as Connection from '../../actions/Connection.jsx'
 import * as Log from '../../actions/Logging.jsx'
 
 const customSave = '/file/persistent/alacarte.json'
 const staticSave = '/file/streaming/alacarte.json'
+const localStorageKey = 'unium'
 
 
 //-------------------------------------------------------------------------------
@@ -20,14 +22,28 @@ export default (function(){
 
     switch( action.type ) {
 
+      //-------------------------------------------------------------------------------
+      // load app settings
+
       case 'APP_LOAD': {
 
-        const { api } = store.getState().app.config
+        const state = store.getState()
+        const { api } = state.app.config
+        const { useLocalStorage } = state.app.settings
+
+        if( global.localStorage ) {
+          const data = global.localStorage.getItem( localStorageKey )
+          if( data != null ) {
+            store.dispatch( { type: 'CONFIG_IMPORT', payload: JSON.parse( data ) } )
+            store.dispatch( Log.Success( 'Custom config loaded from local storage' ) )
+            return
+          }
+        }
 
         Axios.get( api + customSave )
           .then( (res) => {
             store.dispatch( { type: 'CONFIG_IMPORT', payload: res.data } )
-            store.dispatch( Log.Success( 'Custom config loaded' ) )
+            store.dispatch( Log.Success( 'Custom config loaded from game' ) )
           })
           .catch( (err) => {
             store.dispatch( Log.Warning( 'No custom config found' ) )
@@ -36,26 +52,53 @@ export default (function(){
         return
       }
 
+
+      //-------------------------------------------------------------------------------
+
       case 'APP_SAVE': {
-        var state = { ...store.getState() }
-        const { api } = state.app.config
 
+        var data = { ...store.getState() }
+        const { api } = data.app.config
+        const { useLocalStorage } = data.app.settings
 
-        delete state['output']
         
+        delete data[ 'output' ]
+        data.app = _.pick( data.app, 'settings' )
+        data = JSON.stringify( data )
 
-        Axios.post( api + customSave, JSON.stringify( state ) )
+
+        if( useLocalStorage ) {
+
+          if( !global.localStorage ) {
+            store.dispatch( Log.Error( 'Failed to save config - no local storage' ) )
+            return
+          }
+
+          global.localStorage.setItem( localStorageKey, data )
+          store.dispatch( Log.Success( 'Config saved to local storage' ) )
+          
+        } else {
+
+          // save to game
+
+          Axios.post( api + customSave, data )
           .then( (res) => {
-            store.dispatch( Log.Success( 'Config saved' ) )
+            store.dispatch( Log.Success( 'Config saved to persistent data' ) )
           })
           .catch( (err) => {
             store.dispatch( Log.Error( 'Failed to save config: ' + err.toString() ) )
           })
+
+        }
   
         return
       }
-          
-      case 'LOG':
+      
+      
+      //-------------------------------------------------------------------------------
+      // toast important app log messages
+
+      case 'LOG': {
 
         const { type, text } = action.payload
 
@@ -67,17 +110,28 @@ export default (function(){
         }
         
         break
+      }
 
-      case 'CON_CONNECTED':
+
+      //-------------------------------------------------------------------------------
+      // handle connected to game state
+
+      case 'CON_CONNECTED': {
+
         if( action.payload ) {
           store.dispatch( Log.Print( "Connected" ) )
-          store.dispatch( Connection.Send( 'debug', '/bind/events.debug' ) )
+          store.dispatch( Connection.Send( 'debug', '/bind/events.debug' ) ) // bind to debug messages
         } else {
           store.dispatch( Log.Print( "Disconnected" ) )
         }
         break
+      }
 
-      case 'SOCK_DEBUG':
+
+      //-------------------------------------------------------------------------------
+      // handle debug output from game
+
+      case 'SOCK_DEBUG': {
 
         var msg = action.payload
 
@@ -90,6 +144,7 @@ export default (function(){
         }
 
         break
+      }
     }
 
     return next( action )

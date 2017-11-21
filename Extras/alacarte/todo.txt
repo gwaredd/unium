@@ -1,8 +1,13 @@
 bug
   save panel layouts
-  local storage option?
 
+move "connected" label to output bar
+
+delete config - local & game
+edit widgets
+move widgets
 tidy up add widget dialog
 other kinds of widgets
 output - dragable height
+
 

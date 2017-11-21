@@ -32,16 +32,16 @@ export default class AcGrid extends React.PureComponent {
     cols        : { lg: 6, md: 4, sm: 2, xs: 1, xxs: 1 },
   }
 
-  onLayoutChange = ( layouts, layout ) => {
+  onLayoutChange = ( layout, layouts ) => {
     const { tabId, dispatch }  = this.props
-    dispatch( Tabs.TabLayout( tabId, layout ) )
+    dispatch( Tabs.TabLayout( tabId, layouts ) )
   }
 
   //-------------------------------------------------------------------------------
 
   render() {
 
-    const { panels, tabId }  = this.props
+    const { panels, tabId, layout }  = this.props
 
     const unlocked  = "edit" in panels.state ? panels.state.edit : 0
     const panelList = _.filter( panels.byId, (v) => v.tab == tabId )
@@ -53,7 +53,11 @@ export default class AcGrid extends React.PureComponent {
     )
     
     return (
-      <ResponsiveReactGridLayout {...this.props} onLayoutChange={this.onLayoutChange}>
+      <ResponsiveReactGridLayout
+        layouts={layout}
+        onLayoutChange={this.onLayoutChange}
+        {...this.props}
+      >
         { contents }
       </ResponsiveReactGridLayout>
     )

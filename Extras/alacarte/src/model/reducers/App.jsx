@@ -7,11 +7,14 @@ if( DEVSERVER ) {
 }
 
 const initial_state = {
-  dialog    : null,
-  connected : false,
-  config    : {
-    api     : document.location.protocol + '//' + server,
-    ws      : "ws://" + server + "/ws"
+  dialog      : null,
+  connected   : false,
+  config      : {
+    api       : document.location.protocol + '//' + server,
+    ws        : "ws://" + server + "/ws"
+  },
+  settings    : {
+    useLocalStorage : false,
   }
 }
 
@@ -21,18 +24,11 @@ const initial_state = {
 export default function App( state=initial_state, action ) {
 
   switch( action.type ) {
-    
-    case 'CON_CONNECTED':
-      state = {...state, connected: action.payload }
-      break
-
-    case 'APP_DAILOG_SHOW':
-      state = {...state, dialog: action.payload }
-      break
-
-    case 'APP_DIALOG_CANCEL':
-      state = {...state, dialog: null }
-      break
+    case 'CONFIG_IMPORT':     return { ...state, settings: action.payload.app.settings }
+    case 'APP_CONFIG':        return { ...state, settings: action.payload }
+    case 'CON_CONNECTED':     return { ...state, connected: action.payload }
+    case 'APP_DAILOG_SHOW':   return { ...state, dialog: action.payload }
+    case 'APP_DIALOG_CANCEL': return { ...state, dialog: null }
   }
 
   return state

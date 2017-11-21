@@ -16,6 +16,16 @@ export function Save() {
   }
 }
 
+export function Settings( callback ) {
+  return {
+    type    : "APP_DAILOG_SHOW",
+    payload : {
+      modal     : 'settings',
+      callback  : callback,
+    }
+  }
+}
+  
 export function Confirm( title, question, callback, data ) {
   return {
     type    : "APP_DAILOG_SHOW",
@@ -74,3 +84,9 @@ export function CancelDialog() {
   }
 }
 
+export function ChangeConfig( settings ) {
+  return {
+    type: "APP_CONFIG",
+    payload: settings
+  }
+}

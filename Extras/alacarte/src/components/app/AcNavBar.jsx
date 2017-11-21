@@ -49,6 +49,7 @@ export default class AcNavBar extends React.Component {
   onScreenshot  = () => this.props.dispatch( Actions.Screenshot() )
   onAddPanel    = () => this.props.dispatch( Actions.AddPanel( this.onAddPanelConfirm ) )
   onSave        = () => this.props.dispatch( Actions.Save() )
+  onSettings    = () => this.props.dispatch( Actions.Settings() )
   onConnect     = () => this.props.dispatch( Connection.Connect() )
   onDisconnect  = () => this.props.dispatch( Connection.Disconnect() )
 
@@ -78,6 +79,9 @@ export default class AcNavBar extends React.Component {
                 <Label bsStyle="warning">Not Connected</Label>
               </NavItem>
             }
+            <NavItem eventKey={3} onClick={this.onSettings}>
+              <FontAwesome name='cog' />
+            </NavItem>
             <NavItem eventKey={3} onClick={this.onSave}>
               <FontAwesome name='floppy-o' />
             </NavItem>

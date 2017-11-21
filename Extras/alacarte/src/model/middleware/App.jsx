@@ -34,8 +34,12 @@ export default (function(){
         if( global.localStorage ) {
           const data = global.localStorage.getItem( localStorageKey )
           if( data != null ) {
-            store.dispatch( { type: 'CONFIG_IMPORT', payload: JSON.parse( data ) } )
-            store.dispatch( Log.Success( 'Custom config loaded from local storage' ) )
+            try {
+              store.dispatch( { type: 'CONFIG_IMPORT', payload: JSON.parse( data ) } )
+              store.dispatch( Log.Success( 'Custom config loaded from local storage' ) )
+            } catch( e ) {
+              console.error( e )
+            }
             return
           }
         }

@@ -1,13 +1,13 @@
-bug
-  save panel layouts
+delete config - local & game
+view config
 
 move "connected" label to output bar
 
-delete config - local & game
 edit widgets
 move widgets
 tidy up add widget dialog
-other kinds of widgets
-output - dragable height
 
+other kinds of widgets
+
+output - dragable height
 

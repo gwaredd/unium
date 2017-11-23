@@ -1,6 +1,7 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
+import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 
 import {
@@ -39,6 +40,22 @@ export default class AcModalSettings extends React.Component {
 
   onChangeStorage = (e) => { this.setState({ useLocalStorage: e.target.checked }) }
 
+  onViewConfig = (e) => {
+    e.preventDefault()
+    const { dispatch, onCancel } = this.props
+    dispatch( App.ViewConfig() )
+  }
+
+  onDeleteConfig = (e) => {
+    e.preventDefault()
+    const { dispatch } = this.props
+    dispatch( App.Confirm(
+      'Delete Config',
+      "Are you sure you want to delete the config?",
+      () => dispatch( App.Delete() )
+    ))
+  }
+
   onOK = (e) => {
     e.preventDefault()
     const { dispatch, onCancel } = this.props
@@ -74,13 +91,26 @@ export default class AcModalSettings extends React.Component {
               </Col>
             </FormGroup>
 
-
             <FormGroup>
               <Col componentClass={ControlLabel} sm={2}>
-                Local Storage
+                Save Config
               </Col>
               <Col sm={10}>
-                <Checkbox checked={this.state.useLocalStorage} onChange={this.onChangeStorage} />
+                <Checkbox checked={this.state.useLocalStorage} onChange={this.onChangeStorage} >
+                  Local Storage
+                </Checkbox>
+              </Col>
+            </FormGroup>
+
+            <FormGroup>
+              <Col smOffset={2} sm={10}>
+                <Button bsStyle="danger" onClick={this.onDeleteConfig}>
+                  <FontAwesome name='trash'/>
+                </Button>
+                &nbsp;
+                <Button bsStyle="info" onClick={this.onViewConfig}>
+                  <FontAwesome name='file-text-o'/>
+                </Button>
               </Col>
             </FormGroup>
 

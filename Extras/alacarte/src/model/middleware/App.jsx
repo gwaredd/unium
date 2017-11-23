@@ -12,6 +12,17 @@ const customSave = '/file/persistent/alacarte.json'
 const staticSave = '/file/streaming/alacarte.json'
 const localStorageKey = 'unium'
 
+const emptyConfig = {
+  app: {
+    settings: {
+      useLocalStorage: true
+    }
+  },
+  tabs: { byId: {}},
+  panels: { byId: {}},
+  widgets: { byId: {}},
+}
+
 
 //-------------------------------------------------------------------------------
 // redux middleware
@@ -95,6 +106,34 @@ export default (function(){
 
         }
   
+        return
+      }
+
+      //-------------------------------------------------------------------------------
+
+      case 'APP_DELETE': {
+
+        var data = store.getState()
+        const { api } = data.app.config
+        const { useLocalStorage } = data.app.settings
+
+        if( useLocalStorage ) {
+          
+          if( !global.localStorage ) {
+            store.dispatch( Log.Error( 'Failed to save config - no local storage' ) )
+            return
+          }
+
+          global.localStorage.removeItem( localStorageKey )
+
+          store.dispatch( { type: 'CONFIG_IMPORT', payload: emptyConfig } )
+          store.dispatch( Log.Success( 'Config removed' ) )
+          
+        } else {
+
+          console.log( "delete on device" )
+        }
+          
         return
       }
       

@@ -4,7 +4,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import FontAwesome from 'react-fontawesome'
 
-import * as Connection from '../../actions/Connection.jsx'
 import * as Actions from '../../actions/App.jsx'
 import * as ActionsTab from '../../actions/Tabs.jsx'
 
@@ -25,7 +24,6 @@ import {
 
 @connect( (store) => {
   return {
-    app    : store.app,
     panels : store.panels,
     tabs   : store.tabs
   }
@@ -50,15 +48,11 @@ export default class AcNavBar extends React.Component {
   onAddPanel    = () => this.props.dispatch( Actions.AddPanel( this.onAddPanelConfirm ) )
   onSave        = () => this.props.dispatch( Actions.Save() )
   onSettings    = () => this.props.dispatch( Actions.Settings() )
-  onConnect     = () => this.props.dispatch( Connection.Connect() )
-  onDisconnect  = () => this.props.dispatch( Connection.Disconnect() )
 
 
   //-------------------------------------------------------------------------------
 
   render() {
-
-    const isConnected = this.props.app.connected
 
     return (
       <Navbar fixedTop>
@@ -70,15 +64,6 @@ export default class AcNavBar extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            { isConnected ?
-              <NavItem eventKey={1} onClick={this.onDisconnect}>
-                <Label bsStyle="success">Connected</Label>
-                </NavItem>
-            :
-              <NavItem eventKey={2} onClick={this.onConnect}>
-                <Label bsStyle="warning">Not Connected</Label>
-              </NavItem>
-            }
             <NavItem eventKey={3} onClick={this.onSettings}>
               <FontAwesome name='cog' />
             </NavItem>

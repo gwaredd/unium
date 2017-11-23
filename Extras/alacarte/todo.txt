@@ -1,12 +1,9 @@
-delete config - local & game
-view config
-
-move "connected" label to output bar
 
 edit widgets
 move widgets
 tidy up add widget dialog
 
+delete config - on device
 other kinds of widgets
 
 output - dragable height

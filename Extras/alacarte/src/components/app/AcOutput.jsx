@@ -3,6 +3,7 @@
 import React from 'react'
 import FontAwesome from 'react-fontawesome'
 
+import * as Connection from '../../actions/Connection.jsx'
 import * as Log from '../../actions/Logging.jsx'
 
 import _ from 'lodash'
@@ -79,6 +80,17 @@ export default class AcOutput extends React.Component {
     this.props.dispatch( Log.Clear() )
   }
 
+  onConnect = (e) => {
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
+    this.props.dispatch( Connection.Connect() )
+  }
+
+  onDisconnect = () => {
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
+    this.props.dispatch( Connection.Disconnect() )
+  }
     
   render() {
 
@@ -99,16 +111,26 @@ export default class AcOutput extends React.Component {
       <div className='acOutput'>
 
         <div className='acOutputTitle' onClick={this.onToggle}>
-          <FontAwesome
-            className={ this.state.locked ? 'text-danger' : 'text-info' }
-            name={ this.state.locked ? 'lock' : 'unlock' }
-            onClick={this.onLock}
-          />
-          &nbsp;
-          <FontAwesome name='trash' onClick={this.onClear} />
+          <small>
+            { isConnected ?
+              <Label bsStyle="success" onClick={this.onDisconnect}>Connected</Label>
+            :
+              <Label bsStyle="warning" onClick={this.onConnect}>Not Connected</Label>
+            }
+          </small>
           &nbsp;
           Output
+        
           <div className='pull-right'>
+            <FontAwesome name='trash' onClick={this.onClear} />
+            &nbsp;
+            <FontAwesome
+              className={ this.state.locked ? 'text-danger' : 'text-info' }
+              name={ this.state.locked ? 'lock' : 'unlock' }
+              onClick={this.onLock}
+            />
+            &nbsp;
+          
             { this.state.size < 2 && 
               <Glyphicon glyph="chevron-up" onClick={this.onExpand} />
             }

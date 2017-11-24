@@ -32,7 +32,8 @@ export default class AcModalAddWidget extends React.Component {
 
   constructor( props ) {
     super( props )
-    this.state = { ...initialState }
+    const { dialog } = props
+    this.state = { ...initialState, ...dialog.widget }
   }
 
   onChangeName      = (e) => { this.setState({ name: e.target.value }) }
@@ -161,7 +162,9 @@ export default class AcModalAddWidget extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle="default" onClick={onCancel}>Cancel</Button>
-            <Button bsStyle="success" onClick={onOK}>Create Widget</Button>
+            <Button bsStyle="success" onClick={onOK}>
+            { this.props.dialog.widget ? "Update Widget" : "Create Widget" }
+            </Button>
           </Modal.Footer>          
       </Modal>
     )

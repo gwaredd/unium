@@ -7,7 +7,7 @@ import Axios from 'axios'
 
 import * as Actions from '../../actions/App.jsx'
 import * as Log from '../../actions/Logging.jsx'
-import { WidgetRemove } from '../../actions/Tabs.jsx'
+import { WidgetCreate, WidgetRemove } from '../../actions/Tabs.jsx'
 
 //-------------------------------------------------------------------------------
 
@@ -15,9 +15,11 @@ export default class AcWidget extends React.Component {
 
   onClick = (e) => {
 
-    const { widget, dispatch, appConfig } = this.props
+    const { widget, dispatch, appConfig, isLocked } = this.props
 
-    console.log( widget.behaviour )
+    if( !isLocked ) {
+      return
+    }
 
     if( !"query" in widget ) {
       dispatch( Log.Warning( "Widget '" + widget.name + "'has no query" ) )
@@ -42,6 +44,20 @@ export default class AcWidget extends React.Component {
         dispatch( Log.Error( err.toString() ) )
       })
 
+  }
+
+  onEditWidgetConfirm = ( widget ) => {
+    this.props.dispatch( WidgetCreate( widget ))
+  }
+
+  onEditWidget = (e) => {
+
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
+    
+    var { dispatch, widget } = this.props
+
+    dispatch( Actions.AddWidget( this.onEditWidgetConfirm, widget ) )
   }
   
   onRemoveWidget = (e) => {
@@ -70,6 +86,8 @@ export default class AcWidget extends React.Component {
         </span>
         { !this.props.isLocked && 
           <div className='pull-right'>
+            <FontAwesome className='acPanelIcon' name='pencil' onClick={this.onEditWidget} />
+            &nbsp;
             <FontAwesome className='acPanelIcon' name='times' onClick={this.onRemoveWidget} />
           </div>
         }

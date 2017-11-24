@@ -42,8 +42,7 @@ export default class AcModalSettings extends React.Component {
 
   onViewConfig = (e) => {
     e.preventDefault()
-    const { dispatch, onCancel } = this.props
-    dispatch( App.ViewConfig() )
+    this.props.dispatch( App.ViewConfig() )
   }
 
   onDeleteConfig = (e) => {
@@ -93,11 +92,11 @@ export default class AcModalSettings extends React.Component {
 
             <FormGroup>
               <Col componentClass={ControlLabel} sm={2}>
-                Save Config
+                Config
               </Col>
               <Col sm={10}>
                 <Checkbox checked={this.state.useLocalStorage} onChange={this.onChangeStorage} >
-                  Local Storage
+                  Save to local storage (browser)
                 </Checkbox>
               </Col>
             </FormGroup>

@@ -84,12 +84,13 @@ export function EditPanel( id ) {
   }
 }
 
-export function AddWidget( callback ) {
+export function AddWidget( callback, widget ) {
   return {
     type    : "APP_DAILOG_SHOW",
     payload : {
       modal     : 'addWidget',
-      callback  : callback
+      callback  : callback,
+      widget    : widget
     }
   }
 }

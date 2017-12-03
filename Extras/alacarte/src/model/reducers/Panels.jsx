@@ -4,41 +4,9 @@ import { combineReducers } from 'redux'
 import _ from 'lodash'
 
 
-const initial_state = {}
-
-//   1: {
-//     id      : 1,
-//     tab     : 1,
-//     name    : 'Panel 1a',
-//     type    : 'primary',
-//     layout  : { x: 0, y: 0, w: 1, h: 2 }
-//   },
-//   2: {
-//     id      : 2,
-//     tab     : 1,
-//     name    : 'Panel 2a',
-//     type    : 'default',
-//     layout  : { x: 1, y: 0, w: 1, h: 2 }
-//   },
-//   3: {
-//     id      : 3,
-//     tab     : 2,
-//     name    : 'Panel 3b',
-//     type    : 'info',
-//     layout  : { x: 0, y: 0, w: 1, h: 2 }
-//   },
-//   4: {
-//     id      : 4,
-//     tab     : 3,
-//     name    : 'Panel 4c',
-//     type    : 'danger',
-//     layout  : { x: 0, y: 0, w: 1, h: 2 }
-//   },
-// }
-
 //-------------------------------------------------------------------------------
 
-function reduceById( state=initial_state, action ) {
+function reduceById( state={}, action ) {
 
   switch( action.type ) {
 
@@ -46,14 +14,18 @@ function reduceById( state=initial_state, action ) {
       return { ...action.payload.panels.byId }
     }
     
+
+    //-------------------------------------------------------------------------------
+
     case 'PANEL_CREATE': {
 
       const { payload } = action
       const { id }      = payload
-      const panel       = { ...payload }
+      const panel       = { ...payload, widgets: [] }
 
       return { ...state, [id] : panel }
     }
+
 
     case 'PANEL_REMOVE': {
 
@@ -70,19 +42,79 @@ function reduceById( state=initial_state, action ) {
       
       return _.reject( state, (t) => t.tab == id )
     }
+
+
+    //-------------------------------------------------------------------------------
+
+    case 'WIDGET_CREATE': {
+
+      const widget = action.payload
+      const panelID = widget.panel
+      
+      if( panelID in state ) {
+
+        const panel = state[ panelID ]
+        var newPanel = { ...panel, widgets: [ ...panel.widgets, widget.id ] }
+  
+        return { ...state, [ panelID ]: newPanel }
+
+      } else {
+        console.warn( "Can't find panel " + widget.panel )
+      }
+
+      break
+    }
+
+
+    case 'WIDGET_REMOVE': {
+
+      const { id, panel } = action.payload
+
+      if( panel in state ) {
+
+        const oldPanel = state[ panel ]
+        const widgets = _.reject( oldPanel.widgets, (wid) => wid == id )
+
+        return { ...state, [ panel ]: { ...oldPanel, widgets: widgets } }
+
+     } else {
+        console.warn( "Can't find panel " + widget.panel )
+        break
+      }
+
+      // return _.omit( state, id )
+    }
+
+    case 'WIDGET_MOVE': {
+
+      const { id, dragIndex, hoverIndex } = action.payload
+
+      const panel   = state[ id ]
+      const dragged = panel.widgets[ dragIndex ]
+
+      var widgets = [ ...panel.widgets.slice( 0, dragIndex ), ...panel.widgets.slice( dragIndex + 1 ) ]
+
+      widgets.splice( hoverIndex, 0, dragged )
+
+      return { ...state, [ id ]: { ...panel, widgets: widgets } }
+    }
+          
   }
   
   return state
 }
 
 
+//-------------------------------------------------------------------------------
+
+
 function reduceState( state={}, action ) {
 
   switch( action.type ) {
 
-    case 'CONFIG_IMPORT': {
-      return { ...action.payload.panels.state }
-    }
+    // case 'CONFIG_IMPORT': {
+    //   return { ...action.payload.panels.state }
+    // }
 
     case "APP_PANEL_STATE":
       return { ...state, ...action.payload }

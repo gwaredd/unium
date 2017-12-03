@@ -84,6 +84,17 @@ export function EditPanel( id ) {
   }
 }
 
+export function MoveWidget( id, dragIndex, hoverIndex ) {
+  return {
+    type    : "WIDGET_MOVE",
+    payload : {
+      id:         id,
+      dragIndex:  dragIndex,
+      hoverIndex: hoverIndex
+    }
+  }
+}
+
 export function AddWidget( callback, widget ) {
   return {
     type    : "APP_DAILOG_SHOW",

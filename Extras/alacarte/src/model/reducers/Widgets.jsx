@@ -3,13 +3,9 @@
 import { combineReducers } from 'redux'
 import _ from 'lodash'
 
-
-const initial_state = {
-}
-
 //-------------------------------------------------------------------------------
 
-function reduceById( state=initial_state, action ) {
+function reduceById( state={}, action ) {
 
   switch( action.type ) {
     
@@ -23,6 +19,12 @@ function reduceById( state=initial_state, action ) {
       const { id }      = payload
       const widget      = { ...payload }
 
+      // if( widget.panel in state ) {
+
+      // }
+
+      //widget.panel
+
       return { ...state, [id] : widget }
     }
 
@@ -34,6 +36,7 @@ function reduceById( state=initial_state, action ) {
       return _.omit( state, id )
     }
 
+
     case 'PANEL_REMOVE': {
 
       const { payload } = action
@@ -42,7 +45,7 @@ function reduceById( state=initial_state, action ) {
       return _.reject( state, (p) => p.panel == id )
       
     }
-
+    
     case 'TAB_REMOVE': {
 
       const { payload } = action
@@ -55,10 +58,11 @@ function reduceById( state=initial_state, action ) {
 
   return state
 }
-
+  
 
 //-------------------------------------------------------------------------------
 
 export default combineReducers({
   byId    : reduceById
 })
+

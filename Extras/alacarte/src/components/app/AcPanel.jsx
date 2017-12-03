@@ -2,9 +2,11 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Glyphicon, Button, Panel } from 'react-bootstrap'
+import { Panel } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 import AcWidget from './AcWidget.jsx'
 import * as Actions from '../../actions/App.jsx'
@@ -12,6 +14,7 @@ import { WidgetCreate, PanelRemove } from '../../actions/Tabs.jsx'
 
 //-------------------------------------------------------------------------------
 
+@DragDropContext( HTML5Backend )
 @connect( (store) => {
   return {
     widgets : store.widgets,
@@ -45,37 +48,62 @@ export default class AcPanel extends React.Component {
   }
 
   onToggleLock = () => {
-    const { panel, isLocked } = this.props
-    this.props.dispatch( Actions.EditPanel( isLocked ? panel.id : 0 ) )
+    const { panel, isLocked, dispatch } = this.props
+    dispatch( Actions.EditPanel( isLocked ? panel.id : 0 ) )
   }
+
+  moveWidget = ( dragIndex, hoverIndex ) => {
+    const { panel, dispatch } = this.props
+    dispatch( Actions.MoveWidget( panel.id, dragIndex, hoverIndex ) )
+  }
+    
 
   //-------------------------------------------------------------------------------
 
   render() {
 
     const { widgets, dispatch, app, panel, isLocked } = this.props
-    const panelWidgets = _.filter( widgets.byId, (p) => p.panel == panel.id )
 
-    var title = (
-      <div>
-        { panel.name }
-        { isLocked ? (
+    var title;
+
+    if( isLocked ) {
+
+      title = (
+        <div>
+          { panel.name }
           <div className='pull-right'>
             <FontAwesome className='acPanelIcon' name='lock'  onClick={this.onToggleLock} /> &nbsp;
           </div>
-        ):(
+        </div>
+      )
+      
+    } else {
+
+      title = (
+        <div>
+          { panel.name }
           <div className='pull-right'>
             <FontAwesome className='acPanelIcon' name='plus' onClick={this.onAddWidget} /> &nbsp;
             <FontAwesome className='acPanelIcon' name='trash-o' onClick={this.onRemovePanel} /> &nbsp;
             <FontAwesome className='acPanelIcon' name='unlock' onClick={this.onToggleLock}  /> &nbsp;
           </div>
-        )}
-      </div>
-    )
+        </div>
+      )
+
+    }
 
     return (
       <Panel className="acPanel" header={title} bsStyle={ panel.type }>
-        { _.map( panelWidgets, (w) => <AcWidget key={w.id} widget={w} dispatch={dispatch} appConfig={app.config} isLocked={isLocked} /> ) }
+        { _.map( panel.widgets, (wid,i) =>
+          <AcWidget
+            key={wid}
+            id={wid}
+            index={i}
+            appConfig={app.config}
+            isLocked={isLocked}
+            moveWidget={this.moveWidget}
+          />
+        ) }
       </Panel>
     )
   }

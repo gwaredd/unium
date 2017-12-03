@@ -51,7 +51,6 @@ export function PanelCreate( d ) {
       tab   : parseInt( d.tab )
     }
   }
-
 }
 
 export function PanelRemove( id ) {
@@ -73,11 +72,12 @@ export function WidgetCreate( v ) {
 }
 
 
-export function WidgetRemove( id ) {
+export function WidgetRemove( id, panel ) {
   return {
     type    : "WIDGET_REMOVE",
     payload : {
-      id    : id
+      id    : id,
+      panel : panel,
     }
   }  
 }

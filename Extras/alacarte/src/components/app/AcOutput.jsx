@@ -140,8 +140,13 @@ export default class AcOutput extends React.Component {
           </div>
         </div>
 
-        <div ref='output' className={'acOutputContent acOutputSize' + this.state.size}>
-          { contents }
+        <div className={'acOutputContent acOutputSize' + this.state.size}>
+          <div ref='output'>
+            { contents }
+          </div>
+          {/* <div>
+            <input type="text" />
+          </div> */}
         </div>
       </div>
    )

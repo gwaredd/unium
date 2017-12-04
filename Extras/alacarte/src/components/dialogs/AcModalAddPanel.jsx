@@ -1,6 +1,9 @@
 //-------------------------------------------------------------------------------
 
+import _ from 'lodash'
 import React from 'react'
+import { GithubPicker } from 'react-color'
+import ItemTypes from '../../ItemTypes.jsx'
 
 import {
   Modal,
@@ -18,6 +21,12 @@ import {
 } from 'react-bootstrap'
 
 
+const initial_state = {
+  name:        '',
+  colour:      '#004dcf',
+  textColour:  'white',
+  showColours: false
+}
 
 //-------------------------------------------------------------------------------
 
@@ -25,15 +34,17 @@ export default class AcModalAddPanel extends React.Component {
 
   constructor( props ) {
     super( props )
-    this.state = {
-      name  : '',
-      type  : 'Default'
-    }
+    this.state = {...initial_state}
   }
 
-  onChangeName = (e) => { this.setState({ name: e.target.value }); }
-  onChangeType = (v) => { this.setState({ type: v }); }
+  onChangeName    = (e) => { this.setState({ name: e.target.value }); }
+  onChangeColour  = (c) => {
+    const text = c.hex in ItemTypes.DARK_COLOURS ? 'white' : 'black'
+    this.setState({ colour: c.hex, textColour: text, showColours: false })
+  }
 
+  onShowColours     = (e) => { this.setState({ showColours: !this.state.showColours }) }
+  
 
   //-------------------------------------------------------------------------------
 
@@ -46,13 +57,10 @@ export default class AcModalAddPanel extends React.Component {
       e.preventDefault()
       
       if( this.state.name != '' ) {
-        this.state.type = this.state.type.toLowerCase()
-        dialog.callback( this.state )
-      }
+        var panel = {...this.state}
+        panel = _.omit( panel, 'showColours' )
 
-      this.state = {
-        name  : '',
-        type  : 'Default'
+        dialog.callback( panel )
       }
 
       onCancel()
@@ -67,48 +75,39 @@ export default class AcModalAddPanel extends React.Component {
           <Modal.Body>
 
           <Form horizontal onSubmit={onOK}>
-            <FormGroup controlId="formName">
-              <Col componentClass={ControlLabel} sm={2}>
-                Name
-              </Col>
-              <Col sm={10}>
-                <FormControl
-                  type="text"
-                  value={this.state.name}
-                  onChange={this.onChangeName}
-                  autoFocus={true}
-                />
-              </Col>
-            </FormGroup>
 
             <FormGroup controlId="formType">
-              <Col smOffset={2} sm={10}>
-              <DropdownButton
-                  componentClass={InputGroup.Button}
-                  id="formType"
-                  title={this.state.type}
-                >
-                  <MenuItem key="1" onSelect={()=>this.onChangeType('Default')}>
-                    <Panel header="Default"/>
-                  </MenuItem>
-                  <MenuItem key="2" onSelect={()=>this.onChangeType('Primary')}>
-                    <Panel header="Primary" bsStyle="primary"/>
-                  </MenuItem>
-                  <MenuItem key="3" onSelect={()=>this.onChangeType('Success')}>
-                    <Panel header="Success" bsStyle="success"/>
-                  </MenuItem>
-                  <MenuItem key="4" onSelect={()=>this.onChangeType('Info')}>
-                    <Panel header="Info" bsStyle="info"/>
-                  </MenuItem>
-                  <MenuItem key="5" onSelect={()=>this.onChangeType('Warning')}>
-                    <Panel header="Warning" bsStyle="warning"/>
-                  </MenuItem>
-                  <MenuItem key="6" onSelect={()=>this.onChangeType('Danger')}>
-                    <Panel header="Danger" bsStyle="danger"/>
-                  </MenuItem>
-                </DropdownButton>
-              </Col>
-            </FormGroup>
+                <Col componentClass={ControlLabel} sm={2}>Name</Col>
+                <Col sm={10}>
+                  <InputGroup>
+                    <InputGroup.Addon style={{padding: '0px'}}>
+                      <div style={{
+                        backgroundColor: this.state.colour,
+                        width:           '25px',
+                        height:          '36px',
+                      }}
+                      onClick={this.onShowColours}
+                      >
+                        <span style={{backgroundColor: this.state.colour, height:'100%', width:'100%'}} />
+                      </div>
+                    </InputGroup.Addon>                
+                    <FormControl
+                      type="text"
+                      value={this.state.name}
+                      onChange={this.onChangeName}
+                      autoFocus={true}
+                      />
+                  </InputGroup>
+                </Col>
+              </FormGroup>
+
+              { this.state.showColours && 
+                <FormGroup>
+                  <Col smOffset={2} sm={10}>
+                    <GithubPicker width='215px' onChangeComplete={ this.onChangeColour }/>
+                  </Col>
+                </FormGroup>
+              }
 
           </Form>
 

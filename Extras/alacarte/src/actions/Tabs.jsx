@@ -41,15 +41,10 @@ export function TabLayout( id, layout ) {
 
 //-------------------------------------------------------------------------------
 
-export function PanelCreate( d ) {
+export function PanelCreate( panel ) {
   return {
     type: "PANEL_CREATE",
-    payload: {
-      id    : d.id,
-      type  : d.type,
-      name  : d.name,
-      tab   : parseInt( d.tab )
-    }
+    payload: {...panel, tab: parseInt( panel.tab )}
   }
 }
 

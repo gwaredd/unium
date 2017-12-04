@@ -124,13 +124,11 @@ export default class AcWidget extends React.Component {
 
       .then( (res) => {
 
-        const { behaviour } = widget
-
-        if( behaviour == 'Log' || behaviour == 'LogNotify' ) {
+        if( 'log' in widget && widget.log ) {
           dispatch( Log.Print( '[' + widget.name + ']' + JSON.stringify( res.data, null, 2 ) ) )
         }
 
-        if( behaviour == 'Notify' || behaviour == 'LogNotify' ) {
+        if( 'notify' in widget && widget.notify ) {
           dispatch( Log.Success( widget.name + ' Success' ) )
         }
 
@@ -191,7 +189,12 @@ export default class AcWidget extends React.Component {
     if( isLocked ) {
 
       return (
-        <Button bsStyle={ widget.style } block onClick={this.onClick}>
+        <Button
+          bsStyle="default"
+          className="acWidget"
+          style={{ backgroundColor: widget.colour, color: widget.textColour }}
+          block
+          onClick={this.onClick}>
           { widget.name }
         </Button>
       )
@@ -203,15 +206,19 @@ export default class AcWidget extends React.Component {
     const { connectDragSource, connectDropTarget, isDragging } = this.props
 
     const style = {
-      paddingBottom: '8px',
-      marginBottom:  '1px',
+      paddingBottom: '0px',
+      marginBottom:  '5px',
       opacity:       isDragging ? 0: 1
     }
     
-    
     const html = (
       <div style={style} onMouseDown={(e)=>{e.stopPropagation()}}>
-        <Button bsStyle={ widget.style } block>
+        <Button
+          bsStyle="default"
+          className="acWidget"
+          style={{ backgroundColor: widget.colour, color: widget.textColour }}
+          block
+        >
           <span>
             { widget.name }
           </span>

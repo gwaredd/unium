@@ -69,7 +69,7 @@ export default class AcPanel extends React.Component {
     if( isLocked ) {
 
       title = (
-        <div>
+        <div className="panel-title">
           { panel.name }
           <div className='pull-right'>
             <FontAwesome className='acPanelIcon' name='lock'  onClick={this.onToggleLock} /> &nbsp;
@@ -80,7 +80,7 @@ export default class AcPanel extends React.Component {
     } else {
 
       title = (
-        <div>
+        <div className="panel-title">
           { panel.name }
           <div className='pull-right'>
             <FontAwesome className='acPanelIcon' name='plus' onClick={this.onAddWidget} /> &nbsp;
@@ -93,18 +93,25 @@ export default class AcPanel extends React.Component {
     }
 
     return (
-      <Panel className="acPanel" header={title} bsStyle={ panel.type }>
-        { _.map( panel.widgets, (wid,i) =>
-          <AcWidget
-            key={wid}
-            id={wid}
-            index={i}
-            appConfig={app.config}
-            isLocked={isLocked}
-            moveWidget={this.moveWidget}
-          />
-        ) }
-      </Panel>
+      <div className="acPanel panel">
+        <div className="panel-heading" style={{backgroundColor: panel.colour, color: panel.textColour }}>
+          {title}
+        </div>
+        <div>
+          <div className="panel-body">
+            { _.map( panel.widgets, (wid,i) =>
+              <AcWidget
+                key={wid}
+                id={wid}
+                index={i}
+                appConfig={app.config}
+                isLocked={isLocked}
+                moveWidget={this.moveWidget}
+              />
+            )}
+          </div>
+        </div>
+      </div>
     )
   }
 }

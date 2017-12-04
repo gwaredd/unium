@@ -22,6 +22,8 @@ import * as App from '../../actions/App.jsx'
 
 import { connect } from 'react-redux'
 
+const EventListenerMode = { capture: true }
+
 
 //-------------------------------------------------------------------------------
 
@@ -34,38 +36,24 @@ import { connect } from 'react-redux'
 export default class AcOutput extends React.Component {
 
   constructor(...args) {
-    super(...args);
+    
+    super(...args)
 
     this.state = {
-      size: 0,
       locked: false
     }
+
+    this.dragOrigin    = 0
+    this.height        = 0
+    this.dragTimestamp = 0
   }
 
 
   componentDidUpdate () {
     if( !this.state.locked ) {
-      var el = this.refs.output;
-      el.scrollTop = el.scrollHeight;
+      var el = this.refs.output
+      el.scrollTop = el.scrollHeight
     }
-  }
-
-  onExpand = (e) => {
-    e.stopPropagation()
-    e.nativeEvent.stopImmediatePropagation()
-    this.setState({size: this.state.size + 1})
-  }
-
-  onCollapse = (e) => {
-    e.stopPropagation()
-    e.nativeEvent.stopImmediatePropagation()
-    this.setState({size: this.state.size - 1})
-  }
-
-  onToggle = (e) => {
-    e.stopPropagation()
-    e.nativeEvent.stopImmediatePropagation()
-    this.setState({size: this.state.size <= 0 ? 1 : this.state.size - 1 })
   }
 
   onLock = (e) => {
@@ -91,7 +79,51 @@ export default class AcOutput extends React.Component {
     e.nativeEvent.stopImmediatePropagation()
     this.props.dispatch( Connection.Disconnect() )
   }
+
+
+  //-------------------------------------------------------------------------------
+  // draggable height
+
+  onToggle = (e) => {
+    this.height = this.height > 10 ? 0 : 300
+    this.refs.output.style.height = this.height + 'px'
+  }
+
+  onMouseDown = (e) => {
+    document.body.style['pointer-events'] = 'none'
+    document.addEventListener( 'mouseup', this.onMouseUp, EventListenerMode )
+    document.addEventListener( 'mousemove', this.onMouseMove, EventListenerMode )
+    e.preventDefault()
+    e.stopPropagation()
+
+    this.dragOrigin    = e.screenY
+    this.dragTimestamp = Date.now()
+  }
     
+  onMouseMove = (e) => {
+
+    e.stopPropagation()
+
+    const delta = this.dragOrigin - e.screenY
+    this.dragOrigin = e.screenY
+    this.height = Math.max( this.height + delta, 0 )
+
+    this.refs.output.style.height = this.height + 'px'
+  }
+
+  onMouseUp = (e) => {
+    document.body.style['pointer-events'] = 'auto'
+    document.removeEventListener( 'mouseup', this.onMouseUp, EventListenerMode )
+    document.removeEventListener( 'mousemove', this.onMouseMove, EventListenerMode )
+    e.stopPropagation()
+
+    if( Date.now() - this.dragTimestamp < 200 ) {
+      this.onToggle()
+    }
+  }
+
+  //-------------------------------------------------------------------------------
+  
   render() {
 
     const { output, app } = this.props
@@ -109,19 +141,21 @@ export default class AcOutput extends React.Component {
     return (
 
       <div className='acOutput'>
-
-        <div className='acOutputTitle' onClick={this.onToggle}>
-          <small>
-            { isConnected ?
-              <Label bsStyle="success" onClick={this.onDisconnect}>Connected</Label>
-            :
-              <Label bsStyle="warning" onClick={this.onConnect}>Not Connected</Label>
-            }
-          </small>
-          &nbsp;
-          Output
+        <div className='acOutputTitle'>
+          <span style={{width: "110px"}}>
+            <small>
+              { isConnected ?
+                <Label bsStyle="success" onClick={this.onDisconnect}>Connected</Label>
+              :
+                <Label bsStyle="warning" onClick={this.onConnect}>Not Connected</Label>
+              }
+            </small>
+          </span>
+          <span onMouseDown={this.onMouseDown} onClick={this.onToggle} style={{width:'100%'}}>
+            Output
+          </span>
         
-          <div className='pull-right'>
+          <div style={{width: '60px'}}>
             <FontAwesome name='trash' onClick={this.onClear} />
             &nbsp;
             <FontAwesome
@@ -129,24 +163,14 @@ export default class AcOutput extends React.Component {
               name={ this.state.locked ? 'lock' : 'unlock' }
               onClick={this.onLock}
             />
-            &nbsp;
-          
-            { this.state.size < 2 && 
-              <Glyphicon glyph="chevron-up" onClick={this.onExpand} />
-            }
-            { this.state.size > 0 && 
-              <Glyphicon glyph="chevron-down" onClick={this.onCollapse} />
-            }
+            &nbsp;          
           </div>
         </div>
 
-        <div className={'acOutputContent acOutputSize' + this.state.size}>
-          <div ref='output'>
+        <div className='acOutputContent'>
+          <div ref='output' style={{height: this.height + 'px'}}>
             { contents }
           </div>
-          {/* <div>
-            <input type="text" />
-          </div> */}
         </div>
       </div>
    )

@@ -1,8 +1,6 @@
-tidy up add widget dialog
 
-delete config - on device
-other kinds of widgets
-
-output - dragable height
 immediate window
+other kinds of widgets
+output - dragable height
+delete config - on device
 

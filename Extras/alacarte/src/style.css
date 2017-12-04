@@ -34,6 +34,8 @@ body {
   font-size: 16px;
   padding: 10px;
   padding-bottom: 0px;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 
@@ -55,28 +57,3 @@ body {
   -o-transition: height 0.25s ease-out;
   transition: height 0.25s ease-out;
 }
-
-.acOutputSize0 {
-  height: 0vh;
-  -moz-transition: height 0.25s ease-out;
-  -webkit-transition: height 0.25s ease-out;
-  -o-transition: height 0.25s ease-out;
-  transition: height 0.25s ease-out;
-}
-
-.acOutputSize1 {
-  height: 20vh;
-  -moz-transition: height 0.25s ease-out;
-  -webkit-transition: height 0.25s ease-out;
-  -o-transition: height 0.25s ease-out;
-  transition: height 0.25s ease-out;
-}
-
-.acOutputSize2 {
-  height: 70vh;
-  -moz-transition: height 0.25s ease-out;
-  -webkit-transition: height 0.25s ease-out;
-  -o-transition: height 0.25s ease-out;
-  transition: height 0.25s ease-out;
-}
-

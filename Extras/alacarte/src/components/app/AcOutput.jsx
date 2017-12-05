@@ -2,6 +2,7 @@
 
 import React from 'react'
 import FontAwesome from 'react-fontawesome'
+import Axios from 'axios'
 
 import * as Connection from '../../actions/Connection.jsx'
 import * as Log from '../../actions/Logging.jsx'
@@ -15,7 +16,12 @@ import {
   Button,
   Panel,
   Collapse,
-  Label
+  Label,
+  Form,
+  FormGroup,
+  FormControl,
+  ControlLabel,
+  InputGroup,  
 } from 'react-bootstrap'
 
 import * as App from '../../actions/App.jsx'
@@ -51,7 +57,7 @@ export default class AcOutput extends React.Component {
 
   componentDidUpdate () {
     if( !this.state.locked ) {
-      var el = this.refs.output
+      var el = this.refs.outputContent
       el.scrollTop = el.scrollHeight
     }
   }
@@ -80,12 +86,29 @@ export default class AcOutput extends React.Component {
     this.props.dispatch( Connection.Disconnect() )
   }
 
+  onKeyDown = (e) => {
+    if( e.key != 'Enter' || this.input.value == '' ) {
+      return
+    }
+
+    const { dispatch, app } = this.props
+    const { api }           = app.config
+    const input             = this.input.value
+    const separator         = input.startsWith( '/' ) ? '': '/'
+    const url               = api + separator + input
+
+    Axios
+      .get  ( url )
+      .then ( (res) => dispatch( Log.Print( JSON.stringify( res.data, null, 2 ) ) ) )
+      .catch( (err) => dispatch( Log.Error( err.toString() ) ) )
+  }
+
 
   //-------------------------------------------------------------------------------
   // draggable height
 
   onToggle = (e) => {
-    this.height = this.height > 10 ? 0 : 300
+    this.height = this.height > 10 ? 0 : 250
     this.refs.output.style.height = this.height + 'px'
   }
 
@@ -167,10 +190,16 @@ export default class AcOutput extends React.Component {
           </div>
         </div>
 
-        <div className='acOutputContent'>
-          <div ref='output' style={{height: this.height + 'px'}}>
+        <div ref='output' className='acOutputContainer' style={{height: this.height + 'px'}}>
+          <div ref='outputContent' className='acOutputContent'>
             { contents }
           </div>
+          <FormGroup className='acOutputInput'>
+            <InputGroup>
+              <InputGroup.Addon>Query</InputGroup.Addon>
+              <FormControl type="text" onKeyDown={this.onKeyDown} inputRef={ref => { this.input = ref }}/>
+            </InputGroup>
+          </FormGroup>
         </div>
       </div>
    )

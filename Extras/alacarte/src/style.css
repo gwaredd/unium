@@ -39,12 +39,18 @@ body {
 }
 
 
-.acOutputContent {
-  overflow: scroll;
-  background-color: white;
-  border: 1px solid #dddddd;
+.acOutputContainer {
   font-family: monospace;
   margin: 10px;
+  position: relative;
+  background-color: white;
+  border: 1px solid #dddddd;
+  overflow: hidden;
+}
+
+.acOutputContent {
+  overflow: scroll;
+  height: 100%;
 }
 
 .acOutputContent pre {
@@ -56,4 +62,12 @@ body {
   -webkit-transition: height 0.25s ease-out;
   -o-transition: height 0.25s ease-out;
   transition: height 0.25s ease-out;
+}
+
+.acOutputInput {
+  position: absolute; 
+  bottom: 0; 
+  width: 100%; 
+  height: 38px;
+  margin: 0px;
 }

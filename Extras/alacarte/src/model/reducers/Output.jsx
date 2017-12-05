@@ -16,7 +16,7 @@ export default function( state=[], action ) {
 
       const log = {
         ...payload,
-        timestamp : moment().format( 'hh:mm:ss.SS' )
+        timestamp : moment().format( 'HH:mm:ss.SS' )
       }
       
       var output = state.slice()

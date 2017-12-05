@@ -1,6 +1,4 @@
-
-immediate window
 other kinds of widgets
-output - dragable height
+  * table
 delete config - on device
 

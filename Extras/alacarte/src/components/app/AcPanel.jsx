@@ -7,8 +7,7 @@ import FontAwesome from 'react-fontawesome'
 
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-
-import AcWidget from './AcWidget.jsx'
+import Widgets from './AcWidgets.jsx'
 import * as Actions from '../../actions/App.jsx'
 import { WidgetCreate, PanelRemove } from '../../actions/Tabs.jsx'
 
@@ -64,43 +63,44 @@ export default class AcPanel extends React.Component {
 
     const { widgets, dispatch, app, panel, isLocked } = this.props
 
-    var title;
+    var menu;
 
     if( isLocked ) {
 
-      title = (
-        <div className="panel-title">
-          { panel.name }
-          <div className='pull-right'>
-            <FontAwesome className='acPanelIcon' name='lock'  onClick={this.onToggleLock} /> &nbsp;
-          </div>
-        </div>
-      )
-      
+      menu = <FontAwesome className='acPanelIcon' name='lock'  onClick={this.onToggleLock} />
+
     } else {
 
-      title = (
-        <div className="panel-title">
-          { panel.name }
-          <div className='pull-right'>
-            <FontAwesome className='acPanelIcon' name='plus' onClick={this.onAddWidget} /> &nbsp;
-            <FontAwesome className='acPanelIcon' name='trash-o' onClick={this.onRemovePanel} /> &nbsp;
-            <FontAwesome className='acPanelIcon' name='unlock' onClick={this.onToggleLock}  /> &nbsp;
-          </div>
-        </div>
+      menu = (
+        <span>
+          <FontAwesome className='acPanelIcon' name='plus' onClick={this.onAddWidget} /> &nbsp;
+          <FontAwesome className='acPanelIcon' name='trash-o' onClick={this.onRemovePanel} /> &nbsp;
+          <FontAwesome className='acPanelIcon' name='unlock' onClick={this.onToggleLock}  />
+        </span>
       )
-
     }
 
     return (
       <div className="acPanel panel">
-        <div className="panel-heading" style={{backgroundColor: panel.colour, color: panel.textColour }}>
-          {title}
+        <div className="panel-heading panel-title" style={{backgroundColor: panel.colour, color: panel.textColour }}>
+          { panel.name }
+          <div className='pull-right'>
+            { menu }
+          </div>
         </div>
-        <div>
-          <div className="panel-body">
-            { _.map( panel.widgets, (wid,i) =>
-              <AcWidget
+        <div className="panel-body">
+          { _.map( panel.widgets, (wid,i) => {
+
+            const widget = widgets.byId[ wid ]
+
+            if( !widget ) {
+              return null
+            }
+
+            const $component = Widgets[ widget.type.toLowerCase() ]
+            
+            return (
+              <$component
                 key={wid}
                 id={wid}
                 index={i}
@@ -108,8 +108,8 @@ export default class AcPanel extends React.Component {
                 isLocked={isLocked}
                 moveWidget={this.moveWidget}
               />
-            )}
-          </div>
+            )
+          })}
         </div>
       </div>
     )

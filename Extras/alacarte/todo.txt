@@ -1,4 +1,6 @@
 other kinds of widgets
   * table
+
+sort out config loading order
 delete config - on device
 

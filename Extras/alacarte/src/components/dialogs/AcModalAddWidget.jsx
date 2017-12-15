@@ -4,6 +4,7 @@ import _ from 'lodash'
 import React from 'react'
 import { GithubPicker } from 'react-color'
 import ItemTypes from '../../ItemTypes.jsx'
+import Widgets from '../app/AcWidgets.jsx'
 
 import {
   Modal,
@@ -30,6 +31,7 @@ const initialState = {
   log:         true,
   notify:      true,
   type:        'Button',
+  options:    {},
  
   showColours: false,
 }
@@ -46,17 +48,18 @@ export default class AcModalAddWidget extends React.Component {
   }
 
   onChangeName      = (e) => { this.setState({ name: e.target.value }) }
-  onChangeType      = (e) => { this.setState({ type: e }) }
   onChangeQuery     = (e) => { this.setState({ query: e.target.value }) }
   onChangeLog       = (e) => { this.setState({ log: e.target.checked }) }
   onChangeNotify    = (e) => { this.setState({ notify: e.target.checked }) }
-  onChangeColour  = (c) => {
+  onChangeType      = (e) => { this.setState({ type: e }) }
+  onShowColours     = (e) => { this.setState({ showColours: !this.state.showColours }) }
+
+  onChangeColour    = (c) => {
     const text = c.hex in ItemTypes.DARK_COLOURS ? 'white' : 'black'
     this.setState({ colour: c.hex, textColour: text, showColours: false })
   }
 
-  onShowColours     = (e) => { this.setState({ showColours: !this.state.showColours }) }
-
+  
   //-------------------------------------------------------------------------------
 
   render() {
@@ -77,6 +80,10 @@ export default class AcModalAddWidget extends React.Component {
 
       onCancel()
     }
+
+    const type = this.state.type.toLowerCase()
+    const options = new Widgets[ type ]()
+    const $options = options.options.call( this )
 
     return (
       <Modal show={true} onHide={onCancel} bsSize="large">
@@ -149,6 +156,13 @@ export default class AcModalAddWidget extends React.Component {
                 </Checkbox>
               </Col>
             </FormGroup>
+
+            { $options != null && (
+              <div>
+                <hr/>
+                { $options }
+              </div>
+            )}
 
           </Form>
 

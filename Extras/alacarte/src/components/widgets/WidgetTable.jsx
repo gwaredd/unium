@@ -8,7 +8,7 @@ export default class WidgetTable {
   componentWillMount() {
   }
 
-  // -------------------------------------------------------------------------------
+  //-------------------------------------------------------------------------------
   
   render() {
 
@@ -16,6 +16,12 @@ export default class WidgetTable {
 
     return (
       <span>{ widget.name }</span>
+    )
+  }
+
+  options() {
+    return (
+      <span>table options goes here</span>
     )
   }
 

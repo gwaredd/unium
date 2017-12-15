@@ -82,11 +82,30 @@ export default class WidgetTable extends React.Component {
         return
       }
 
-      if( keyMap != null ) {
-        
+      // data
+
+      if( _.isObject( data[0] ) == false ) {
+        const keys = _.map( data, (k,i) => i )
+        this.setState( { data: _.zipObject( keys, data ) } )
+        return
+      }
+
+      var headers = []
+
+      if( keyMap == null ) {
+
+        headers = _.keys( data[0] )
+
+      } else {
+
+        const include = widget.options.type == 'Include'        
+
+        headers = _.keys( keyMap )
+        data    = _.map( data, (v,k) => include ? _.pickBy( v, (o,n) => n in keyMap ): _.omitBy( v, (o,n) => n in keyMap ) )
+          
       }
       
-      this.setState({ error: "TODO: handle arrays!", data: null })
+      this.setState({ headers: headers, data: data })
       
       
     // objects
@@ -151,6 +170,60 @@ export default class WidgetTable extends React.Component {
       this.fetchData()
     }
   }
+
+
+  //-------------------------------------------------------------------------------
+
+  renderTable = () => {
+
+    // with headers
+
+    if( this.state.headers ) {
+
+      const { headers } = this.state
+
+      return (
+        <Table responsive>
+          <thead>
+            <tr>
+              { _.map( headers, (v,k) => <th key={k}>{v}</th> ) }
+            </tr>
+          </thead>
+          <tbody>
+          {
+            _.map( this.state.data, (v,index) => 
+              <tr key={index}>
+                {
+                  _.map( headers, (key,i) => <td key={i}>{  _.isString( v[key] ) ? v[key] : JSON.stringify( v[key] )  }</td> )
+                }
+              </tr>
+            )
+          }
+          </tbody>      
+        </Table>
+      )
+    }
+    
+    // without headers
+
+    return (
+      <Table responsive>
+        <tbody>
+        {
+          _.map( this.state.data, (v,k) => {
+            return (
+              <tr key={k}>
+                <td>{ k }</td>
+                <td>{ _.isString( v ) ? v : JSON.stringify(v) }</td>
+              </tr>
+            )
+          })
+        }
+        </tbody>
+      </Table>
+    )
+
+  }
   
   
   //-------------------------------------------------------------------------------
@@ -184,22 +257,7 @@ export default class WidgetTable extends React.Component {
           </Alert>
         )}
 
-        { this.state.data != null && (
-          <Table responsive> 
-            <tbody>
-            {
-              _.map( this.state.data, (v,k) => {
-                return (
-                  <tr key={k}>
-                    <td>{ k }</td>
-                    <td>{ _.isString( v ) ? v : JSON.stringify(v) }</td>
-                  </tr>
-                )
-              })
-            }
-            </tbody>
-          </Table>
-        )}
+        { this.state.data != null && this.renderTable() }
 
         </div>
       </div>

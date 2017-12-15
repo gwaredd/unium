@@ -1,4 +1,7 @@
 other kinds of widgets
+
+  * make parent handle 'editing' - position controls automatically
+
   * table
 
 sort out config loading order

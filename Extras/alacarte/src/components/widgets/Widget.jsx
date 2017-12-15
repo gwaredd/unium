@@ -1,23 +1,25 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+// drag and drop
 import { findDOMNode } from 'react-dom'
 import { DragSource, DropTarget } from 'react-dnd'
 import ItemTypes from '../../ItemTypes.jsx'
 
-import { Button } from 'react-bootstrap'
+// widgets
 import FontAwesome from 'react-fontawesome'
-import Axios from 'axios'
+import Widgets from '../app/AcWidgets.jsx'
 
+// actions
 import * as Actions from '../../actions/App.jsx'
 import * as Log from '../../actions/Logging.jsx'
 import * as Tabs from '../../actions/Tabs.jsx'
 
 
 //-------------------------------------------------------------------------------
+// dragging
 
 const cardSource = {
   beginDrag(props) {
@@ -36,9 +38,11 @@ const cardTarget = {
     const hoverIndex = props.index
 
     // Don't replace items with themselves
+
     if (dragIndex === hoverIndex) {
       return
     }
+
 
     // Determine rectangle on screen
     const hoverBoundingRect = findDOMNode( component ).getBoundingClientRect()
@@ -92,54 +96,23 @@ const cardTarget = {
     widgets : store.widgets
   }
 })
-export default class AcWidget extends React.Component {
+export default class Widget extends React.Component {
 
-  static propTypes = {
-    id:                PropTypes.any.isRequired,
-    isLocked:          PropTypes.bool.isRequired,
+  constructor( ...args ) {
+    super( ...args )
 
-    connectDragSource: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
-    index:             PropTypes.number.isRequired,
-    isDragging:        PropTypes.bool.isRequired,
-    moveWidget:        PropTypes.func.isRequired,
+    // construct widget visitor (seeing as javascript is being arse)
+    const { widget } = this.props
+    this.widget = new Widgets[ widget.type.toLowerCase() ]
   }
 
+  componentWillMount() {
+    this.widget.componentWillMount.call( this )
+  }
+
+  componentWillUnmount() {
+  }
   
-  //-------------------------------------------------------------------------------
-  // onClick
-
-  onClick = (e) => {
-
-    const { id, widgets, dispatch, appConfig } = this.props
-    const widget = widgets.byId[ id ]
-
-    if( !"query" in widget ) {
-      dispatch( Log.Warning( "Widget '" + widget.name + "'has no query" ) )
-      return
-    }
-
-    Axios
-      .get( appConfig.api + widget.query )
-
-      .then( (res) => {
-
-        if( 'log' in widget && widget.log ) {
-          dispatch( Log.Print( '[' + widget.name + ']' + JSON.stringify( res.data, null, 2 ) ) )
-        }
-
-        if( 'notify' in widget && widget.notify ) {
-          dispatch( Log.Success( widget.name + ' Success' ) )
-        }
-
-      })
-
-      .catch( (err) => {
-        dispatch( Log.Error( err.toString() ) )
-      })
-
-  }
-
 
   //-------------------------------------------------------------------------------
   //  edit
@@ -158,6 +131,7 @@ export default class AcWidget extends React.Component {
     dispatch( Actions.AddWidget( this.onEditWidgetConfirm, widget ) )
   }
   
+
   //-------------------------------------------------------------------------------
   // remove
 
@@ -177,28 +151,19 @@ export default class AcWidget extends React.Component {
 
   }
 
-
   //-------------------------------------------------------------------------------
   // render
 
   render() {
 
-    const { isLocked, widgets, id } = this.props
-    const widget = widgets.byId[ id ]
+    const { isEditing, widget, id } = this.props
 
-    if( isLocked ) {
+    
+    const $control = this.widget.render.call( this )
 
-      return (
-        <Button
-          bsStyle="default"
-          className="acWidget"
-          style={{ backgroundColor: widget.colour, color: widget.textColour }}
-          block
-          onClick={this.onClick}>
-          { widget.name }
-        </Button>
-      )
 
+    if( !isEditing ) {
+      return $control
     }
 
     // editing ...
@@ -208,22 +173,14 @@ export default class AcWidget extends React.Component {
     const style = {
       paddingBottom: '0px',
       marginBottom:  '5px',
-      opacity:       isDragging ? 0: 1
+      opacity:       isDragging ? 0: 1,
+      position:     'relative'
     }
     
     const html = (
       <div style={style} onMouseDown={(e)=>{e.stopPropagation()}}>
-        <Button
-          bsStyle="default"
-          className="acWidget"
-          style={{ backgroundColor: widget.colour, color: widget.textColour }}
-          block
-        >
-          <span>
-            { widget.name }
-          </span>
-        </Button>
-        <div className='pull-right'>
+        { $control }
+        <div className='acEdit'>
             <FontAwesome className='acPanelIcon' name='pencil' onClick={this.onEditWidget} />
             &nbsp;
             <FontAwesome className='acPanelIcon' name='times' onClick={this.onRemoveWidget} />

@@ -7,9 +7,11 @@ import FontAwesome from 'react-fontawesome'
 
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-import Widgets from './AcWidgets.jsx'
+
+import Widget from '../widgets/Widget.jsx'
+
 import * as Actions from '../../actions/App.jsx'
-import { WidgetCreate, PanelRemove } from '../../actions/Tabs.jsx'
+import * as Tabs from '../../actions/Tabs.jsx'
 
 //-------------------------------------------------------------------------------
 
@@ -31,7 +33,7 @@ export default class AcPanel extends React.Component {
     dispatch( Actions.Confirm(
       'Remove Panel',
       "Are you sure you want to remove '" + panel.name + "'",
-      () => dispatch( PanelRemove( panel.id ) )
+      () => dispatch( Tabs.PanelRemove( panel.id ) )
     ))
   }
 
@@ -39,7 +41,7 @@ export default class AcPanel extends React.Component {
     var { widgets, panel, dispatch } = this.props
     var keys  = _.map( _.keys( widgets.byId ), (k) => parseInt(k) )
     var id    = keys.length == 0 ? 1 : _.max( keys ) + 1
-    dispatch( WidgetCreate( { ...v, id: id, panel: panel.id, tab: panel.tab } ))
+    dispatch( Tabs.WidgetCreate( { ...v, id: id, panel: panel.id, tab: panel.tab } ))
   }
 
   onAddWidget = () => {
@@ -47,8 +49,8 @@ export default class AcPanel extends React.Component {
   }
 
   onToggleLock = () => {
-    const { panel, isLocked, dispatch } = this.props
-    dispatch( Actions.EditPanel( isLocked ? panel.id : 0 ) )
+    const { panel, isEditing, dispatch } = this.props
+    dispatch( Actions.EditPanel( isEditing ? 0 : panel.id ) )
   }
 
   moveWidget = ( dragIndex, hoverIndex ) => {
@@ -61,11 +63,11 @@ export default class AcPanel extends React.Component {
 
   render() {
 
-    const { widgets, dispatch, app, panel, isLocked } = this.props
+    const { widgets, dispatch, app, panel, isEditing } = this.props
 
     var menu;
 
-    if( isLocked ) {
+    if( !isEditing ) {
 
       menu = <FontAwesome className='acPanelIcon' name='lock'  onClick={this.onToggleLock} />
 
@@ -96,16 +98,15 @@ export default class AcPanel extends React.Component {
             if( !widget ) {
               return null
             }
-
-            const $component = Widgets[ widget.type.toLowerCase() ]
             
             return (
-              <$component
+              <Widget
                 key={wid}
                 id={wid}
                 index={i}
                 appConfig={app.config}
-                isLocked={isLocked}
+                widget={widget}
+                isEditing={isEditing}
                 moveWidget={this.moveWidget}
               />
             )

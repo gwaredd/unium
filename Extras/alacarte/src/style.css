@@ -71,3 +71,10 @@ body {
   height: 38px;
   margin: 0px;
 }
+
+.acEdit {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  margin: 9px;
+}

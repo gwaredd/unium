@@ -1,11 +1,10 @@
 //-------------------------------------------------------------------------------
 
+import _ from 'lodash'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Responsive, WidthProvider } from 'react-grid-layout'
-import _ from 'lodash'
 
-import * as Tabs from '../../actions/Tabs.jsx'
 import AcPanel from './AcPanel.jsx'
 
 import GridStyle from 'react-grid-layout/css/styles.css'
@@ -45,12 +44,6 @@ export default class AcGrid extends React.PureComponent {
 
     const unlocked  = "edit" in panels.state ? panels.state.edit : 0
     const panelList = _.filter( panels.byId, (v) => v.tab == tabId )
-
-    var contents = _.map( panelList, (p,i) =>
-      <div key={i}>
-        <AcPanel panel={p} isLocked={p.id != unlocked} />
-      </div>
-    )
     
     return (
       <ResponsiveReactGridLayout
@@ -58,7 +51,13 @@ export default class AcGrid extends React.PureComponent {
         onLayoutChange={this.onLayoutChange}
         {...this.props}
       >
-        { contents }
+      {
+        _.map( panelList, (p,i) =>
+          <div key={i}>
+            <AcPanel panel={p} isEditing={p.id == unlocked} />
+          </div>
+        )
+      }
       </ResponsiveReactGridLayout>
     )
   }

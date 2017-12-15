@@ -4,7 +4,7 @@ import _ from 'lodash'
 import React from 'react'
 import { GithubPicker } from 'react-color'
 import ItemTypes from '../../ItemTypes.jsx'
-import Widgets from '../app/AcWidgets.jsx'
+import { Options } from '../app/AcWidgets.jsx'
 
 import {
   Modal,
@@ -47,52 +47,58 @@ export default class AcModalAddWidget extends React.Component {
     this.state = { ...initialState, ...dialog.widget }
   }
 
-  onChangeName      = (e) => { this.setState({ name: e.target.value }) }
-  onChangeQuery     = (e) => { this.setState({ query: e.target.value }) }
-  onChangeLog       = (e) => { this.setState({ log: e.target.checked }) }
-  onChangeNotify    = (e) => { this.setState({ notify: e.target.checked }) }
-  onChangeType      = (e) => { this.setState({ type: e }) }
-  onShowColours     = (e) => { this.setState({ showColours: !this.state.showColours }) }
-
+  onChangeName      = (e) => this.setState( { name: e.target.value } )
+  onChangeQuery     = (e) => this.setState( { query: e.target.value } )
+  onChangeLog       = (e) => this.setState( { log: e.target.checked } )
+  onChangeNotify    = (e) => this.setState( { notify: e.target.checked } )
+  onShowColours     = (e) => this.setState( { showColours: !this.state.showColours } )
+  onChangeOptions   = (o) => this.setState( { options: o } )
+  onChangeType      = (e) => this.setState( { type: e } )
+  
   onChangeColour    = (c) => {
     const text = c.hex in ItemTypes.DARK_COLOURS ? 'white' : 'black'
     this.setState({ colour: c.hex, textColour: text, showColours: false })
   }
 
-  
+
+
+
+  //-------------------------------------------------------------------------------
+
+  onOK = (e) => {
+
+    const { dialog, onCancel } = this.props
+
+    e.preventDefault()
+
+    if( this.state.name != '' ) {
+
+      var widget = { ...this.state }
+      widget = _.omit( widget, 'showColours' )
+
+      dialog.callback( widget )
+    }
+
+    onCancel()
+  }
+
+    
   //-------------------------------------------------------------------------------
 
   render() {
 
     const { dialog, onCancel } = this.props
 
-    const onOK = (e) => {
-
-      e.preventDefault()
-
-      if( this.state.name != '' ) {
-
-        var widget = { ...this.state }
-        widget = _.omit( widget, 'showColours' )
-
-        dialog.callback( widget )
-      }
-
-      onCancel()
-    }
-
-    const type = this.state.type.toLowerCase()
-    const options = new Widgets[ type ]()
-    const $options = options.options.call( this )
+    const $options = Options[ this.state.type.toLowerCase() ]
 
     return (
       <Modal show={true} onHide={onCancel} bsSize="large">
           <Modal.Header closeButton>
-            <Modal.Title>Add Widget</Modal.Title>
+            <Modal.Title>Add { this.state.type }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 
-          <Form horizontal onSubmit={onOK}>
+          <Form horizontal onSubmit={this.onOK}>
 
             <FormGroup controlId="formType">
               <Col componentClass={ControlLabel} sm={2}>Name</Col>
@@ -157,19 +163,14 @@ export default class AcModalAddWidget extends React.Component {
               </Col>
             </FormGroup>
 
-            { $options != null && (
-              <div>
-                <hr/>
-                { $options }
-              </div>
-            )}
+            { $options != null && (<$options options={this.state.options} saveOptions={this.onChangeOptions}/>) }
 
           </Form>
 
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="default" onClick={onCancel}>Cancel</Button>
-            <Button bsStyle="success" onClick={onOK}>
+            <Button bsStyle="default" onClick={this.props.onCancel}>Cancel</Button>
+            <Button bsStyle="success" onClick={this.onOK}>
             { this.props.dialog.widget ? "Update Widget" : "Create Widget" }
             </Button>
           </Modal.Footer>          

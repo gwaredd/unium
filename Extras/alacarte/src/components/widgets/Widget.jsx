@@ -10,7 +10,7 @@ import ItemTypes from '../../ItemTypes.jsx'
 
 // widgets
 import FontAwesome from 'react-fontawesome'
-import Widgets from '../app/AcWidgets.jsx'
+import { Controls } from '../app/AcWidgets.jsx'
 
 // actions
 import * as Actions from '../../actions/App.jsx'
@@ -97,21 +97,6 @@ const cardTarget = {
   }
 })
 export default class Widget extends React.Component {
-
-  constructor( ...args ) {
-    super( ...args )
-
-    // construct widget visitor (seeing as javascript is being arse)
-    const { widget } = this.props
-    this.widget = new Widgets[ widget.type.toLowerCase() ]
-  }
-
-  componentWillMount() {
-    this.widget.componentWillMount.call( this )
-  }
-
-  componentWillUnmount() {
-  }
   
 
   //-------------------------------------------------------------------------------
@@ -156,14 +141,14 @@ export default class Widget extends React.Component {
 
   render() {
 
-    const { isEditing, widget, id } = this.props
+    const { isEditing, widget } = this.props
 
     
-    const $control = this.widget.render.call( this )
+    const $control = Controls[ widget.type.toLowerCase() ]
 
 
     if( !isEditing ) {
-      return $control
+      return <$control widget={widget} dispatch={this.props.dispatch} appConfig={this.props.appConfig}/>
     }
 
     // editing ...
@@ -179,7 +164,7 @@ export default class Widget extends React.Component {
     
     const html = (
       <div style={style} onMouseDown={(e)=>{e.stopPropagation()}}>
-        { $control }
+        <$control widget={widget} dispatch={this.props.dispatch} appConfig={this.props.appConfig}/>
         <div className='acEdit'>
             <FontAwesome className='acPanelIcon' name='pencil' onClick={this.onEditWidget} />
             &nbsp;

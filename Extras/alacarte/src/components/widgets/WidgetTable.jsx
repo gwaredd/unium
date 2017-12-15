@@ -1,27 +1,31 @@
 
 import React from 'react'
-import Widget from './Widget.jsx'
 
-export default class WidgetTable {
+import {
+  Modal,
+  Button,
+  Form,
+  FormGroup,
+  Col,
+  FormControl,
+  ControlLabel,
+  DropdownButton,
+  InputGroup,
+  MenuItem,
+  Checkbox,
+  Panel,
+  HelpBlock
 
+} from 'react-bootstrap'
 
-  componentWillMount() {
-  }
-
-  //-------------------------------------------------------------------------------
-  
+export default class WidgetTable extends React.Component {
+    
   render() {
 
     const { widget } = this.props
 
     return (
       <span>{ widget.name }</span>
-    )
-  }
-
-  options() {
-    return (
-      <span>table options goes here</span>
     )
   }
 

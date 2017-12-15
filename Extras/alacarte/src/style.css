@@ -3,6 +3,11 @@ body {
   margin-top: 60px;
 }
 
+.navbar {
+  background-image: none;
+  background-color: rgb(0, 77, 207);
+}
+
 .acPanel {
   height: inherit;
   overflow: auto;

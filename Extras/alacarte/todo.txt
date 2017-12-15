@@ -1,7 +1,3 @@
-other kinds of widgets
-  * table
-    * handle arrays
-  * graph?
 
 bugs
 

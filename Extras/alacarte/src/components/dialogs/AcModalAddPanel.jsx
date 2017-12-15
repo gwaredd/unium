@@ -3,7 +3,7 @@
 import _ from 'lodash'
 import React from 'react'
 import { GithubPicker } from 'react-color'
-import ItemTypes from '../../ItemTypes.jsx'
+import ItemTypes from '../../Utils.jsx'
 
 import {
   Modal,

@@ -5,11 +5,13 @@ body {
 
 .acPanel {
   height: inherit;
+  overflow: auto;
   background: #EEEEEE;
 }
 
+
 .acWidget {
-  background-image: none
+  background-image: none;
 }
 
 .acPanelIcon:hover {

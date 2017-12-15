@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 // drag and drop
 import { findDOMNode } from 'react-dom'
 import { DragSource, DropTarget } from 'react-dnd'
-import ItemTypes from '../../ItemTypes.jsx'
+import ItemTypes from '../../Utils.jsx'
 
 // widgets
 import FontAwesome from 'react-fontawesome'
@@ -148,7 +148,7 @@ export default class Widget extends React.Component {
 
 
     if( !isEditing ) {
-      return <$control widget={widget} dispatch={this.props.dispatch} appConfig={this.props.appConfig}/>
+      return <$control widget={widget} dispatch={this.props.dispatch} appConfig={this.props.appConfig} isEditing={false}/>
     }
 
     // editing ...
@@ -161,11 +161,12 @@ export default class Widget extends React.Component {
       opacity:       isDragging ? 0: 1,
       position:     'relative'
     }
+
     
     const html = (
       <div style={style} onMouseDown={(e)=>{e.stopPropagation()}}>
-        <$control widget={widget} dispatch={this.props.dispatch} appConfig={this.props.appConfig}/>
-        <div className='acEdit'>
+        <$control widget={widget} dispatch={this.props.dispatch} appConfig={this.props.appConfig} isEditing={true}/>
+        <div className='acEdit' style={{color: widget.textColour}}>
             <FontAwesome className='acPanelIcon' name='pencil' onClick={this.onEditWidget} />
             &nbsp;
             <FontAwesome className='acPanelIcon' name='times' onClick={this.onRemoveWidget} />

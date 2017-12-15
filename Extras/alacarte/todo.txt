@@ -1,5 +1,7 @@
 other kinds of widgets
   * table
+  * external link
+  * graph
 
 sort out config loading order
 delete config - on device

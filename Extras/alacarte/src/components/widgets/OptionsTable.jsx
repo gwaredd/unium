@@ -30,14 +30,9 @@ export default class OptionsTable extends React.Component {
     this.state = { ...initialState, ...options }
   }
 
-  onChangeState = ( state ) => {
-    this.setState( state )
-    this.props.saveOptions( this.state )
-  }
-
-  onChangeFilter     = (v) => this.onChangeState( { filter: v.target.value } )
-  onChangeFilterType = (v) => this.onChangeState( { type: v } )
-
+  onChangeFilter     = (v) => this.setState( { filter: v.target.value } )
+  onChangeFilterType = (v) => this.setState( { type:   v } )
+  
   
   //-------------------------------------------------------------------------------
   

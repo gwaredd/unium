@@ -3,8 +3,8 @@
 import React from 'react'
 
 import { Button } from 'react-bootstrap'
-import Axios from 'axios'
 
+import Utils from '../../Utils.jsx'
 import * as Log from '../../actions/Logging.jsx'
 
 
@@ -23,10 +23,9 @@ export default class WidgetButton extends React.Component {
       dispatch( Log.Warning( "Widget '" + widget.name + "'has no query" ) )
       return
     }
-  
-    Axios
-      .get( appConfig.api + widget.query )
-  
+
+    Utils.Fetch( widget.query, appConfig )
+    
       .then( (res) => {
   
         if( 'log' in widget && widget.log ) {

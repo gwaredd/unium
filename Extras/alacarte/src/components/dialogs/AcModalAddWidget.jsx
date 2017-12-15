@@ -3,7 +3,7 @@
 import _ from 'lodash'
 import React from 'react'
 import { GithubPicker } from 'react-color'
-import ItemTypes from '../../ItemTypes.jsx'
+import ItemTypes from '../../Utils.jsx'
 import { Options } from '../app/AcWidgets.jsx'
 
 import {
@@ -52,7 +52,6 @@ export default class AcModalAddWidget extends React.Component {
   onChangeLog       = (e) => this.setState( { log: e.target.checked } )
   onChangeNotify    = (e) => this.setState( { notify: e.target.checked } )
   onShowColours     = (e) => this.setState( { showColours: !this.state.showColours } )
-  onChangeOptions   = (o) => this.setState( { options: o } )
   onChangeType      = (e) => this.setState( { type: e } )
   
   onChangeColour    = (c) => {
@@ -73,7 +72,13 @@ export default class AcModalAddWidget extends React.Component {
 
     if( this.state.name != '' ) {
 
-      var widget = { ...this.state }
+      var options = {}
+
+      if( this.refs != null && this.refs.options != null ) {
+        options = this.refs.options.state
+      }
+
+      var widget = { ...this.state, options: options }
       widget = _.omit( widget, 'showColours' )
 
       dialog.callback( widget )
@@ -163,7 +168,7 @@ export default class AcModalAddWidget extends React.Component {
               </Col>
             </FormGroup>
 
-            { $options != null && (<$options options={this.state.options} saveOptions={this.onChangeOptions}/>) }
+            { $options != null && (<$options ref='options' options={this.state.options}/>) }
 
           </Form>
 

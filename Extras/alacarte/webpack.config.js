@@ -1,9 +1,10 @@
 //-------------------------------------------------------------------------------
 
-const _       = require( 'lodash' )
-const path    = require( 'path' )
-const webpack = require( 'webpack' )
+const _                 = require( 'lodash' )
+const path              = require( 'path' )
+const webpack           = require( 'webpack' )
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' )
+const CopyWebpackPlugin = require( 'copy-webpack-plugin' )
 
 
 //-------------------------------------------------------------------------------
@@ -41,6 +42,11 @@ module.exports = env => {
     },
 
     plugins: [
+
+      new CopyWebpackPlugin([
+        { from: './src/test' },
+      ]),
+     
 
       new HtmlWebpackPlugin({
         template: './src/index.html',

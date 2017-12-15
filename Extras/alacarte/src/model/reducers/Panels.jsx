@@ -54,7 +54,13 @@ function reduceById( state={}, action ) {
       if( panelID in state ) {
 
         const panel = state[ panelID ]
-        var newPanel = { ...panel, widgets: [ ...panel.widgets, widget.id ] }
+        var widgets = [ ...panel.widgets ]
+
+        if( _.find( widgets, (w) => w == widget.id ) == null ) {
+          widgets.push( widget.id )
+        }
+
+        var newPanel = { ...panel, widgets: widgets }
   
         return { ...state, [ panelID ]: newPanel }
 

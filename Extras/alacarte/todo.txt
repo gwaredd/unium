@@ -1,7 +1,12 @@
 other kinds of widgets
   * table
-  * external link
-  * graph
+    * handle arrays
+  * graph?
+
+bugs
+
+  * create panel
+  * resizing panels
 
 sort out config loading order
 delete config - on device

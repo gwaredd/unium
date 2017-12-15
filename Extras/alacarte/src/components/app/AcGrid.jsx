@@ -10,6 +10,8 @@ import AcPanel from './AcPanel.jsx'
 import GridStyle from 'react-grid-layout/css/styles.css'
 import ResizeStyle from 'react-resizable/css/styles.css'
 
+import * as Tabs from '../../actions/Tabs.jsx'
+
 
 const ResponsiveReactGridLayout = WidthProvider( Responsive )
 

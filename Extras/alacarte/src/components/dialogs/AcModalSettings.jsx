@@ -39,6 +39,7 @@ export default class AcModalSettings extends React.Component {
   }
 
   onChangeStorage = (e) => { this.setState({ useLocalStorage: e.target.checked }) }
+  onChangeLoadOrder = (e) => {}
 
   onViewConfig = (e) => {
     e.preventDefault()
@@ -100,6 +101,7 @@ export default class AcModalSettings extends React.Component {
                 </Checkbox>
               </Col>
             </FormGroup>
+
 
             <FormGroup>
               <Col smOffset={2} sm={10}>

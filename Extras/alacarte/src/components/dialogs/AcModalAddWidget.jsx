@@ -128,7 +128,8 @@ export default class AcModalAddWidget extends React.Component {
                     />
                   <DropdownButton componentClass={InputGroup.Button} id="formType" title={this.state.type}>
                     <MenuItem key="1" onSelect={()=>this.onChangeType('Button')}>Button</MenuItem>
-                    <MenuItem key="2" onSelect={()=>this.onChangeType('Table')}>Table</MenuItem>
+                    <MenuItem key="2" onSelect={()=>this.onChangeType('Link')}>Link</MenuItem>
+                    <MenuItem key="3" onSelect={()=>this.onChangeType('Table')}>Table</MenuItem>
                   </DropdownButton>
                 </InputGroup>
               </Col>

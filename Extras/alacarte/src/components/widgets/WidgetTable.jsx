@@ -33,53 +33,75 @@ import * as Log from '../../actions/Logging.jsx'
 export default class WidgetTable extends React.Component {
 
   constructor( ...args ) {
+
     super( ...args )
 
     this.state = {
-      error: null,
-      data: null
+      error:   null,
+      data:    null,
+      headers: null
     }
   }
 
 
   //-------------------------------------------------------------------------------
 
+  setObject = (data,keyMap) => {
+
+    const { widget } = this.props
+
+    if( keyMap != null ) {
+      if( widget.options.type == 'Include' ) {
+        data = _.pickBy( data, (v,k) => k in keyMap )
+      } else {
+        data = _.omitBy( data, (v,k) => k in keyMap )
+      }
+    }
+
+    this.setState({ data:data, headers: null })
+  }
+
   processData = (data) => {
 
-    try {
+    const { widget } = this.props
 
-      const { widget } = this.props
-      
-      if( _.isObject( data ) ) {
+    var keyMap = null
 
-        if( widget.options.filter != "" ) {
+    if( widget.options.filter != "" ) {
 
-          const keys = widget.options.filter.split( /\s*,\s*/ )
-          const keyMap = _.zipObject( keys, _.map( keys, () => true ) )
+      const keys = widget.options.filter.split( /\s*,\s*/ )
+      keyMap = _.zipObject( keys, _.map( keys, () => true ) )
+    }
 
-          if( widget.options.type == 'Include' ) {
+    // arrays
 
-            data = _.pickBy( data, (v,k) => k in keyMap )
+    if( _.isArray( data ) ) {
+    
+      if( data.length == 1 ) {
+        this.setObject( data[0], keyMap )
+        return
+      }
 
-          } else {
-
-            data = _.omitBy( data, (v,k) => k in keyMap )
-
-          }
-
-
-          console.log( keyMap )
-        }
-
-        this.setState({data:data})
-
-      } else {
-        console.error( "TODO: handle arrays!")
+      if( keyMap != null ) {
+        
       }
       
-    }
-    catch( e ) {
-      console.error( "TODO: handle parse error" )
+      this.setState({ error: "TODO: handle arrays!", data: null })
+      
+      
+    // objects
+    
+    } else if( _.isObject( data ) ) {
+
+      this.setObject( data, keyMap )
+
+
+    // plain old data
+      
+    } else {
+
+      this.setState({data:{0:JSON.stringify( data ) }})
+
     }
   }
 
@@ -122,6 +144,12 @@ export default class WidgetTable extends React.Component {
   //-------------------------------------------------------------------------------
 
   componentWillMount() {
+
+    const { widget, isEditing } = this.props
+
+    if( !isEditing && widget.options.fetchOnStartup ) {
+      this.fetchData()
+    }
   }
   
   
@@ -163,8 +191,8 @@ export default class WidgetTable extends React.Component {
               _.map( this.state.data, (v,k) => {
                 return (
                   <tr key={k}>
-                    <td>{k}</td>
-                    <td>{JSON.stringify(v)}</td>
+                    <td>{ k }</td>
+                    <td>{ _.isString( v ) ? v : JSON.stringify(v) }</td>
                   </tr>
                 )
               })

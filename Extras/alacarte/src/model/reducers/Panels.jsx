@@ -40,7 +40,7 @@ function reduceById( state={}, action ) {
       const { payload } = action
       const { id }      = payload
       
-      return _.reject( state, (t) => t.tab == id )
+      return _.omitBy( state, (t) => t.tab == id )
     }
 
 
@@ -117,10 +117,6 @@ function reduceById( state={}, action ) {
 function reduceState( state={}, action ) {
 
   switch( action.type ) {
-
-    // case 'CONFIG_IMPORT': {
-    //   return { ...action.payload.panels.state }
-    // }
 
     case "APP_PANEL_STATE":
       return { ...state, ...action.payload }

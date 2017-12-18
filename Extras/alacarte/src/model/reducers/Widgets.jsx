@@ -19,12 +19,6 @@ function reduceById( state={}, action ) {
       const { id }      = payload
       const widget      = { ...payload }
 
-      // if( widget.panel in state ) {
-
-      // }
-
-      //widget.panel
-
       return { ...state, [id] : widget }
     }
 
@@ -42,7 +36,7 @@ function reduceById( state={}, action ) {
       const { payload } = action
       const { id }      = payload
       
-      return _.reject( state, (p) => p.panel == id )
+      return _.omitBy( state, (w) => w.panel == id )
       
     }
     
@@ -51,7 +45,7 @@ function reduceById( state={}, action ) {
       const { payload } = action
       const { id }      = payload
       
-      return _.reject( state, (p) => p.tab == id )
+      return _.omitBy( state, (w) => w.tab == id )
       
     }
   }

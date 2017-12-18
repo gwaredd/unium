@@ -1,8 +1,7 @@
 
 bugs
 
-  * create panel
-  * resizing panels
+  * deleting a panel ...
 
 sort out config loading order
 delete config - on device

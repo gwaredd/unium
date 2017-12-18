@@ -174,7 +174,7 @@ namespace gw.proto.http
         }
 
         ////////////////////////////////////////////////////////////////////////////////
-        // asychronous accept - happens on ThreadPool
+        // asynchronous accept - happens on ThreadPool
 
         protected static void OnAcceptConnection( IAsyncResult result )
         {
@@ -190,8 +190,12 @@ namespace gw.proto.http
                 }
                 else
                 {
-                    server.Log.Warn( "Failed to acception client connection" );
+                    server.Log.Warn( "Failed to accept client connection" );
                 }
+
+                // fix for IL2CPP
+                tcpClient.ReceiveTimeout    = -1;
+                tcpClient.SendTimeout       = -1;
 
                 server.mListener.BeginAcceptTcpClient( new AsyncCallback( OnAcceptConnection ), server );
             }

@@ -1,8 +1,2 @@
-
-bugs
-
-  * deleting a panel ...
-
-sort out config loading order
-delete config - on device
-
+* save load order in local storage separate from app config
+* save config to origin

@@ -43,9 +43,9 @@ module.exports = env => {
 
     plugins: [
 
-      new CopyWebpackPlugin([
-        { from: './src/test' },
-      ]),
+      // new CopyWebpackPlugin([
+      //   { from: './src/test' },
+      // ]),
      
 
       new HtmlWebpackPlugin({

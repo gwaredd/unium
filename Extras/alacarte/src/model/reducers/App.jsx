@@ -13,9 +13,6 @@ const initial_state = {
     api       : document.location.protocol + '//' + server,
     ws        : "ws://" + server + "/ws"
   },
-  settings    : {
-    useLocalStorage : false,
-  }
 }
 
 
@@ -24,8 +21,8 @@ const initial_state = {
 export default function App( state=initial_state, action ) {
 
   switch( action.type ) {
-    case 'CONFIG_IMPORT':     return { ...state, settings: action.payload.app.settings }
-    case 'APP_CONFIG':        return { ...state, settings: action.payload }
+    case 'CONFIG_IMPORT':     return { ...state }
+    case 'APP_CONFIG':        return { ...state }
     case 'CON_CONNECTED':     return { ...state, connected: action.payload }
     case 'APP_DAILOG_SHOW':   return { ...state, dialog: action.payload }
     case 'APP_DIALOG_CANCEL': return { ...state, dialog: null }

@@ -8,8 +8,6 @@ import AcModalConfirm from '../dialogs/AcModalConfirm.jsx'
 import AcModalAddTab from '../dialogs/AcModalAddTab.jsx'
 import AcModalAddPanel from '../dialogs/AcModalAddPanel.jsx'
 import AcModalAddWidget from '../dialogs/AcModalAddWidget.jsx'
-import AcModalSettings from '../dialogs/AcModalSettings.jsx'
-import AcModalVieWConfig from '../dialogs/AcModalVieWConfig.jsx'
 
 const DialogComponents = {
   'screenshot': AcModalScreenshot,
@@ -17,8 +15,6 @@ const DialogComponents = {
   'addTab'    : AcModalAddTab,
   'addPanel'  : AcModalAddPanel,
   'addWidget' : AcModalAddWidget,
-  'settings'  : AcModalSettings,
-  'viewconfig': AcModalVieWConfig,
 }
 
 import { CancelDialog } from '../../actions/App.jsx'

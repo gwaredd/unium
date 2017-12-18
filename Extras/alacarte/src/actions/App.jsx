@@ -21,27 +21,7 @@ export function Delete() {
     type    : "APP_DELETE"
   }
 }
-
-export function Settings( callback ) {
-  return {
-    type    : "APP_DAILOG_SHOW",
-    payload : {
-      modal     : 'settings',
-      callback  : callback,
-    }
-  }
-}
   
-export function ViewConfig() {
-  return {
-    type    : "APP_DAILOG_SHOW",
-    payload : {
-      modal     : 'viewconfig',
-      callback  : null,
-    }
-  }
-}
-
 export function Confirm( title, question, callback, data ) {
   return {
     type    : "APP_DAILOG_SHOW",

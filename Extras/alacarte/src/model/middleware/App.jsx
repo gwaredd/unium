@@ -13,11 +13,7 @@ const staticSave = '/file/streaming/alacarte.json'
 const localStorageKey = 'unium'
 
 const emptyConfig = {
-  app: {
-    settings: {
-      useLocalStorage: true
-    }
-  },
+  app: {},
   tabs: { byId: {}},
   panels: { byId: {}},
   widgets: { byId: {}},
@@ -40,20 +36,6 @@ export default (function(){
 
         const state = store.getState()
         const { api } = state.app.config
-        const { useLocalStorage } = state.app.settings
-
-        if( global.localStorage ) {
-          const data = global.localStorage.getItem( localStorageKey )
-          if( data != null ) {
-            try {
-              store.dispatch( { type: 'CONFIG_IMPORT', payload: JSON.parse( data ) } )
-              store.dispatch( Log.Success( 'Custom config loaded from local storage' ) )
-            } catch( e ) {
-              console.error( e )
-            }
-            return
-          }
-        }
 
         Axios.get( api + customSave )
           .then( (res) => {
@@ -61,7 +43,7 @@ export default (function(){
             store.dispatch( Log.Success( 'Custom config loaded from game' ) )
           })
           .catch( (err) => {
-            store.dispatch( Log.Warning( 'No custom config found' ) )
+            store.dispatch( Log.Warning( 'No custom config returned by game' ) )
           })
 
         return
@@ -74,38 +56,17 @@ export default (function(){
 
         var data = { ...store.getState() }
         const { api } = data.app.config
-        const { useLocalStorage } = data.app.settings
 
         
         delete data[ 'output' ]
         data.app = _.pick( data.app, 'settings' )
         data = JSON.stringify( data )
 
-
-        if( useLocalStorage ) {
-
-          if( !global.localStorage ) {
-            store.dispatch( Log.Error( 'Failed to save config - no local storage' ) )
-            return
-          }
-
-          global.localStorage.setItem( localStorageKey, data )
-          store.dispatch( Log.Success( 'Config saved to local storage' ) )
-          
-        } else {
-
-          // save to game
-
-          Axios.post( api + customSave, data )
-          .then( (res) => {
-            store.dispatch( Log.Success( 'Config saved to persistent data' ) )
-          })
-          .catch( (err) => {
-            store.dispatch( Log.Error( 'Failed to save config: ' + err.toString() ) )
-          })
-
-        }
-  
+        Axios
+          .post( api + customSave, data )
+          .then ( (res) => store.dispatch( Log.Success( 'Config saved to persistent data' ) ) )
+          .catch( (err) => store.dispatch( Log.Error( 'Failed to save config: ' + err.toString() ) ) )
+    
         return
       }
 
@@ -115,24 +76,11 @@ export default (function(){
 
         var data = store.getState()
         const { api } = data.app.config
-        const { useLocalStorage } = data.app.settings
 
-        if( useLocalStorage ) {
-          
-          if( !global.localStorage ) {
-            store.dispatch( Log.Error( 'Failed to save config - no local storage' ) )
-            return
-          }
+        global.localStorage.removeItem( localStorageKey )
 
-          global.localStorage.removeItem( localStorageKey )
-
-          store.dispatch( { type: 'CONFIG_IMPORT', payload: emptyConfig } )
-          store.dispatch( Log.Success( 'Config removed' ) )
-          
-        } else {
-
-          console.log( "delete on device" )
-        }
+        store.dispatch( { type: 'CONFIG_IMPORT', payload: emptyConfig } )
+        store.dispatch( Log.Success( 'Config removed' ) )
           
         return
       }

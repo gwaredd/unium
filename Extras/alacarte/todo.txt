@@ -1,2 +1,0 @@
-* save load order in local storage separate from app config
-* save config to origin

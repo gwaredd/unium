@@ -105,12 +105,6 @@ namespace gw.proto.http
                 Dispatch        = dispatcher;
                 Response        = new HttpResponse( mStream );
 
-                // seems like a bug in mono that doesn't close the streams properly, so get them to timeout
-
-                mStream.ReadTimeout     = 1000;
-                mStream.WriteTimeout    = 1000;
-
-
                 // read
 
                 mBufferPos      = 0;

@@ -186,16 +186,16 @@ namespace gw.proto.http
 
                 if( tcpClient != null )
                 {
+                    // fix for IL2CPP
+                    tcpClient.ReceiveTimeout = -1;
+                    tcpClient.SendTimeout    = -1;
+
                     ThreadPool.QueueUserWorkItem( (object c) => (c as Client).OnConnect(), new Client( server.Dispatcher, tcpClient ) );
                 }
                 else
                 {
                     server.Log.Warn( "Failed to accept client connection" );
                 }
-
-                // fix for IL2CPP
-                tcpClient.ReceiveTimeout    = -1;
-                tcpClient.SendTimeout       = -1;
 
                 server.mListener.BeginAcceptTcpClient( new AsyncCallback( OnAcceptConnection ), server );
             }

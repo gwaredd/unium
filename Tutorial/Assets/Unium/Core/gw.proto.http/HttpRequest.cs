@@ -15,40 +15,42 @@ namespace gw.proto.http
     public class HttpRequest
     {
         // general config options
-
-        public static int LimitPostSize           = 0;
-        public static int HeaderBufferSize        = 8 * 1024;
+        
+        public static int LimitPostSize     = 0;
+        public static int HeaderBufferSize  = 8 * 1024;
 
 
         // request
 
-        public Dictionary<string, string> Headers { get; private set; }
+        public Dictionary<string,string> Headers { get; private set; }
 
-        public uint         ID                    { get; private set; }
-        public string       Method                { get; private set; }
-        public string       URL                   { get; private set; }
-        public string       QueryParameters       { get; private set; }
+        public uint         ID          { get; private set; }
+        public string       Method      { get; private set; }
+        public string       URL         { get; private set; }
+        public string       QueryParameters { get; private set; }
         public byte[]       Body;
 
-        public HttpResponse Response              { get; private set; }
+        public HttpResponse Response    { get; private set; }
 
-        public Logger       Log                   { get{ return Dispatch.Log; } }
-        public Dispatcher   Dispatch              { get; private set; }
+        public Logger       Log         { get { return Dispatch.Log; } }
+        public Dispatcher   Dispatch    { get; private set; }
 
         private Stream      mStream;
+        private Client      mClient;
 
 
         static uint sNextID = 0;
 
         public HttpRequest()
         {
-            ID = sNextID++;
-            Headers = new Dictionary<string, string>();
+            ID      = sNextID++;
+            Headers = new Dictionary<string,string>();
         }
 
         public HttpRequest( Client client )
             : this()
         {
+            mClient = client;
         }
 
 
@@ -99,21 +101,15 @@ namespace gw.proto.http
             {
                 // setup
 
-                mStream = stream;
-                Dispatch = dispatcher;
-                Response = new HttpResponse( mStream );
-
-                // seems like a bug in mono that doesn't close the streams properly, so get them to timeout
-
-                mStream.ReadTimeout = 1000;
-                mStream.WriteTimeout = 1000;
-
+                mStream         = stream;
+                Dispatch        = dispatcher;
+                Response        = new HttpResponse( mStream );
 
                 // read
 
-                mBufferPos = 0;
-                mBufferedBytes = 0;
-                mBuffer = new byte[ HeaderBufferSize ];
+                mBufferPos      = 0;
+                mBufferedBytes  = 0;
+                mBuffer         = new byte[ HeaderBufferSize ];
 
                 ReadRequest();
                 ReadHeaders();
@@ -124,7 +120,7 @@ namespace gw.proto.http
                 switch( Method )
                 {
                     case "GET":
-
+                        
                         if( IsUpgradeRequest() )
                         {
                             DispatchWebSocket();
@@ -144,7 +140,7 @@ namespace gw.proto.http
 
 
                     case "OPTIONS":
-                        Response.Headers[ "Access-Control-Allow-Origin" ] = "*";
+                        Response.Headers[ "Access-Control-Allow-Origin"  ] = "*";
                         Response.Headers[ "Access-Control-Allow-Headers" ] = "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With";
                         Response.Close();
                         break;
@@ -178,6 +174,8 @@ namespace gw.proto.http
 
         void DispatchWebSocket()
         {
+            Log.Print( "[{0}] OPEN {1} - {2}", ID, URL, mClient != null ? mClient.Address : "stream" );
+
             if( Dispatch.OnSocketRequest == null )
             {
                 throw new HttpResponseException( ResponseCode.NotFound );
@@ -188,6 +186,8 @@ namespace gw.proto.http
 
         void DispatchRequest()
         {
+            Log.Print( "[{0}] {1} {2} - {3}", ID, Method, URL, mClient != null ? mClient.Address : "stream" );
+
             if( Dispatch.OnWebRequest == null )
             {
                 throw new HttpResponseException( ResponseCode.NotFound );
@@ -304,8 +304,8 @@ namespace gw.proto.http
             var url = request[ 1 ];
             var idx = url.IndexOf( '?' );
 
-            Method = request[ 0 ];
-            URL = idx >= 0 ? url.Substring( 0, idx ) : url;
+            Method  = request[ 0 ];
+            URL     = idx >= 0 ? url.Substring( 0, idx ) : url;
             QueryParameters = idx >= 0 ? url.Substring( idx + 1 ) : string.Empty;
         }
 
@@ -329,7 +329,7 @@ namespace gw.proto.http
 
                 // add header
 
-                Headers[ kv[ 0 ].Trim() ] = kv[ 1 ].Trim();
+                Headers[ kv[0].Trim() ] = kv[1].Trim();
 
                 line = ReadLine();
             }
@@ -383,7 +383,7 @@ namespace gw.proto.http
             {
                 return; // nothing to read
             }
-
+                
             if( LimitPostSize > 0 && numBytesToRead > LimitPostSize )
             {
                 throw new HttpResponseException( ResponseCode.EntityTooLarge );

@@ -15,7 +15,7 @@ namespace gw.proto.http
     public class HttpRequest
     {
         // general config options
-        
+
         public static int LimitPostSize     = 0;
         public static int HeaderBufferSize  = 8 * 1024;
 
@@ -32,7 +32,6 @@ namespace gw.proto.http
 
         public HttpResponse Response    { get; private set; }
 
-        public Logger       Log         { get { return Dispatch.Log; } }
         public Dispatcher   Dispatch    { get; private set; }
 
         private Stream      mStream;
@@ -120,7 +119,7 @@ namespace gw.proto.http
                 switch( Method )
                 {
                     case "GET":
-                        
+
                         if( IsUpgradeRequest() )
                         {
                             DispatchWebSocket();
@@ -152,17 +151,17 @@ namespace gw.proto.http
             }
             catch( HttpResponseException e )
             {
-                Log.Warn( "[{0}] {1} {2}", ID, e.Code, HttpUtils.CodeToString( e.Code ) );
+                Util.Warn( "[{0}] {1} {2}", ID, e.Code, HttpUtils.CodeToString( e.Code ) );
                 Response.Reject( e.Code );
             }
             catch( System.IO.IOException e )
             {
-                Log.Warn( "[{0}] failed to read from stream - {1}", ID, e.Message );
+                Util.Warn( "[{0}] failed to read from stream - {1}", ID, e.Message );
                 mStream.Close();
             }
             catch( Exception e )
             {
-                Log.Error( "[{0}] {1}", ID, e.ToString() );
+                Util.Error( "[{0}] {1}", ID, e.ToString() );
                 Response.Abort();
             }
 
@@ -174,7 +173,7 @@ namespace gw.proto.http
 
         void DispatchWebSocket()
         {
-            Log.Print( "[{0}] OPEN {1} - {2}", ID, URL, mClient != null ? mClient.Address : "stream" );
+            Util.Print( "[{0}] OPEN {1} - {2}", ID, URL, mClient != null ? mClient.Address : "stream" );
 
             if( Dispatch.OnSocketRequest == null )
             {
@@ -186,7 +185,7 @@ namespace gw.proto.http
 
         void DispatchRequest()
         {
-            Log.Print( "[{0}] {1} {2} - {3}", ID, Method, URL, mClient != null ? mClient.Address : "stream" );
+            Util.Print( "[{0}] {1} {2} - {3}", ID, Method, URL, mClient != null ? mClient.Address : "stream" );
 
             if( Dispatch.OnWebRequest == null )
             {
@@ -383,7 +382,7 @@ namespace gw.proto.http
             {
                 return; // nothing to read
             }
-                
+
             if( LimitPostSize > 0 && numBytesToRead > LimitPostSize )
             {
                 throw new HttpResponseException( ResponseCode.EntityTooLarge );

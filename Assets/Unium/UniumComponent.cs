@@ -14,7 +14,7 @@ using gw.unium;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// UniumComponent 
+// UniumComponent
 
 public class UniumComponent : MonoBehaviour
 {
@@ -144,8 +144,6 @@ public class UniumComponent : MonoBehaviour
         mServer.Stop();
         mServer.Dispatcher.OnSocketClose -= OnWebSocketClose;
         mServer = null;
-
-        JsonReflector.Log = null;
 
         lock( mQueuedRequests )
         {
@@ -326,4 +324,3 @@ public class UniumComponent : MonoBehaviour
         Log( msg, LogType.Error );
     }
 }
-

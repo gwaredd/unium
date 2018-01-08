@@ -12,14 +12,13 @@ namespace gw.proto.utils
 
     public static class JsonReflector
     {
-        public static Logger Log = null;
         static JsonTypeConverters mConverters = new JsonTypeConverters();
 
         public static void Add( Type type, JsonSerialiser converter )
         {
             mConverters.Add( type, converter );
         }
-        
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -105,10 +104,7 @@ namespace gw.proto.utils
                 }
                 catch( Exception e )
                 {
-                    if( Log != null )
-                    {
-                        Log.Warn( e.ToString() );
-                    }
+                    Util.Warn( e.ToString() );
                 }
             }
 

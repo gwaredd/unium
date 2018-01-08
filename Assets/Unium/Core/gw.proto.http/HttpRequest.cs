@@ -35,7 +35,6 @@ namespace gw.proto.http
         public Dispatcher   Dispatch    { get; private set; }
 
         private Stream      mStream;
-        private Client      mClient;
 
 
         static uint sNextID = 0;
@@ -49,7 +48,6 @@ namespace gw.proto.http
         public HttpRequest( Client client )
             : this()
         {
-            mClient = client;
         }
 
 
@@ -173,8 +171,6 @@ namespace gw.proto.http
 
         void DispatchWebSocket()
         {
-            Util.Print( "[{0}] OPEN {1} - {2}", ID, URL, mClient != null ? mClient.Address : "stream" );
-
             if( Dispatch.OnSocketRequest == null )
             {
                 throw new HttpResponseException( ResponseCode.NotFound );
@@ -185,8 +181,6 @@ namespace gw.proto.http
 
         void DispatchRequest()
         {
-            Util.Print( "[{0}] {1} {2} - {3}", ID, Method, URL, mClient != null ? mClient.Address : "stream" );
-
             if( Dispatch.OnWebRequest == null )
             {
                 throw new HttpResponseException( ResponseCode.NotFound );

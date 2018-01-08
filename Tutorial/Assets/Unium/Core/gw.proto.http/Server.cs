@@ -19,8 +19,6 @@ namespace gw.proto.http
         public delegate void WebRequestHandler( HttpRequest req );
         public delegate void WebSocketHandler( WebSocket sender );
 
-        public Logger Log = new Logger();
-
         public WebRequestHandler        OnWebRequest    = null;
         public WebSocketHandler         OnSocketRequest = null;
         public WebSocketHandler         OnSocketOpen    = null;
@@ -60,7 +58,6 @@ namespace gw.proto.http
         public Settings     Settings    { get; private set; }
         public Dispatcher   Dispatcher  { get; private set; }
 
-        public Logger       Log         { get { return Dispatcher.Log; } }
         public string       Address     { get { return mListener != null ? mListener.LocalEndpoint.ToString() : null; } }
         public bool         IsListening { get { return mListener != null; } }
 
@@ -97,7 +94,7 @@ namespace gw.proto.http
             {
                 if( mListener != null )
                 {
-                    Log.Error( "Already listening on {0}", mListener.LocalEndpoint.ToString() );
+                    Util.Error( string.Format( "Already listening on {0}", mListener.LocalEndpoint.ToString() ) );
                     return false;
                 }
 
@@ -105,13 +102,13 @@ namespace gw.proto.http
                 mListener.Start();
                 mListener.BeginAcceptTcpClient( new AsyncCallback( OnAcceptConnection ), this );
 
-                Log.Print( "Listening on {0}", mListener.LocalEndpoint.ToString() );
+                Util.Print( string.Format( "Listening on {0}", mListener.LocalEndpoint.ToString() ) );
 
                 return true;
             }
             catch( Exception e )
             {
-                Log.Error( e.ToString() );
+                Util.Error( e.ToString() );
                 mListener = null;
             }
 
@@ -132,7 +129,7 @@ namespace gw.proto.http
             mListener.Stop();
             mListener = null;
 
-            Log.Print( "Server closing down" );
+            Util.Print( "Server closing down" );
 
             foreach( var ws in mWebSockets )
             {
@@ -190,14 +187,14 @@ namespace gw.proto.http
                 }
                 else
                 {
-                    server.Log.Warn( "Failed to accept client connection" );
+                    Util.Warn( "Failed to accept client connection" );
                 }
 
                 server.mListener.BeginAcceptTcpClient( new AsyncCallback( OnAcceptConnection ), server );
             }
             catch( Exception e )
             {
-                server.Log.Error( e.ToString() );
+                Util.Error( e.ToString() );
             }
         }
     }

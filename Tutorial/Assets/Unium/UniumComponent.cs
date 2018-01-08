@@ -144,8 +144,6 @@ public class UniumComponent : MonoBehaviour
         mServer.Dispatcher.OnSocketClose -= OnWebSocketClose;
         mServer = null;
 
-        JsonReflector.Log = null;
-
         lock( mQueuedRequests )
         {
             foreach( var req in mQueuedRequests )
@@ -306,10 +304,10 @@ public class UniumComponent : MonoBehaviour
 
         switch( type )
         {
-            case LogType.Log: UnityEngine.Debug.Log( str ); break;
-            case LogType.Warning: UnityEngine.Debug.LogWarning( str ); break;
             default:
-            case LogType.Error: UnityEngine.Debug.LogError( str ); break;
+            case LogType.Error:   UnityEngine.Debug.LogError( str ); break;
+            case LogType.Log:     UnityEngine.Debug.Log( str ); break;
+            case LogType.Warning: UnityEngine.Debug.LogWarning( str ); break;
         }
     }
 

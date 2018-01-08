@@ -31,8 +31,6 @@ namespace gw.proto.http
         public byte[]       Body;
 
         public HttpResponse Response    { get; private set; }
-
-        public Logger       Log         { get { return Dispatch.Log; } }
         public Dispatcher   Dispatch    { get; private set; }
 
         private Stream      mStream;
@@ -152,17 +150,17 @@ namespace gw.proto.http
             }
             catch( HttpResponseException e )
             {
-                Log.Warn( "[{0}] {1} {2}", ID, e.Code, HttpUtils.CodeToString( e.Code ) );
+                Util.Warn( string.Format( "[{0}] {1} {2}", ID, e.Code, HttpUtils.CodeToString( e.Code ) ) );
                 Response.Reject( e.Code );
             }
             catch( System.IO.IOException e )
             {
-                Log.Warn( "[{0}] failed to read from stream - {1}", ID, e.Message );
+                Util.Warn( string.Format( "[{0}] failed to read from stream - {1}", ID, e.Message ) );
                 mStream.Close();
             }
             catch( Exception e )
             {
-                Log.Error( "[{0}] {1}", ID, e.ToString() );
+                Util.Error( string.Format( "[{0}] {1}", ID, e.ToString() ) );
                 Response.Abort();
             }
 
@@ -174,7 +172,7 @@ namespace gw.proto.http
 
         void DispatchWebSocket()
         {
-            Log.Print( "[{0}] OPEN {1} - {2}", ID, URL, mClient != null ? mClient.Address : "stream" );
+            Util.Print( string.Format( "[{0}] OPEN {1} - {2}", ID, URL, mClient != null ? mClient.Address : "stream" ) );
 
             if( Dispatch.OnSocketRequest == null )
             {
@@ -186,7 +184,7 @@ namespace gw.proto.http
 
         void DispatchRequest()
         {
-            Log.Print( "[{0}] {1} {2} - {3}", ID, Method, URL, mClient != null ? mClient.Address : "stream" );
+            Util.Print( string.Format( "[{0}] {1} {2} - {3}", ID, Method, URL, mClient != null ? mClient.Address : "stream" ) );
 
             if( Dispatch.OnWebRequest == null )
             {

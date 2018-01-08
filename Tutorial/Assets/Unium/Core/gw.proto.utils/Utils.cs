@@ -1,6 +1,7 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace gw.proto.utils
@@ -13,6 +14,24 @@ namespace gw.proto.utils
         public static string RandomString( int length = 8 )
         {
             return new string( Enumerable.Repeat( chars, length ).Select( s => s[ Rnd.Next( s.Length ) ] ).ToArray() );
+        }
+
+        [Conditional( "GW_DEBUG" )]
+        public static void Print( string msg )
+        {
+            UnityEngine.Debug.Log( msg );
+        }
+
+        [Conditional( "GW_DEBUG" )]
+        public static void Warn( string msg )
+        {
+            UnityEngine.Debug.LogWarning( msg );
+        }
+
+        [Conditional( "GW_DEBUG" )]
+        public static void Error( string msg )
+        {
+            UnityEngine.Debug.LogError( msg );
         }
     }
 }

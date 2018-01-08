@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace gw.gql
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // interpreters provide the "DOM" search interface to a given type 
+    // interpreters provide the "DOM" search interface to a given type
 
     public class Interpreter
     {

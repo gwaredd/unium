@@ -13,11 +13,11 @@ namespace gw.proto.utils
         [Flags]
         public enum Severity
         {
-            None = 0x00,
-            Info = 0x01,
+            None    = 0x00,
+            Info    = 0x01,
             Warning = 0x02,
-            Error = 0x04,
-            All = 0x07,
+            Error   = 0x04,
+            All     = 0x07,
         }
 
         public Severity Type { get; private set; }

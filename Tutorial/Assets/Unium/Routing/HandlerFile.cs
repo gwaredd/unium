@@ -86,46 +86,45 @@ namespace gw.unium
 
         static void DownloadFile( RequestAdapter req, string filepath )
         {
-#if UNITY_ANDROID
-
-            /*
-            var data = new WWW( filepath );
-
-            while( !data.isDone )
+            if( Application.platform == RuntimePlatform.Android )
             {
-                Thread.Sleep( 10 );
-            }
+                var data = new WWW( filepath );
 
-            if( string.IsNullOrEmpty( data.error ) )
-            {
-                req.SetContentType( GetMimeType( filepath ) );
-                req.Respond( data.bytes );
-            }
-            else
-            {
-                req.Reject( ResponseCode.InternalServerError );
-            }
-            */
-            req.Reject(ResponseCode.InternalServerError);
-#else
+                while( !data.isDone )
+                {
+                    Thread.Sleep( 10 );
+                }
 
-            // System.IO
-
-            if( ( File.GetAttributes( filepath ) & FileAttributes.Directory ) == FileAttributes.Directory )
-            {
-                // list contents of directory
-
-                var files = from c in Directory.GetFileSystemEntries( filepath ) select Path.GetFileName( c );
-                req.Respond( JsonReflector.Reflect( files.ToArray() ) );
+                if( string.IsNullOrEmpty( data.error ) )
+                {
+                    req.SetContentType( GetMimeType( filepath ) );
+                    req.Respond( data.bytes );
+                }
+                else
+                {
+                    Debug.LogError( data.error );
+                    req.Reject( ResponseCode.InternalServerError );
+                }
             }
             else
             {
-                // dump bytes
+                // System.IO
 
-                req.SetContentType( GetMimeType( filepath ) );
-                req.Respond( File.ReadAllBytes( filepath ) );
+                if( ( File.GetAttributes( filepath ) & FileAttributes.Directory ) == FileAttributes.Directory )
+                {
+                    // list contents of directory
+
+                    var files = from c in Directory.GetFileSystemEntries( filepath ) select Path.GetFileName( c );
+                    req.Respond( JsonReflector.Reflect( files.ToArray() ) );
+                }
+                else
+                {
+                    // dump bytes
+
+                    req.SetContentType( GetMimeType( filepath ) );
+                    req.Respond( File.ReadAllBytes( filepath ) );
+                }
             }
-#endif
         }
 
         //----------------------------------------------------------------------------------------------------

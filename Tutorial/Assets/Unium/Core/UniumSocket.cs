@@ -16,7 +16,7 @@ namespace gw.unium
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// A class that handles communication over a websocket
-    /// 
+    ///
     /// Parses json messages from the client and dispatches them on the game thread
     /// Also handles "watching variables" and listening to game events
     /// </summary>

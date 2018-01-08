@@ -15,7 +15,7 @@ namespace gw.proto.http
     public class HttpRequest
     {
         // general config options
-        
+
         public static int LimitPostSize     = 0;
         public static int HeaderBufferSize  = 8 * 1024;
 
@@ -120,7 +120,7 @@ namespace gw.proto.http
                 switch( Method )
                 {
                     case "GET":
-                        
+
                         if( IsUpgradeRequest() )
                         {
                             DispatchWebSocket();
@@ -383,7 +383,7 @@ namespace gw.proto.http
             {
                 return; // nothing to read
             }
-                
+
             if( LimitPostSize > 0 && numBytesToRead > LimitPostSize )
             {
                 throw new HttpResponseException( ResponseCode.EntityTooLarge );

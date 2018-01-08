@@ -101,7 +101,7 @@ namespace gw.gql.calc
 
         // context for counting number of function arguments(...)
 
-        public int      NumCommas   = 0;    // 
+        public int      NumCommas   = 0;    //
         public int      OutputSize  = 0;
 
         public Token( int type, string text = null )

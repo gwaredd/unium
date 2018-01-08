@@ -12,7 +12,7 @@ public class TestCalcToken
     [Test]
     public void ShouldIdentifyTokenTypes()
     {
-        // type 
+        // type
 
         Assert.IsTrue( new Token( Token.Variable ).IsOperand() );
         Assert.IsTrue( new Token( Token.Integer ).IsOperand() );

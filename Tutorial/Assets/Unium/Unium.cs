@@ -64,14 +64,14 @@ namespace gw.unium
 
             // immediate
 
-            RoutesHTTP.AddImmediate( "/file", HandlerFile.Serve );
-            RoutesHTTP.AddImmediate( "/", ( RequestAdapter req, string path ) => req.Redirect( "index.html" ) ).ExactMatch = true;
+            RoutesHTTP.Add( "/file", HandlerFile.Serve );
+            RoutesHTTP.Add( "/", ( RequestAdapter req, string path ) => req.Redirect( "index.html" ) ).ExactMatch = true;
 
             // otherwise
 
             RoutesHTTP.Otherwise = new Route();
             RoutesHTTP.Otherwise.Handler = HandlerFile.Serve;
-            RoutesHTTP.Otherwise.DispatchOnGameThread = false;
+            RoutesHTTP.Otherwise.DispatchOnGameThread = true;
 
 
             //
@@ -85,7 +85,6 @@ namespace gw.unium
             RoutesSocket.Add( "/socket", HandlerSocketCommand.Execute );
             RoutesSocket.Add( "/bind", HandlerSocketBind.HandleBind );
         }
-
 
 
         //----------------------------------------------------------------------------------------------------

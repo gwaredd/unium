@@ -164,7 +164,7 @@ public class TestSocket
         msg.id = "msg";
         msg.Info( "hello" );
 
-        // JSON unfriendly 
+        // JSON unfriendly
 
         rcv.Expect = @"{""id"":""\"",x:{}\"""",""info"":""\"",x:{}\""""}";
         msg.id = @""",x:{}""";

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-//#define GW_WEBSOCKET_DETAILED_LOGGING
+#define GW_WEBSOCKET_DETAILED_LOGGING
 
 using System;
 using System.Security.Cryptography;
@@ -10,6 +10,10 @@ using System.IO;
 using System.Collections.Generic;
 
 using gw.proto.utils;
+
+#if GW_WEBSOCKET_DETAILED_LOGGING
+using UnityEngine;
+#endif
 
 namespace gw.proto.http
 {
@@ -405,7 +409,7 @@ namespace gw.proto.http
 
 
 #if GW_WEBSOCKET_DETAILED_LOGGING
-                    mLog.Print( "[ws:{0}] Sending {1}/{2}", ID, index + numBytes, totalBytes );
+                Debug.Log( string.Format( "[ws:{0}] Sending {1}/{2}", ID, index + numBytes, totalBytes ) );
 #endif
 
                 lock( mSendQueue )
@@ -655,8 +659,8 @@ namespace gw.proto.http
                     mFragmentPayloads.Add( mFrame.Payload );
 
 #if GW_WEBSOCKET_DETAILED_LOGGING
-                        mLog.Print( "[ws:{0}] Fragment #{1} - {2} makes {3}", ID, mFragmentPayloads.Count, mFrame.Payload.Length, mFragmentTotalBytes );
-                        mLog.Print( "[ws:{0}] Recived message with length {1} over {2} fragments", ID, mFragmentTotalBytes, mFragmentPayloads.Count );
+                        Debug.LogFormat( "[ws:{0}] Fragment #{1} - {2} makes {3}", ID, mFragmentPayloads.Count, mFrame.Payload.Length, mFragmentTotalBytes );
+                        Debug.LogFormat( "[ws:{0}] Recived message with length {1} over {2} fragments", ID, mFragmentTotalBytes, mFragmentPayloads.Count );
 #endif
 
                     // concatenate into one buffer
@@ -710,7 +714,7 @@ namespace gw.proto.http
                 mFragmentPayloads.Add( mFrame.Payload );
 
 #if GW_WEBSOCKET_DETAILED_LOGGING
-                    mLog.Print( "[ws:{0}] Fragment #{1} - {2} makes {3}", ID, mFragmentPayloads.Count, mFrame.Payload.Length, mFragmentTotalBytes );
+                    Debug.LogFormat( "[ws:{0}] Fragment #{1} - {2} makes {3}", ID, mFragmentPayloads.Count, mFrame.Payload.Length, mFragmentTotalBytes );
 #endif
             }
         }
@@ -723,47 +727,49 @@ namespace gw.proto.http
 
         void OnControlFrame()
         {
-#if GW_WEBSOCKET_DETAILED_LOGGING
-                mLog.Print( "[ws:{0}] Recvied OpCode {1}", ID, mFrame.OpCode );
-#endif
+            #if GW_WEBSOCKET_DETAILED_LOGGING
+                Debug.LogFormat( "[ws:{0}] Recvied OpCode {1}", ID, mFrame.OpCode );
+            #endif
 
             switch( mFrame.OpCode )
             {
                 case WebSocketOpCode.Ping:
-                    {
-                        // respond to a ping by "ponging" the payload back (maybe null, which is fine)
+                {
+                    // respond to a ping by "pong-ing" the payload back (maybe null, which is fine)
 
-#if GW_WEBSOCKET_DETAILED_LOGGING
-                        mLog.Print( "[ws:{0}] Pong", ID );
-#endif
+                    #if GW_WEBSOCKET_DETAILED_LOGGING
+                        Debug.LogFormat( "[ws:{0}] Pong", ID );
+                    #endif
 
-                        SendAsync( mFrame.Payload, WebSocketOpCode.Pong );
-                    }
-                    break;
+                    SendAsync( mFrame.Payload, WebSocketOpCode.Pong );
+                }
+                break;
 
                 case WebSocketOpCode.Pong:
+                {
                     mSentPing = false;
-                    break;
+                }
+                break;
 
                 case WebSocketOpCode.Close:
+                {
+                    lock( mCloseLock )
                     {
-                        lock( mCloseLock )
-                        {
-                            mCloseReceived = true;
-                        }
-
-                        if( Connection == State.Open )
-                        {
-                            Close();
-                        }
+                        mCloseReceived = true;
                     }
-                    break;
+
+                    if( Connection == State.Open )
+                    {
+                        Close();
+                    }
+                }
+                break;
 
                 default:
-                    {
-                        // unknown control code, must be client error or newer protocol
-                        throw new WebSocketException( WebSocketStatus.ProtocolError );
-                    }
+                {
+                    // unknown control code, must be client error or newer protocol
+                    throw new WebSocketException( WebSocketStatus.ProtocolError );
+                }
             }
         }
     }

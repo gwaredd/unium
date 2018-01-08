@@ -4,12 +4,6 @@ using System;
 
 namespace gw.proto.utils
 {
-
-
-
-
-
-
     /// <summary>
     /// A utility library for endian operations
     /// </summary>

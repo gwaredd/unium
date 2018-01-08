@@ -71,6 +71,8 @@
 * Overlord - device manger / test runner
 * A la Carte / Omakase - debug menu maker
 * Editor Extensions - 
+* Record and playback
+* "Drivers" for different langugages
 * Test Runner
 
 

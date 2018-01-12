@@ -18,7 +18,7 @@ using UnityEditor;
 namespace gw.unium
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 
+    //
 
     public static class HandlerUtils
     {
@@ -74,7 +74,7 @@ namespace gw.unium
 
 
         //----------------------------------------------------------------------------------------------------
-        // 
+        //
 
         public static void NotFound( RequestAdapter req, string path )
         {
@@ -167,7 +167,7 @@ namespace gw.unium
                     yield return asyncOp;
                 }
 
-                req.Reject( ResponseCode.OK );
+                req.Respond( JsonReflector.Reflect( new { scene = name }) );
             }
         }
 

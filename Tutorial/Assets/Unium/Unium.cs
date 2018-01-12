@@ -5,7 +5,6 @@ using System;
 
 using gw.gql;
 using gw.proto.utils;
-using System.Collections.Generic;
 
 namespace gw.unium
 {
@@ -16,7 +15,7 @@ namespace gw.unium
     {
         public delegate void EventDelegate( object data );
 
-        public static readonly Version  Version         = new Version( 1, 0 );
+        public static readonly Version  Version         = new Version( 1, 0, 1 );
         public static Router            RoutesHTTP      = new Router();
         public static Router            RoutesSocket    = new Router();
         public static Root              Root            = new Root();
@@ -61,25 +60,27 @@ namespace gw.unium
             RoutesHTTP.Add( "/utils/scene",         HandlerUtils.HandlerScene );
             RoutesHTTP.Add( "/utils",               HandlerUtils.NotFound );
 
+            RoutesHTTP.Add( "/", ( RequestAdapter req, string path ) => req.Redirect( "index.html" ) ).ExactMatch = true;
 
-            // immediate
+            // android requires the WWW interface, so dispatch file requests on the game thread
+            // otherwise we can dispatch immediately on a worker thread
 
             if( Application.platform == RuntimePlatform.Android )
             {
                 RoutesHTTP.Add( "/file", HandlerFile.Serve );
-                RoutesHTTP.Add( "/", ( RequestAdapter req, string path ) => req.Redirect( "index.html" ) ).ExactMatch = true;
             }
             else
             {
                 RoutesHTTP.AddImmediate( "/file", HandlerFile.Serve );
-                RoutesHTTP.AddImmediate( "/", ( RequestAdapter req, string path ) => req.Redirect( "index.html" ) ).ExactMatch = true;
             }
 
-            // otherwise
+            // default route handler if all others fail
 
-            RoutesHTTP.Otherwise                    = new Route();
-            RoutesHTTP.Otherwise.Handler            = HandlerFile.Serve;
-            RoutesHTTP.Otherwise.DispatchOnGameThread = Application.platform == RuntimePlatform.Android;
+            RoutesHTTP.Otherwise = new Route()
+            {
+                Handler              = HandlerFile.Serve,
+                DispatchOnGameThread = Application.platform == RuntimePlatform.Android
+            };
 
 
             //

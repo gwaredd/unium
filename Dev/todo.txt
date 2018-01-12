@@ -2,16 +2,13 @@
 --------------------------------------------------------------------------------
 
 * look/fix integration tests
-* get file loading working on android
-* test android file serving
+* get/test file loading working on android
+* get/test file saving to work on device
+* test alacarte on device
 
 
 # Next
 --------------------------------------------------------------------------------
-
-* features
-  * default web interface
-
 
 * named queries
 
@@ -37,10 +34,10 @@
 * improvements
   * improve type conversion and argument parsing - e.g. when passing in vectors / objects to function calls
 
-* profie - potential speed improvements
+* profile - potential speed improvements
   * Numbers.Compare
-  * regex for name matching
-  * path parsing regex
+  * remove regex for name matching
+  * remove regex for path parsing
 
 * features
   * callout feature - establish connection by calling out to a web server
@@ -60,18 +57,13 @@
 
   * run tests on connected clients
 
-* default debug interface
-
-  * debug output
-  * platform for tools? - dashboard widgets
-
 
 # Extensions
 --------------------------------------------------------------------------------
 
 * Overlord - device manger / test runner
 * A la Carte / Omakase - debug menu maker
-* Editor Extensions - 
+* Editor Extensions - mimicking changes in editor to device
 * Record and playback
 * "Drivers" for different langugages
 * Test Runner

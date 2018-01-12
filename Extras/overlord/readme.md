@@ -1,6 +1,6 @@
 # Unium Overlord
 
-> Test agent controller
+> Overlord is a device manager, the endpoint for the UniumMinion component
 
 ## Install
 

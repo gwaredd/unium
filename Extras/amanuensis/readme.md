@@ -1,4 +1,4 @@
 # Unium Amanuensis
 
-> Record and playback tests ...
+> Amanuensis is an input recording and playback utility to make writing simple tests and automation quickly
 

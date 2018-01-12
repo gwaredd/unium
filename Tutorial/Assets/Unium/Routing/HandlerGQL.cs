@@ -38,7 +38,7 @@ namespace gw.unium
         public static void Query( RequestAdapter req, string path )
         {
             // if we have already cached the query then use that
-
+            
             if( req.CachedContext != null )
             {
                 var cache = req.CachedContext as CachedQuery;

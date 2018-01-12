@@ -11,7 +11,7 @@ public class UniumRegister : MonoBehaviour
 {
     public string OptionalName;
 
-#if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
+    #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
     void Start()
     {
@@ -28,5 +28,6 @@ public class UniumRegister : MonoBehaviour
         Unium.Root.Remove( OptionalName );
     }
 
-#endif
+    #endif
 }
+

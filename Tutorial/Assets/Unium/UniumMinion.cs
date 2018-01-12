@@ -43,10 +43,8 @@ public class UniumMinion : MonoBehaviour
 
     IEnumerator OverlordSockets()
     {
-        var ws = new WebSocket( URL );
-        ws.Connect();
-
-        yield break;
+        throw new System.NotImplementedException();
+        //yield break;
     }
 
 

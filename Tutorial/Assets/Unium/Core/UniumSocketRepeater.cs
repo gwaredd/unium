@@ -12,8 +12,8 @@ namespace gw.unium
 
         class Repeater
         {
-            public string ID { get { return mRequest.ID; } }
-            public bool IsFinished { get; private set; }
+            public string   ID          { get { return mRequest.ID; } }
+            public bool     IsFinished  { get; private set; }
 
 
             //----------------------------------------------------------------------------------------------------
@@ -31,14 +31,14 @@ namespace gw.unium
 
             public Repeater( Route route, RequestAdapterSocket req )
             {
-                mRoute = route;
-                mRequest = req;
+                mRoute      = route;
+                mRequest    = req;
 
                 var repeat = req.Message.repeat;
 
-                mFrom = repeat.skip;
-                mTo = repeat.samples != int.MaxValue ? mFrom + repeat.samples : int.MaxValue;
-                mFreq = repeat.freq;
+                mFrom   = repeat.skip;
+                mTo     = repeat.samples != int.MaxValue ? mFrom + repeat.samples : int.MaxValue;
+                mFreq   = repeat.freq;
 
                 mRequest.Info( "repeating" );
             }
@@ -63,7 +63,7 @@ namespace gw.unium
                 }
 
                 // update timer
-
+                
                 mTimer += Time.deltaTime;
 
                 if( mTimer < mFreq )

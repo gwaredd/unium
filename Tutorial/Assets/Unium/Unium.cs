@@ -38,8 +38,8 @@ namespace gw.unium
 
         static void SetupTypeHandlers()
         {
-            JsonReflector.Add( typeof( GameObject ), new SerialiseGameObject() );
-            JsonReflector.Add( typeof( Transform ), new SerialiseTransform() );
+            JsonReflector.Add( typeof( GameObject ),    new SerialiseGameObject() );
+            JsonReflector.Add( typeof( Transform ),     new SerialiseTransform() );
         }
 
 
@@ -53,38 +53,47 @@ namespace gw.unium
 
             // game thread
 
-            RoutesHTTP.Add( "/q", HandlerGQL.Query );
-            RoutesHTTP.Add( "/about", HandlerUtils.HandlerAbout );
+            RoutesHTTP.Add( "/q",                   HandlerGQL.Query );
+            RoutesHTTP.Add( "/about",               HandlerUtils.HandlerAbout );
 
-            RoutesHTTP.Add( "/utils/debug", HandlerUtils.DebugOutput );
-            RoutesHTTP.Add( "/utils/screenshot", HandlerUtils.Screenshot );
-            RoutesHTTP.Add( "/utils/scene", HandlerUtils.HandlerScene );
-            RoutesHTTP.Add( "/utils", HandlerUtils.NotFound );
+            RoutesHTTP.Add( "/utils/debug",         HandlerUtils.DebugOutput );
+            RoutesHTTP.Add( "/utils/screenshot",    HandlerUtils.Screenshot );
+            RoutesHTTP.Add( "/utils/scene",         HandlerUtils.HandlerScene );
+            RoutesHTTP.Add( "/utils",               HandlerUtils.NotFound );
 
 
             // immediate
 
-            RoutesHTTP.Add( "/file", HandlerFile.Serve );
-            RoutesHTTP.Add( "/", ( RequestAdapter req, string path ) => req.Redirect( "index.html" ) ).ExactMatch = true;
+            if( Application.platform == RuntimePlatform.Android )
+            {
+                RoutesHTTP.Add( "/file", HandlerFile.Serve );
+                RoutesHTTP.Add( "/", ( RequestAdapter req, string path ) => req.Redirect( "index.html" ) ).ExactMatch = true;
+            }
+            else
+            {
+                RoutesHTTP.AddImmediate( "/file", HandlerFile.Serve );
+                RoutesHTTP.AddImmediate( "/", ( RequestAdapter req, string path ) => req.Redirect( "index.html" ) ).ExactMatch = true;
+            }
 
             // otherwise
 
-            RoutesHTTP.Otherwise = new Route();
-            RoutesHTTP.Otherwise.Handler = HandlerFile.Serve;
-            RoutesHTTP.Otherwise.DispatchOnGameThread = true;
+            RoutesHTTP.Otherwise                    = new Route();
+            RoutesHTTP.Otherwise.Handler            = HandlerFile.Serve;
+            RoutesHTTP.Otherwise.DispatchOnGameThread = Application.platform == RuntimePlatform.Android;
 
 
             //
             // Socket routes
             //
 
-            RoutesSocket.Add( "/q", HandlerGQL.Query ).CacheContext = HandlerGQL.CacheContext;
-            RoutesSocket.Add( "/about", HandlerUtils.HandlerAbout );
-            RoutesSocket.Add( "/utils/scene", HandlerUtils.HandlerScene );
+            RoutesSocket.Add( "/q",             HandlerGQL.Query ).CacheContext = HandlerGQL.CacheContext;
+            RoutesSocket.Add( "/about",         HandlerUtils.HandlerAbout );
+            RoutesSocket.Add( "/utils/scene",   HandlerUtils.HandlerScene );
 
-            RoutesSocket.Add( "/socket", HandlerSocketCommand.Execute );
-            RoutesSocket.Add( "/bind", HandlerSocketBind.HandleBind );
+            RoutesSocket.Add( "/socket",        HandlerSocketCommand.Execute );
+            RoutesSocket.Add( "/bind",          HandlerSocketBind.HandleBind );
         }
+
 
 
         //----------------------------------------------------------------------------------------------------
@@ -93,14 +102,14 @@ namespace gw.unium
         {
             // node interpreters for types
 
-            Interpreters.Add( typeof( GameObject ), new InterpreterGameObject() );
-            Interpreters.Add( typeof( GameObject[] ), new InterpreterGameObjectArray() );
-            Interpreters.Add( typeof( Root ), new InterpreterSearchRoot() );
+            Interpreters.Add( typeof( GameObject ),     new InterpreterGameObject() );
+            Interpreters.Add( typeof( GameObject[] ),   new InterpreterGameObjectArray() );
+            Interpreters.Add( typeof( Root ),           new InterpreterSearchRoot() );
 
             Func<object> scene = () => UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
 
-            Root.Add( "scene", scene );
-            Root.Add( "stats", Stats.Singleton );
+            Root.Add( "scene",  scene );
+            Root.Add( "stats",  Stats.Singleton );
             Root.Add( "events", Events.Singleton );
         }
 #endif

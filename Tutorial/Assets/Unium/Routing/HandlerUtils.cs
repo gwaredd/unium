@@ -11,7 +11,6 @@ using UnityEngine.SceneManagement;
 using gw.proto.http;
 using gw.proto.utils;
 using System.Collections;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -19,7 +18,7 @@ using UnityEditor;
 namespace gw.unium
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
+    // 
 
     public static class HandlerUtils
     {
@@ -37,11 +36,11 @@ namespace gw.unium
 
             var filename = Path.Combine( HandlerFile.GetPath( "persistent" ), "screenshot.png" );
 
-#if UNITY_5
-            Application.CaptureScreenshot( filename );
-#else
+            #if UNITY_5
+                Application.CaptureScreenshot( filename );
+            #else
                 ScreenCapture.CaptureScreenshot( filename );
-#endif
+            #endif
 
             UniumComponent.Log( "Screenshot '" + filename + "'" );
 
@@ -75,7 +74,7 @@ namespace gw.unium
 
 
         //----------------------------------------------------------------------------------------------------
-        //
+        // 
 
         public static void NotFound( RequestAdapter req, string path )
         {
@@ -100,7 +99,7 @@ namespace gw.unium
                 FPS         = 1.0f / Time.smoothDeltaTime,
                 RunningTime = Time.realtimeSinceStartup,
                 Scene       = SceneManager.GetActiveScene().name,
-            } ) );
+            }));
         }
 
 
@@ -168,10 +167,7 @@ namespace gw.unium
                     yield return asyncOp;
                 }
 
-                req.Respond( JsonReflector.Reflect( new
-                {
-                    scene = name
-                }));
+                req.Reject( ResponseCode.OK );
             }
         }
 
@@ -184,7 +180,7 @@ namespace gw.unium
             {
                 FPS         = 1.0f / Time.smoothDeltaTime,
                 RunningTime = Time.realtimeSinceStartup,
-                Scene       = SceneManager.GetActiveScene().name,
+                Scene       = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name,
             }));
         }
     }

@@ -55,7 +55,7 @@ namespace gw.gql
                             continue;
                         }
 
-                        for( int i = 0; i < args.Length; i++ )
+                        for( int i=0; i < args.Length; i++ )
                         {
                             // convert string to value
 
@@ -63,7 +63,7 @@ namespace gw.gql
 
                             if( argType != cachedTypes[ i ] )
                             {
-                                cachedTypes[ i ] = argType;
+                                cachedTypes[ i ]  = argType;
                                 cachedValues[ i ] = ConvertType.FromString( strArgs[ i ], argType );
                             }
 

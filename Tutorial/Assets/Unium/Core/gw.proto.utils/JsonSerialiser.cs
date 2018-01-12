@@ -38,7 +38,7 @@ namespace gw.proto.utils
     {
         override public string Convert( object o )
         {
-            return ( (int) o ).ToString();
+            return ((int)o).ToString();
         }
     }
 
@@ -113,7 +113,7 @@ namespace gw.proto.utils
                 switch( ch )
                 {
                     // escape backslash and quotes
-
+                    
                     case '\\':
                     case '"':
                         text[ index++ ] = '\\';
@@ -137,7 +137,7 @@ namespace gw.proto.utils
                         continue;
 
                     // ignore these control characters
-
+                    
                     case '\0':
                     case '\f':
                     case '\r':
@@ -153,3 +153,5 @@ namespace gw.proto.utils
         }
     }
 }
+
+

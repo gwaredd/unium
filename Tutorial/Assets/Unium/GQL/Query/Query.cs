@@ -14,17 +14,17 @@ namespace gw.gql
             Invoke,
         }
 
-        public object Root { get; private set; }
-        public Path SearchPath { get; private set; }
+        public object           Root        { get; private set; }
+        public Path             SearchPath  { get; private set; }
 
-        public List<object> Selected { get; private set; }
+        public List<object>     Selected    { get; private set; }
 
 
         public Query( string q, object root )
         {
-            Root = root;
-            SearchPath = new Path( q );
-            Selected = new List<object>();
+            Root        = root;
+            SearchPath  = new Path( q );
+            Selected    = new List<object>();
         }
 
         public void Clear()
@@ -36,9 +36,9 @@ namespace gw.gql
         {
             switch( SearchPath.Action )
             {
-                case Query.Action.Get: return Selected;
-                case Query.Action.Set: return ActionSet();
-                case Query.Action.Invoke: return ActionInvoke();
+                case Query.Action.Get:      return Selected;
+                case Query.Action.Set:      return ActionSet();
+                case Query.Action.Invoke:   return ActionInvoke();
             }
 
             return null;

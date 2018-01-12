@@ -94,7 +94,7 @@ namespace gw.proto.http
             {
                 if( mListener != null )
                 {
-                    Util.Error( string.Format( "Already listening on {0}", mListener.LocalEndpoint.ToString() ) );
+                    Util.Error( "Already listening on {0}", mListener.LocalEndpoint.ToString() );
                     return false;
                 }
 
@@ -102,7 +102,7 @@ namespace gw.proto.http
                 mListener.Start();
                 mListener.BeginAcceptTcpClient( new AsyncCallback( OnAcceptConnection ), this );
 
-                Util.Print( string.Format( "Listening on {0}", mListener.LocalEndpoint.ToString() ) );
+                Util.Print( "Listening on {0}", mListener.LocalEndpoint.ToString() );
 
                 return true;
             }

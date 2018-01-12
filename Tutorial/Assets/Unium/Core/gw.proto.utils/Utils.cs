@@ -1,5 +1,7 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 
+//#define GW_LOGGING
+
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -16,22 +18,22 @@ namespace gw.proto.utils
             return new string( Enumerable.Repeat( chars, length ).Select( s => s[ Rnd.Next( s.Length ) ] ).ToArray() );
         }
 
-        [Conditional( "GW_DEBUG" )]
-        public static void Print( string msg )
+        [Conditional("GW_LOGGING")]
+        public static void Print( string msg, params object[] args )
         {
-            UnityEngine.Debug.Log( msg );
+            UnityEngine.Debug.Log( string.Format( "[{0:HH:mm:ss.ffff}] {1}", DateTime.Now, string.Format( msg, args ) ) );
         }
 
-        [Conditional( "GW_DEBUG" )]
-        public static void Warn( string msg )
+        [Conditional( "GW_LOGGING" )]
+        public static void Warn( string msg, params object[] args )
         {
-            UnityEngine.Debug.LogWarning( msg );
+            UnityEngine.Debug.LogWarning( string.Format( "[{0:HH:mm:ss.ffff}] {1}", DateTime.Now, string.Format( msg, args ) ) );
         }
 
-        [Conditional( "GW_DEBUG" )]
-        public static void Error( string msg )
+        [Conditional( "GW_LOGGING" )]
+        public static void Error( string msg, params object[] args )
         {
-            UnityEngine.Debug.LogError( msg );
+            UnityEngine.Debug.LogError( string.Format( "[{0:HH:mm:ss.ffff}] {1}", DateTime.Now, string.Format( msg, args ) ) );
         }
     }
 }

@@ -22,8 +22,8 @@ namespace gw.gql
 
         // accessors
 
-        public int Length { get { return mPath.Length; } }
-        public Segment this[ int index ] { get { return mPath[ index ]; } }
+        public int      Length                  { get { return mPath.Length; } }
+        public Segment  this[ int index ]       { get { return mPath[ index ]; } }
 
 
         // query path
@@ -49,8 +49,8 @@ namespace gw.gql
 
         static Regex sMatchToken = new Regex(
 
-            @"(?<type>[/\.])" +
-            @"(?<name>[^\[\]\./=\(]+)?" +
+            @"(?<type>[/\.])" + 
+            @"(?<name>[^\[\]\./=\(]+)?" + 
             @"(\[(?<where>[^\]]+)\])?" +
             @"(?<action>(=|\()(?<params>.*))?"
 
@@ -81,7 +81,7 @@ namespace gw.gql
                 {
                     // where clause without name is shorthand for '*'
                     //  q := /a/b/[x=3]/...
-
+                    
                     if( match.Groups[ "where" ].Success )
                     {
                         name = "*";
@@ -126,7 +126,7 @@ namespace gw.gql
                 if( match.Groups[ "action" ].Success )
                 {
                     // actions can only be applied to attributes
-
+                    
                     if( type != Segment.Type.Attribute )
                     {
                         throw new FormatException( "GQL::Query - failed to parse query, no attribute to set" );
@@ -144,8 +144,8 @@ namespace gw.gql
 
                     if( action[ 0 ] == '=' )
                     {
-                        Action = Query.Action.Set;
-                        Arguments = new string[] { p };
+                        Action       = Query.Action.Set;
+                        Arguments    = new string[] { p };
                     }
 
 
@@ -220,11 +220,11 @@ namespace gw.gql
 
                 // wildcard name match?
 
-#if NET_2_0
+                #if NET_2_0
                     Regex name_match = name.Contains( "*" ) ? new Regex( name.Replace( "*", ".*?" ), RegexOptions.Compiled ) : null;
-#else
-                Regex name_match = name.Contains( "*" ) ? new Regex( name.Replace( "*", ".*?" ) ) : null;
-#endif
+                #else
+                    Regex name_match = name.Contains( "*" ) ? new Regex( name.Replace( "*", ".*?" ) ) : null;
+                #endif
 
 
                 // add section to path

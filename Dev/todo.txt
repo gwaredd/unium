@@ -3,6 +3,7 @@
 
 * look/fix integration tests
 * get file loading working on android
+* test android file serving
 
 
 # Next

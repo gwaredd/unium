@@ -9,7 +9,7 @@ namespace gw.proto.http
     ////////////////////////////////////////////////////////////////////////////////
 
     public class Client
-    {
+	{
         public Stream       Stream          { get; private set; }
         public Dispatcher   Dispatch        { get; private set; }
         public uint         ID              { get; private set; }
@@ -21,27 +21,28 @@ namespace gw.proto.http
         public Client( Dispatcher dispatcher, TcpClient client )
             : base()
         {
-            mClient  = client;
-            Dispatch = dispatcher;
-            Stream   = client.GetStream();
+            mClient     = client;
+            Dispatch    = dispatcher;
+            Stream      = client.GetStream();
         }
 
 
         public Client( Dispatcher dispatcher, Stream stream )
             : base()
-        {
-            Dispatch = dispatcher;
-            Stream = stream;
-        }
+		{
+            Dispatch    = dispatcher;
+            Stream      = stream;
+		}
 
 
         // client started on new thread from ThreadPool
 
         public void OnConnect()
         {
-            ( new HttpRequest( this ) ).Process( Stream, Dispatch );
+            //Dispatch.Log.Print( "connection from {0}", Address );
+            (new HttpRequest(this)).Process( Stream, Dispatch );
         }
-    }
+	}
 }
 
 #endif

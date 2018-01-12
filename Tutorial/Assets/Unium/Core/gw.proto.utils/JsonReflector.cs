@@ -161,7 +161,7 @@ namespace gw.proto.utils
                 json.Value( JsonTypeConverters.EscapedString( Enum.GetName( type, obj ) ) );
             }
 
-            else if( type.IsGenericType && type.GetGenericTypeDefinition() == typeof( Dictionary<,> ) )
+            else if( type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) )
             {
                 json.BeginObject();
 

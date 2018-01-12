@@ -31,10 +31,10 @@ namespace gw.proto.http
         public byte[]       Body;
 
         public HttpResponse Response    { get; private set; }
+
         public Dispatcher   Dispatch    { get; private set; }
 
         private Stream      mStream;
-        private Client      mClient;
 
 
         static uint sNextID = 0;
@@ -48,7 +48,6 @@ namespace gw.proto.http
         public HttpRequest( Client client )
             : this()
         {
-            mClient = client;
         }
 
 
@@ -150,17 +149,17 @@ namespace gw.proto.http
             }
             catch( HttpResponseException e )
             {
-                Util.Warn( string.Format( "[{0}] {1} {2}", ID, e.Code, HttpUtils.CodeToString( e.Code ) ) );
+                Util.Warn( "[{0}] {1} {2}", ID, e.Code, HttpUtils.CodeToString( e.Code ) );
                 Response.Reject( e.Code );
             }
             catch( System.IO.IOException e )
             {
-                Util.Warn( string.Format( "[{0}] failed to read from stream - {1}", ID, e.Message ) );
+                Util.Warn( "[{0}] failed to read from stream - {1}", ID, e.Message );
                 mStream.Close();
             }
             catch( Exception e )
             {
-                Util.Error( string.Format( "[{0}] {1}", ID, e.ToString() ) );
+                Util.Error( "[{0}] {1}", ID, e.ToString() );
                 Response.Abort();
             }
 
@@ -172,8 +171,6 @@ namespace gw.proto.http
 
         void DispatchWebSocket()
         {
-            Util.Print( string.Format( "[{0}] OPEN {1} - {2}", ID, URL, mClient != null ? mClient.Address : "stream" ) );
-
             if( Dispatch.OnSocketRequest == null )
             {
                 throw new HttpResponseException( ResponseCode.NotFound );
@@ -184,8 +181,6 @@ namespace gw.proto.http
 
         void DispatchRequest()
         {
-            Util.Print( string.Format( "[{0}] {1} {2} - {3}", ID, Method, URL, mClient != null ? mClient.Address : "stream" ) );
-
             if( Dispatch.OnWebRequest == null )
             {
                 throw new HttpResponseException( ResponseCode.NotFound );

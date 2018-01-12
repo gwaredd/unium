@@ -9,13 +9,13 @@ namespace gw.proto.http
 
     public enum WebSocketStatus
     {
-        None            = 0,
-        NormalClosure   = 1000,
-        GoingAway       = 1001,
-        ProtocolError   = 1002,
-        PolicyViolation = 1008, // generic error
-        PayloadTooLarge = 1009,
-        InternalError   = 1011,
+        None                        = 0,
+        NormalClosure               = 1000,
+        GoingAway                   = 1001,
+        ProtocolError               = 1002,
+        PolicyViolation             = 1008, // generic error
+        PayloadTooLarge             = 1009,
+        InternalError               = 1011,
     }
 
 
@@ -47,15 +47,16 @@ namespace gw.proto.http
             switch( code )
             {
 
-                case WebSocketStatus.NormalClosure:   return "Closing connection";
-                case WebSocketStatus.GoingAway:       return "Going away";
-                case WebSocketStatus.ProtocolError:   return "No extended protocol negotiated";
-                case WebSocketStatus.PolicyViolation: return "Policy violation";
-                case WebSocketStatus.PayloadTooLarge: return "Max payload size exceeded";
-                case WebSocketStatus.InternalError:   return "Fatal error";
+                case WebSocketStatus.NormalClosure:         return "Closing connection";
+                case WebSocketStatus.GoingAway:             return "Going away";
+                case WebSocketStatus.ProtocolError:         return "No extended protocol negotiated";
+                case WebSocketStatus.PolicyViolation:       return "Policy violation";
+                case WebSocketStatus.PayloadTooLarge:       return "Max payload size exceeded";
+                case WebSocketStatus.InternalError:         return "Fatal error";
             }
 
             return "Unknown Error";
         }
     }
 }
+

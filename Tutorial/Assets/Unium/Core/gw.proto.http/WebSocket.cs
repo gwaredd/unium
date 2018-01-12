@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-#define GW_WEBSOCKET_DETAILED_LOGGING
+//#define GW_WEBSOCKET_DETAILED_LOGGING
 
 using System;
 using System.Security.Cryptography;
@@ -10,10 +10,7 @@ using System.IO;
 using System.Collections.Generic;
 
 using gw.proto.utils;
-
-#if GW_WEBSOCKET_DETAILED_LOGGING
-using UnityEngine;
-#endif
+using System.Diagnostics;
 
 namespace gw.proto.http
 {
@@ -25,13 +22,13 @@ namespace gw.proto.http
         ////////////////////////////////////////////////////////////////////////////////
         // some global config options
 
-        public static readonly ulong MaxPayload      = 2   * 1024 * 1024;  // 2Mb
-        public static readonly ulong MaxMessage      = 8   * 1024 * 1024;  // 8Mb
-        public static readonly int   BufferSize      = 8   * 1024;         // 8k
-        public static readonly int   Heartbeat       = 30  * 1000;         // 30s
-        public static readonly int   MaxFrameSize    = 128 * 1024;         // 128k
-        public static readonly int   CloseTimeout    = 3   * 1000;         // 3s
-        public static readonly int   PingPongTimeout = 12  * 1000;         // 12s
+        public static readonly ulong MaxPayload      = 2 * 1024 * 1024;  // 2Mb
+        public static readonly ulong MaxMessage      = 8 * 1024 * 1024;  // 8Mb
+        public static readonly int   BufferSize      = 8 * 1024;         // 8k
+        public static readonly int   Heartbeat       = 30 * 1000;        // 30s
+        public static readonly int   MaxFrameSize    = 128 * 1024;       // 128k
+        public static readonly int   CloseTimeout    = 3 * 1000;         // 3s
+        public static readonly int   PingPongTimeout = 12 * 1000;        // 12s
 
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -45,10 +42,10 @@ namespace gw.proto.http
             Closed
         }
 
-        public uint ID          { get; private set; }   // unique id for socket
-        public string URL       { get; private set; }   // URL associated with socket request
-        public bool IsServer    { get; private set; }   // is in server or client mode
-        public State Connection { get; private set; }   // current connection state
+        public uint     ID          { get; private set; }   // unique id for socket
+        public string   URL         { get; private set; }   // URL associated with socket request
+        public bool     IsServer    { get; private set; }   // is in server or client mode
+        public State    Connection  { get; private set; }   // current connection state
 
 
         // socket events for binding
@@ -66,10 +63,10 @@ namespace gw.proto.http
         Dispatcher      mDispatcher;
 
 
-        // reading a websocket frame
+        // reading a web socket frame
 
         WebSocketFrame  mFrame;                                         // current frame
-        byte[]          mReadBuffer;                                    // tempory input buffer
+        byte[]          mReadBuffer;                                    // temporary input buffer
         uint            mReadPosition;                                  // position to read from in buffer
         int             mWritePosition;                                 // position to write to in buffer
 
@@ -97,8 +94,6 @@ namespace gw.proto.http
 
         //------------------------------------------------------------------------------
 
-        // incoming
-
         public WebSocket( HttpRequest request )
         {
             mRequest    = request;
@@ -108,27 +103,6 @@ namespace gw.proto.http
 
             IsServer    = true;
             Connection  = State.Connecting;
-        }
-
-        // outgoing
-
-        public WebSocket( string url )
-        {
-            mRequest    = null;
-            ID          = 0;
-            URL         = url;
-            mDispatcher = null;
-
-            IsServer    = false;
-            Connection  = State.Connecting;
-        }
-
-
-        ////////////////////////////////////////////////////////////////////////////////
-
-        public void Connect()
-        {
-            throw new NotImplementedException();
         }
 
 
@@ -154,8 +128,8 @@ namespace gw.proto.http
 
             res.Response( ResponseCode.SwitchingProtocols );
 
-            res.Headers[ "Connection" ] = "Upgrade";
-            res.Headers[ "Upgrade" ] = "websocket";
+            res.Headers[ "Connection" ]           = "Upgrade";
+            res.Headers[ "Upgrade" ]              = "websocket";
             res.Headers[ "Sec-WebSocket-Accept" ] = accept;
 
             res.WriteHeaders();
@@ -178,7 +152,7 @@ namespace gw.proto.http
         {
             mRequest.Reject( code );
 
-            mRequest = null;
+            mRequest   = null;
             Connection = State.Closed;
         }
 
@@ -188,12 +162,14 @@ namespace gw.proto.http
 
         void Open()
         {
-            mFrame         = new WebSocketFrame();
-            mReadBuffer    = new byte[ BufferSize ];
-            mReadPosition  = 0;
-            mWritePosition = 0;
-            mLastRecv      = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-            Connection     = State.Open;
+            Util.Print( "[ws:{0}] Opening websocket id:{0}", ID );
+
+            mFrame          = new WebSocketFrame();
+            mReadBuffer     = new byte[ BufferSize ];
+            mReadPosition   = 0;
+            mWritePosition  = 0;
+            mLastRecv       = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            Connection      = State.Open;
 
             mStream.BeginRead( mReadBuffer, 0, mReadBuffer.Length, OnRead, this );
 
@@ -218,6 +194,7 @@ namespace gw.proto.http
 
                     if( now - mLastRecv > PingPongTimeout )
                     {
+                        Detail( "[ws:{0}] Pong not received, closing connection ({1},{2})", ID, now, mLastRecv );
                         Close();
                     }
                 }
@@ -249,8 +226,12 @@ namespace gw.proto.http
         {
             if( Connection != State.Open )
             {
+                Util.Warn( "[ws:{0}] Attempting to close a socket that is not open", ID );
                 return;
             }
+
+
+            Detail( "[ws:{0}] Sending close frame", ID );
 
             // create close payload
 
@@ -263,8 +244,8 @@ namespace gw.proto.http
 
             // close
 
-            Connection = State.Closing;
-            mCloseStarted = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            Connection      = State.Closing;
+            mCloseStarted   = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
             SendAsync( data, WebSocketOpCode.Close );
         }
@@ -290,6 +271,7 @@ namespace gw.proto.http
             Connection = State.Closed;
 
             mStream.Close();
+            Util.Print( "[ws:{0}] Connection closed", ID );
 
             mDispatcher.SocketClose( this );
         }
@@ -299,7 +281,11 @@ namespace gw.proto.http
 
         void Ping()
         {
+            Detail( "[ws:{0}] Send ping", ID );
+
+            mLastRecv = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             mSentPing = true;
+
             SendAsync( null, WebSocketOpCode.Ping );
         }
 
@@ -318,6 +304,7 @@ namespace gw.proto.http
 
                 if( Connection != State.Closing || opCode != WebSocketOpCode.Close )
                 {
+                    Util.Warn( "[ws:{0}] Can't send data as conection is not open", ID );
                     return;
                 }
             }
@@ -408,9 +395,7 @@ namespace gw.proto.http
                 }
 
 
-#if GW_WEBSOCKET_DETAILED_LOGGING
-                Debug.Log( string.Format( "[ws:{0}] Sending {1}/{2}", ID, index + numBytes, totalBytes ) );
-#endif
+                //Detail( "[ws:{0}] Sending {1}/{2}", ID, index + numBytes, totalBytes ) );
 
                 lock( mSendQueue )
                 {
@@ -462,8 +447,9 @@ namespace gw.proto.http
                     }
                 }
             }
-            catch( Exception )
+            catch( Exception e )
             {
+                Util.Error( e.ToString() );
                 CloseSocket();
             }
         }
@@ -489,7 +475,7 @@ namespace gw.proto.http
                 }
 
                 mWritePosition += bytesRead;
-                mLastRecv = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                mLastRecv       = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
                 // loop through all frames in buffer, NB: there may be more than one!
 
@@ -534,7 +520,7 @@ namespace gw.proto.http
                 if( mWritePosition == mReadPosition )
                 {
                     mWritePosition = 0;
-                    mReadPosition = 0;
+                    mReadPosition  = 0;
                 }
 
                 // otherwise ensure we always have space for at least one whole WebSocket frame
@@ -546,7 +532,7 @@ namespace gw.proto.http
                     Array.Copy( mReadBuffer, mReadPosition, mReadBuffer, 0, bytesLeft );
 
                     mWritePosition = bytesLeft;
-                    mReadPosition = 0;
+                    mReadPosition  = 0;
                 }
 
                 // then wait for more data
@@ -556,6 +542,8 @@ namespace gw.proto.http
             catch( WebSocketException e )
             {
                 // protocol error, so try and gracefully shut down the connection if we can
+
+                Util.Error( "[ws:{0}] {1}", ID, e.Code.ToString() );
 
                 if( Connection == State.Open )
                 {
@@ -577,12 +565,14 @@ namespace gw.proto.http
             {
                 // fatal error
 
+                Util.Error( "[ws:{0}] Fatal error - {1}", ID, e.StackTrace );
                 HardClose( e.ToString() );
             }
         }
 
         void HardClose( string error )
         {
+            Util.Error( "[ws:{0}] Terminating connection - {1}", ID, error );
             CloseSocket();
         }
 
@@ -599,6 +589,7 @@ namespace gw.proto.http
 
             if( mFrame.Payload != null && mFrame.IsMasked == false )
             {
+                Util.Error( "[ws:{0}] Payload from client not masked", ID );
                 Close( WebSocketStatus.ProtocolError );
                 return;
             }
@@ -626,6 +617,8 @@ namespace gw.proto.http
                     mFragmentTotalBytes = 0;
                     mFragmentPayloads.Clear();
 
+                    Util.Warn( "[ws:{0}] No handler set for websocket messages", ID );
+
                     return;
                 }
 
@@ -635,6 +628,8 @@ namespace gw.proto.http
                 if( mFragmentTotalBytes == 0 )
                 {
                     // all data contained in one frame, so easy!
+
+                    //Detail( "[ws:{0}] Recived message with length {1}", ID, mFrame.Payload.Length ) );
 
                     OnMessage( this, mFrame.Payload, mFrame.OpCode == WebSocketOpCode.Text );
                 }
@@ -658,10 +653,8 @@ namespace gw.proto.http
 
                     mFragmentPayloads.Add( mFrame.Payload );
 
-#if GW_WEBSOCKET_DETAILED_LOGGING
-                        Debug.LogFormat( "[ws:{0}] Fragment #{1} - {2} makes {3}", ID, mFragmentPayloads.Count, mFrame.Payload.Length, mFragmentTotalBytes );
-                        Debug.LogFormat( "[ws:{0}] Recived message with length {1} over {2} fragments", ID, mFragmentTotalBytes, mFragmentPayloads.Count );
-#endif
+                    Detail( "[ws:{0}] Fragment #{1} - {2} makes {3}", ID, mFragmentPayloads.Count, mFrame.Payload.Length, mFragmentTotalBytes );
+                    Detail( "[ws:{0}] Recived message with length {1} over {2} fragments", ID, mFragmentTotalBytes, mFragmentPayloads.Count );
 
                     // concatenate into one buffer
 
@@ -713,9 +706,7 @@ namespace gw.proto.http
 
                 mFragmentPayloads.Add( mFrame.Payload );
 
-#if GW_WEBSOCKET_DETAILED_LOGGING
-                    Debug.LogFormat( "[ws:{0}] Fragment #{1} - {2} makes {3}", ID, mFragmentPayloads.Count, mFrame.Payload.Length, mFragmentTotalBytes );
-#endif
+                Detail( "[ws:{0}] Fragment #{1} - {2} makes {3}", ID, mFragmentPayloads.Count, mFrame.Payload.Length, mFragmentTotalBytes );
             }
         }
 
@@ -727,9 +718,7 @@ namespace gw.proto.http
 
         void OnControlFrame()
         {
-            #if GW_WEBSOCKET_DETAILED_LOGGING
-                Debug.LogFormat( "[ws:{0}] Recvied OpCode {1}", ID, mFrame.OpCode );
-            #endif
+            Detail( "[ws:{0}] Recvied OpCode {1}", ID, mFrame.OpCode );
 
             switch( mFrame.OpCode )
             {
@@ -737,19 +726,14 @@ namespace gw.proto.http
                 {
                     // respond to a ping by "pong-ing" the payload back (maybe null, which is fine)
 
-                    #if GW_WEBSOCKET_DETAILED_LOGGING
-                        Debug.LogFormat( "[ws:{0}] Pong", ID );
-                    #endif
-
+                    Detail( "[ws:{0}] Send pong", ID );
                     SendAsync( mFrame.Payload, WebSocketOpCode.Pong );
                 }
                 break;
 
                 case WebSocketOpCode.Pong:
-                {
                     mSentPing = false;
-                }
-                break;
+                    break;
 
                 case WebSocketOpCode.Close:
                 {
@@ -771,6 +755,12 @@ namespace gw.proto.http
                     throw new WebSocketException( WebSocketStatus.ProtocolError );
                 }
             }
+        }
+
+        [Conditional( "GW_WEBSOCKET_DETAILED_LOGGING" )]
+        void Detail( string msg, params object[] args )
+        {
+            Util.Print( msg, args );
         }
     }
 }

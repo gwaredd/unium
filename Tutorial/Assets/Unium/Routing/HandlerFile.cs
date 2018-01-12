@@ -102,7 +102,6 @@ namespace gw.unium
                 }
                 else
                 {
-                    Debug.LogError( data.error );
                     req.Reject( ResponseCode.InternalServerError );
                 }
             }
@@ -135,7 +134,7 @@ namespace gw.unium
             {
                 // remove initial /
 
-                if( path[ 0 ] == '/' )
+                if( path[0] == '/' )
                 {
                     path = path.Substring( 1 );
                 }
@@ -150,7 +149,7 @@ namespace gw.unium
                     if( path.StartsWith( key + "/" ) )
                     {
                         drive = sPaths[ key ];
-                        path = path.Substring( key.Length + 1 );
+                        path  = path.Substring( key.Length + 1 );
                         break;
                     }
                 }

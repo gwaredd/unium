@@ -73,7 +73,7 @@ namespace gw.gql.calc
             {
                 throw new FormatException( "Unexpected token type " + token.Type.ToString() );
             }
-        }
+        }        
     }
 }
 

@@ -4,13 +4,24 @@
 
 ## Install
 
-To install, copy the contents of the root folder to the StreamingAssets folder in your project.
+To install, copy the contents of the dist folder to the StreamingAssets folder in your project.
 
-Point your webrowser at the unium endpoint, e.g. http://localhost:8342/
+Then point your webrowser at the unium endpoint, e.g. `http://localhost:8342/` when the game is running.
+
+Configuration files are saved to the persisterent storage on device.
 
 ## Building
 
-To build from, first install all the dependent libraries with `yarn install`
+If you want to build the source ...
 
-Then use `yarn start` to start a development server locally, or `yarn release` to build a release version of the application.
+### Requirements
+
+* [node.js](https://nodejs.org/) - v6.11.4
+* [yarn](https://yarnpkg.com/) - v1.3.2
+
+
+### To Build
+
+* First install all the dependent libraries with `yarn install`
+* Then use `yarn start` to start a development server locally, or `yarn release` to build a release version of the application (output goes to the dist folder).
 

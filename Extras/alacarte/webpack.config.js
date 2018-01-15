@@ -18,7 +18,7 @@ module.exports = env => {
     entry: './src/index.jsx',
     
     output: {
-      path: path.resolve('./root'),
+      path: path.resolve('./dist'),
       filename: 'alacarte.js'
     },
 

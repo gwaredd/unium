@@ -33,7 +33,7 @@ To install unium into your project.
 * Add the UniumComponent to an empty game object in your scene
 * Enjoy
 
-NB: Remember to enable the `developent build` flag if you are making builds (unium is disabled for release by default).
+NB: Remember to enable the `development build` flag if you are making builds (unium is disabled for release by default).
 
 
 ### Compatability

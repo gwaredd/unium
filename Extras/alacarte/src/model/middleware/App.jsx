@@ -8,8 +8,8 @@ import _ from 'lodash'
 import * as Connection from '../../actions/Connection.jsx'
 import * as Log from '../../actions/Logging.jsx'
 
-const customSave = '/file/persistent/alacarte.json'
-const staticSave = '/file/streaming/alacarte.json'
+const persistentConfig = '/file/persistent/alacarte.json'
+const streamingConfig = '/file/streaming/alacarte.json'
 const localStorageKey = 'unium'
 
 const emptyConfig = {
@@ -37,13 +37,23 @@ export default (function(){
         const state = store.getState()
         const { api } = state.app.config
 
-        Axios.get( api + customSave )
+        Axios.get( api + persistentConfig )
           .then( (res) => {
             store.dispatch( { type: 'CONFIG_IMPORT', payload: res.data } )
-            store.dispatch( Log.Success( 'Custom config loaded from game' ) )
+            store.dispatch( Log.Success( 'Config loaded from persistent storage' ) )
           })
           .catch( (err) => {
-            store.dispatch( Log.Warning( 'No custom config returned by game' ) )
+
+            // failed to load from persistent storage, try streaming instead
+
+            Axios.get( api + streamingConfig )
+              .then( (res) => {
+                store.dispatch( { type: 'CONFIG_IMPORT', payload: res.data } )
+                store.dispatch( Log.Success( 'Config loaded from streaming assets' ) )
+              })
+              .catch( (err) => {
+                store.dispatch( Log.Warning( 'Failed to fetch a config file from the game' ) )
+              })
           })
 
         return
@@ -63,7 +73,7 @@ export default (function(){
         data = JSON.stringify( data )
 
         Axios
-          .post( api + customSave, data )
+          .post( api + persistentConfig, data )
           .then ( (res) => store.dispatch( Log.Success( 'Config saved to persistent data' ) ) )
           .catch( (err) => store.dispatch( Log.Error( 'Failed to save config: ' + err.toString() ) ) )
     

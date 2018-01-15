@@ -7,7 +7,7 @@
 # Now
 --------------------------------------------------------------------------------
 
-* add ip address to tutorial level
+* alacarte - attempt to load config from streaming assets folder if persistent fails ...
 
 * test
   * file loading on android - both il2cpp and mono variants

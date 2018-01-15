@@ -24,6 +24,18 @@ Your default browser should open automtically. The tutorial is best experienced 
 
 Documentation can be found in the corresponding [unium.pdf](https://github.com/gwaredd/unium/blob/master/unium.pdf) file. 
 
+
+### Install For Your Project
+
+To install unium into your project.
+
+* Copy the Unium library (Assets/Unium directory) into your project
+* Add the UniumComponent to an empty game object in your scene
+* Enjoy
+
+NB: Remember to enable the `developent build` flag if you are making builds (unium is disabled for release by default).
+
+
 ### Compatability
 
 * Compatible with Unity v5.4.2 and up

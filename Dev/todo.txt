@@ -2,17 +2,9 @@
 --------------------------------------------------------------------------------
 
 * publishing alacarte
-* integrating dev and master branches properly
 
 # Now
 --------------------------------------------------------------------------------
-
-* alacarte - attempt to load config from streaming assets folder if persistent fails ...
-
-* test
-  * file loading on android - both il2cpp and mono variants
-  * file saving on android - both il2cpp and mono variants
-  * alacarte on device
 
 * look/fix integration tests
 
@@ -71,11 +63,9 @@
 # Extensions
 --------------------------------------------------------------------------------
 
-* Overlord - device manger / test runner
 * A la Carte / Omakase - debug menu maker
+* Record and playback - externally and in editor?
+* Overlord - device manger / test runner
 * Editor Extensions - mimicking changes in editor to device
-* Record and playback
 * "Drivers" for different langugages
-* Test Runner
-
 

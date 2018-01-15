@@ -1,11 +1,22 @@
+# Focus
+--------------------------------------------------------------------------------
+
+* publishing alacarte
+* integrating dev and master branches properly
+
 # Now
 --------------------------------------------------------------------------------
 
-* look/fix integration tests
-* get/test file loading working on android
-* get/test file saving to work on device
-* test alacarte on device
+* add ip address to tutorial level
 
+* test
+  * file loading on android - both il2cpp and mono variants
+  * file saving on android - both il2cpp and mono variants
+  * alacarte on device
+
+* look/fix integration tests
+* embed fonts etc in tutorial scripts
+* move favicon to root
 
 # Next
 --------------------------------------------------------------------------------

@@ -10,6 +10,8 @@ Then point your webrowser at the unium endpoint, e.g. `http://localhost:8342/` w
 
 Configuration files are saved to the persisterent storage on device.
 
+See the [documentation](https://github.com/gwaredd/unium/raw/master/Extras/alacarte/Unium%20A%20La%20Carte.pdf)
+
 ## Building
 
 If you want to build the source ...

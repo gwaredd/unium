@@ -82,49 +82,52 @@ namespace gw.unium
             }
         }
 
+
         //----------------------------------------------------------------------------------------------------
 
-        static void DownloadFile( RequestAdapter req, string filepath )
+        static void DownloadFileWWW( RequestAdapter req, string filepath )
         {
-            if( Application.platform == RuntimePlatform.Android )
+            var data = new WWW( filepath );
+
+            while( !data.isDone )
             {
-                var data = new WWW( filepath );
+                Thread.Sleep( 10 );
+            }
 
-                while( !data.isDone )
-                {
-                    Thread.Sleep( 10 );
-                }
-
-                if( string.IsNullOrEmpty( data.error ) )
-                {
-                    req.SetContentType( GetMimeType( filepath ) );
-                    req.Respond( data.bytes );
-                }
-                else
-                {
-                    req.Reject( ResponseCode.InternalServerError );
-                }
+            if( string.IsNullOrEmpty( data.error ) )
+            {
+                req.SetContentType( GetMimeType( filepath ) );
+                req.Respond( data.bytes );
             }
             else
             {
-                // System.IO
-
-                if( ( File.GetAttributes( filepath ) & FileAttributes.Directory ) == FileAttributes.Directory )
-                {
-                    // list contents of directory
-
-                    var files = from c in Directory.GetFileSystemEntries( filepath ) select Path.GetFileName( c );
-                    req.Respond( JsonReflector.Reflect( files.ToArray() ) );
-                }
-                else
-                {
-                    // dump bytes
-
-                    req.SetContentType( GetMimeType( filepath ) );
-                    req.Respond( File.ReadAllBytes( filepath ) );
-                }
+                req.Reject( ResponseCode.InternalServerError );
             }
         }
+
+
+        //----------------------------------------------------------------------------------------------------
+
+        static void DownloadFileNative( RequestAdapter req, string filepath )
+        {
+            // System.IO
+
+            if( ( File.GetAttributes( filepath ) & FileAttributes.Directory ) == FileAttributes.Directory )
+            {
+                // list contents of directory
+
+                var files = from c in Directory.GetFileSystemEntries( filepath ) select Path.GetFileName( c );
+                req.Respond( JsonReflector.Reflect( files.ToArray() ) );
+            }
+            else
+            {
+                // dump bytes
+
+                req.SetContentType( GetMimeType( filepath ) );
+                req.Respond( File.ReadAllBytes( filepath ) );
+            }
+        }
+
 
         //----------------------------------------------------------------------------------------------------
 
@@ -132,7 +135,7 @@ namespace gw.unium
         {
             try
             {
-                // remove initial /
+                // remove initial
 
                 if( path[0] == '/' )
                 {
@@ -142,28 +145,38 @@ namespace gw.unium
 
                 // find "drive"
 
-                var drive = sPaths[ "root" ];
+                var useWWW = Application.platform == RuntimePlatform.Android;
+                var drive  = sPaths[ "root" ];
 
                 foreach( var key in sPaths.Keys )
                 {
                     if( path.StartsWith( key + "/" ) )
                     {
-                        drive = sPaths[ key ];
-                        path  = path.Substring( key.Length + 1 );
+                        drive  = sPaths[ key ];
+                        path   = path.Substring( key.Length + 1 );
+                        useWWW = Application.platform == RuntimePlatform.Android && key != "persistent";
+
                         break;
                     }
                 }
+
 
                 // combine drive path and file path to get local path
 
                 var filepath = Path.Combine( drive, path );
 
-
                 // do the thing
 
                 if( req.Body == null )
                 {
-                    DownloadFile( req, filepath );
+                    if( useWWW )
+                    {
+                        DownloadFileWWW( req, filepath );
+                    }
+                    else
+                    {
+                        DownloadFileNative( req, filepath );
+                    }
                 }
                 else
                 {

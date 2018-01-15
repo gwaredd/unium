@@ -15,8 +15,7 @@
   * alacarte on device
 
 * look/fix integration tests
-* embed fonts etc in tutorial scripts
-* move favicon to root
+
 
 # Next
 --------------------------------------------------------------------------------

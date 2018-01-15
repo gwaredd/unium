@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom'
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 import Theme from './resources/theme.css'
 import Style from './resources/custom.css'
-import Favicon from './resources/favicon.ico'
 
 import Intro from './components/intro.jsx'
 import NavBar from './components/navbar.jsx'

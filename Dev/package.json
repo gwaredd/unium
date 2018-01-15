@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "unium development scripts",
   "scripts": {
-    "test": "mocha --opts ./test/mocha.opts ./test",
+    "test": "node node_modules/mocha/bin/mocha --opts ./test/mocha.opts ./test",
     "compile": "coffee -c -b -m -o ./tmp ./scripts/"
   },
   "author": "gwaredd@hotmail.com",

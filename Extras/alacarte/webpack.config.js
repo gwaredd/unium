@@ -19,7 +19,7 @@ module.exports = env => {
     
     output: {
       path: path.resolve('./root'),
-      filename: 'index_bundle.js'
+      filename: 'alacarte.js'
     },
 
     module: {

@@ -6,7 +6,7 @@ var HtmlWebpackPlugin = require( 'html-webpack-plugin' )
 
 //--------------------------------------------------------------------------------
 
-var BUILD_DIR   = path.resolve( __dirname, 'root' )
+var BUILD_DIR   = path.resolve( __dirname, 'dist' )
 var APP_DIR     = path.resolve( __dirname, 'src' )
 
 var config = {

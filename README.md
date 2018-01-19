@@ -1,3 +1,4 @@
+
 # unium
 > An open source test automation framework for Unity games and the occasional debug tool
 
@@ -7,7 +8,7 @@ The main idea is twofold. Firstly, embed a web server into your project to provi
 
 The advantages of a web server is that HTTP provides a technology agnostic protocol that places no restrictions on whatever tools and frameworks you wish to use. It also means it will work whether the game is running in editor, on device or on some headless server in the clouds.
 
-Hopefully the query language and automatic reflection reduces the amount of manual serialisation code that often makes these kind of systems a pain to work with.
+Hopefully the query language and automatic reflection reduces the amount of manual serialization code that often makes these kind of systems a pain to work with.
 
 
 ## Getting Started
@@ -20,7 +21,7 @@ For a live tutorial that will guide you through unium and it's features
 * Open the Tutorial scene in the editor
 * Hit play
 
-Your default browser should open automtically. The tutorial is best experienced with the editor and browser side-by-side. 
+Your default browser should open automatically. The tutorial is best experienced with the editor and browser side-by-side. 
 
 Documentation can be found in the corresponding [unium.pdf](https://github.com/gwaredd/unium/blob/master/unium.pdf) file. 
 
@@ -36,7 +37,7 @@ To install unium into your project.
 NB: Remember to enable the `development build` flag if you are making builds (unium is disabled for release by default).
 
 
-### Compatability
+### Compatibility
 
 * Compatible with Unity v5.4.2 and up
 

@@ -45,3 +45,9 @@ NB: Remember to enable the `development build` flag if you are making builds (un
 
 [![Unium Tutorial Video](http://img.youtube.com/vi/7mTaPr2oaG4/0.jpg)](http://www.youtube.com/watch?v=7mTaPr2oaG4 "Unium Tutorial Video")
 
+### Questionnaire
+
+If you have been using unium or even if you decided it wasn't for you, I would appreciate some feedback to help improve the library. Here is a link to [very short questionnaire](https://goo.gl/forms/QWmYpOaKE1YpU1LL2). All feedback very welcome.
+
+Many thanks.
+

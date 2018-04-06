@@ -44,9 +44,14 @@ namespace gw.unium
 
             UniumComponent.Log( "Screenshot '" + filename + "'" );
 
-            // screenshots don't happen immediately, so defer a redirect for a small amount of time
+
+            // screen shots don't happen immediately, so wait for a bit
 
             yield return new WaitForSeconds( 1.0f );
+
+
+            // then redirect to the file
+
             req.Redirect( "/file/persistent/screenshot.png?cb=" + Util.RandomString() );
         }
 

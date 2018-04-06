@@ -4,6 +4,6 @@ public class TestButton : MonoBehaviour
 {
     public void OnClick()
     {
-        Debug.Log( "hello" );
+        Debug.Log( "Button Clicked" );
     }
 }

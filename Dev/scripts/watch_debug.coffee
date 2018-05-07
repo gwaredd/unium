@@ -6,9 +6,19 @@ WebSocket = require 'ws'
 
 #--------------------------------------------------------------------------------
 
-ws = new WebSocket 'ws://localhost:8342/ws'
+#addr = "localhost"
+addr = "192.168.2.172"
+url = "ws://#{addr}:8342/ws"
 
-ws.on 'open', -> ws.send JSON.stringify id: "dbg", q: "/bind/events.debug"
+log.info "Connecting to #{url}"
+
+ws = new WebSocket url
+
+
+ws.on 'open', ->
+  log.info "Connected ok"
+  ws.send JSON.stringify id: "dbg", q: "/bind/events.debug"
+
 ws.on 'error', (err) -> log.error err
 
 ws.on 'message', (msg) ->

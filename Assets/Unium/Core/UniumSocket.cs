@@ -37,7 +37,8 @@ namespace gw.unium
                 Target      = target;
                 Delegate    = Delegate.CreateDelegate( eventInfo.EventHandlerType, Message, "Reply" );
 
-                eventInfo.AddEventHandler( Target, Delegate );
+                // eventInfo.AddEventHandler( Target, Delegate );
+                eventInfo.GetAddMethod().Invoke( Target, new [] { Delegate } );
 
                 msg.Info( "bound" );
             }

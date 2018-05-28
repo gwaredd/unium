@@ -2,7 +2,8 @@
 
 using UnityEngine;
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
 using gw.gql;
 using gw.proto.utils;
 
@@ -107,7 +108,21 @@ namespace gw.unium
             Interpreters.Add( typeof( GameObject[] ),   new InterpreterGameObjectArray() );
             Interpreters.Add( typeof( Root ),           new InterpreterSearchRoot() );
 
-            Func<object> scene = () => UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
+            // /scene GQL root queries all root-level gameobjects across scenes 
+            
+            // Note: Elegant method uses deprecated method
+            Func<object> scene = () => UnityEngine.SceneManagement.SceneManager.GetAllScenes().SelectMany(s => s.GetRootGameObjects());
+
+            // Note: Alternate method without warnings
+            // Func<object> scene = () =>
+            // {
+            //     var allGameObjects = new List<GameObject>();
+            //     for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
+            //     {
+            //         allGameObjects.AddRange(UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).GetRootGameObjects());
+            //     }
+            //     return allGameObjects;
+            // };
 
             Root.Add( "scene",  scene );
             Root.Add( "stats",  Stats.Singleton );

@@ -111,7 +111,11 @@ namespace gw.unium
             // /scene GQL root queries all root-level gameobjects across scenes 
             
             // Note: Elegant method uses deprecated method
-            Func<object> scene = () => UnityEngine.SceneManagement.SceneManager.GetAllScenes().SelectMany(s => s.GetRootGameObjects());
+            Func<object> scene = () =>
+                UnityEngine.SceneManagement.SceneManager
+                    .GetAllScenes()
+                    .SelectMany(s => s.GetRootGameObjects())
+                    .ToArray();
 
             // Note: Alternate method without warnings
             // Func<object> scene = () =>
@@ -119,9 +123,10 @@ namespace gw.unium
             //     var allGameObjects = new List<GameObject>();
             //     for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
             //     {
-            //         allGameObjects.AddRange(UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).GetRootGameObjects());
+            //         allGameObjects.AddRange(UnityEngine.SceneManagement.SceneManager.GetSceneAt(i)
+            //             .GetRootGameObjects());
             //     }
-            //     return allGameObjects;
+            //     return allGameObjects.ToArray();
             // };
 
             Root.Add( "scene",  scene );

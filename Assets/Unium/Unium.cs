@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using gw.gql;
 using gw.proto.utils;
+using UnityEngine.SceneManagement;
 
 namespace gw.unium
 {
@@ -108,26 +109,9 @@ namespace gw.unium
             Interpreters.Add( typeof( GameObject[] ),   new InterpreterGameObjectArray() );
             Interpreters.Add( typeof( Root ),           new InterpreterSearchRoot() );
 
-            // /scene GQL root queries all root-level gameobjects across scenes 
-            
-            // Note: Elegant method uses deprecated method
-            Func<object> scene = () =>
-                UnityEngine.SceneManagement.SceneManager
-                    .GetAllScenes()
-                    .SelectMany(s => s.GetRootGameObjects())
-                    .ToArray();
+            // /q/scene queries all root-level game objects across scenes 
 
-            // Note: Alternate method without warnings
-            // Func<object> scene = () =>
-            // {
-            //     var allGameObjects = new List<GameObject>();
-            //     for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
-            //     {
-            //         allGameObjects.AddRange(UnityEngine.SceneManagement.SceneManager.GetSceneAt(i)
-            //             .GetRootGameObjects());
-            //     }
-            //     return allGameObjects.ToArray();
-            // };
+            Func<object> scene = () => Enumerable.Range( 0, SceneManager.sceneCount ).SelectMany( i => SceneManager.GetSceneAt(i).GetRootGameObjects() ).ToArray();
 
             Root.Add( "scene",  scene );
             Root.Add( "stats",  Stats.Singleton );

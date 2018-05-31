@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Net;
+using System.Net.Sockets;
+using System.Linq;
+
+using gw.gql;
 
 public class Address : MonoBehaviour
 {
     private void Start()
     {
         var IPText = GetComponent<Text>();
-
-        if( IPText != null )
-        {
-            var port = UniumComponent.Singleton != null ? ":" + UniumComponent.Singleton.Port.ToString() : "";
-            IPText.text = Network.player.ipAddress.ToString() + port;
-        }
+        var port = UniumComponent.Singleton != null ? ":" + UniumComponent.Singleton.Port.ToString() : "";
+        IPText.text = UniumUtils.GetIPAddress().ToString() + port;
     }
 }

@@ -4,11 +4,25 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using System.Net;
+using System.Net.Sockets;
+using System.Linq;
 
 namespace gw.gql
 {
     public static class UniumUtils
     {
+        public static IPAddress GetIPAddress()
+        {
+            if( System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable() == false )
+            {
+                return IPAddress.Any;
+            }
+
+            var host = Dns.GetHostEntry( Dns.GetHostName() );
+            return host.AddressList.FirstOrDefault( ip => ip.AddressFamily == AddressFamily.InterNetwork );
+        }
+        
         public static string Path( GameObject go )
         {
             if( go == null )

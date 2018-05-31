@@ -115,7 +115,8 @@ public class UniumComponent : MonoBehaviour
 
         if( Application.isEditor == false )
         {
-            mServer.Settings.Address = IPAddress.Parse( Network.player.ipAddress );
+            var addr = gw.gql.UniumUtils.GetIPAddress().ToString();
+            mServer.Settings.Address = IPAddress.Parse( addr );
         }
 
         mServer.Settings.Port = Port;
@@ -126,7 +127,7 @@ public class UniumComponent : MonoBehaviour
 
         mServer.Start();
 
-        Log( string.Format( "server listening on {0}:{1}", Network.player.ipAddress, Port ) );
+        Log( string.Format( "server listening on {0}:{1}", mServer.Settings.Address.ToString(), Port ) );
     }
 
 

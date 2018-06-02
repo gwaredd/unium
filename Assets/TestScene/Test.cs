@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Linq;
 
 using gw.unium;
 using gw.gql;
+using gw.proto.utils;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -21,7 +19,11 @@ public class Test : MonoBehaviour
     {
         // check we can add routes dynamically
         Unium.RoutesHTTP.AddImmediate( "/test", ( RequestAdapter req, string path ) => req.Respond( @"{""test"":""ok""}" ) );
-        IPText.text = UniumUtils.GetIPAddress().ToString();
+
+        if( IPText != null )
+        {
+            IPText.text = Util.GetIPAddress().ToString();
+        }
     }
 
     //----------------------------------------------------------------------------------------------------

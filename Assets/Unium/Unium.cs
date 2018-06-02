@@ -4,9 +4,10 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.SceneManagement;
+
 using gw.gql;
 using gw.proto.utils;
-using UnityEngine.SceneManagement;
 
 namespace gw.unium
 {
@@ -111,7 +112,10 @@ namespace gw.unium
 
             // /q/scene queries all root-level game objects across scenes 
 
-            Func<object> scene = () => Enumerable.Range( 0, SceneManager.sceneCount ).SelectMany( i => SceneManager.GetSceneAt(i).GetRootGameObjects() ).ToArray();
+            Func<object> scene = () =>
+                Enumerable.Range( 0, SceneManager.sceneCount )
+                .SelectMany( i => SceneManager.GetSceneAt(i).GetRootGameObjects() )
+                .ToArray();
 
             Root.Add( "scene",  scene );
             Root.Add( "stats",  Stats.Singleton );

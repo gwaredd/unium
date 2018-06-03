@@ -42,11 +42,11 @@ namespace gw.proto.utils
         {
             if( System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable() == false )
             {
-                return IPAddress.Any;
+                return IPAddress.Any; // 0.0.0.0
             }
 
             var host = Dns.GetHostEntry( Dns.GetHostName() );
-            return host.AddressList.FirstOrDefault( ip => ip.AddressFamily == AddressFamily.InterNetwork );
+            return host.AddressList.LastOrDefault( ip => ip.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(ip) );
         }
     }
 }

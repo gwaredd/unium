@@ -33,27 +33,64 @@ namespace gw.unium
 
         static IEnumerator TakeScreenshot( RequestAdapter req, string path )
         {
-            // save screenshot
+            // render cameras to render texture
 
-            var filename = Path.Combine( HandlerFile.GetPath( "persistent" ), "screenshot.png" );
+            var screenshot = new RenderTexture( Screen.width, Screen.height, 24 );
 
-            #if UNITY_5
-                Application.CaptureScreenshot( filename );
-            #else
-                ScreenCapture.CaptureScreenshot( filename );
-            #endif
+            if( screenshot == null )
+            {
+                req.Reject( ResponseCode.InternalServerError );
+                yield break;
+            }
 
-            UniumComponent.Log( "Screenshot '" + filename + "'" );
+            screenshot.filterMode = FilterMode.Point; // no filtering as we are using the same resolution as the screen
+
+            yield return new WaitForEndOfFrame();
+
+            for( int i = 0; i < Camera.allCamerasCount; ++i )
+            {
+                var camera = Camera.allCameras[i];
+                var previousRTex = camera.targetTexture;
+
+                camera.targetTexture= screenshot;
+                camera.Render();
+                camera.targetTexture = previousRTex;
+            }
+
+            yield return null;
 
 
-            // screen shots don't happen immediately, so wait for a bit
+            // read from render texture to memory (ReadPixels will read from current active render texture)
 
-            yield return new WaitForSeconds( 1.0f );
+            var pixels = new Texture2D( screenshot.width, screenshot.height, TextureFormat.RGB24, false );
 
+            if( pixels == null )
+            {
+                req.Reject( ResponseCode.InternalServerError );
+                yield break;
+            }
 
-            // then redirect to the file
+            var previousActiveRTex = RenderTexture.active;
+            RenderTexture.active = screenshot;
 
-            req.Redirect( "/file/persistent/screenshot.png?cb=" + Util.RandomString() );
+            pixels.ReadPixels( new Rect( 0, 0, screenshot.width, screenshot.height ), 0, 0 );
+            pixels.Apply();
+
+            RenderTexture.active = previousActiveRTex;
+
+            // return png
+
+            var bytes = pixels.EncodeToPNG();
+
+            if( bytes != null )
+            {
+                req.SetContentType( "image/png" );
+                req.Respond( bytes );
+            }
+            else
+            {
+                req.Reject( ResponseCode.InternalServerError );
+            }
         }
 
 

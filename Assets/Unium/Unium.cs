@@ -110,12 +110,14 @@ namespace gw.unium
             Interpreters.Add( typeof( GameObject[] ),   new InterpreterGameObjectArray() );
             Interpreters.Add( typeof( Root ),           new InterpreterSearchRoot() );
 
-            // /q/scene queries all root-level game objects across scenes 
+            // /q/scene queries all root-level game objects
 
             Func<object> scene = () =>
-                Enumerable.Range( 0, SceneManager.sceneCount )
-                .SelectMany( i => SceneManager.GetSceneAt(i).GetRootGameObjects() )
-                .ToArray();
+                Enumerable
+                    .Range( 0, SceneManager.sceneCount )
+                    .SelectMany( i => SceneManager.GetSceneAt(i).GetRootGameObjects() )         // all loaded scenes
+                    .Concat( UniumComponent.Singleton.gameObject.scene.GetRootGameObjects() )   // don't destroy on load 'scene'
+                    .ToArray();
 
             Root.Add( "scene",  scene );
             Root.Add( "stats",  Stats.Singleton );

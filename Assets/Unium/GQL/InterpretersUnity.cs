@@ -38,6 +38,11 @@ namespace gw.unium
 
             if( go != null )
             {
+                if( name == "path" )
+                {
+                    return UniumUtils.Path( go );
+                }
+
                 // find component
 
                 var component = go.GetComponent( name );

@@ -5,6 +5,9 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace gw.proto.utils
 {
@@ -38,7 +41,29 @@ namespace gw.proto.utils
 
         public static string GetIPAddress()
         {
-            return UnityEngine.Network.player.ipAddress;
+            if( NetworkInterface.GetIsNetworkAvailable() == false )
+            {
+                return IPAddress.Any.ToString(); // 0.0.0.0
+            }
+
+            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces().Where( i => i.OperationalStatus == OperationalStatus.Up );
+
+//             if( UnityEngine.Application.platform == UnityEngine.RuntimePlatform.Android )
+//             {
+//                 networkInterfaces = networkInterfaces.Where( i => i.Name == "eth0" || i.Name == "wlan0" );
+//             }
+//             else if( UnityEngine.Application.platform == UnityEngine.RuntimePlatform.IPhonePlayer )
+//             {
+//                 networkInterfaces = networkInterfaces.Where( i => i.Name == "en0" );
+//             }
+
+            return networkInterfaces
+                .SelectMany( iface => iface.GetIPProperties().UnicastAddresses )
+                .Select( iface => iface.Address )
+                .Where( addr => addr.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback( addr ) )
+                .LastOrDefault()
+                .ToString()
+            ;
         }
     }
 }

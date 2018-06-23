@@ -5,8 +5,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 
 namespace gw.proto.utils
 {
@@ -38,15 +36,9 @@ namespace gw.proto.utils
             UnityEngine.Debug.LogError( string.Format( "[{0:HH:mm:ss.ffff}] {1}", DateTime.Now, string.Format( msg, args ) ) );
         }
 
-        public static IPAddress GetIPAddress()
+        public static string GetIPAddress()
         {
-            if( System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable() == false )
-            {
-                return IPAddress.Any; // 0.0.0.0
-            }
-
-            var host = Dns.GetHostEntry( Dns.GetHostName() );
-            return host.AddressList.LastOrDefault( ip => ip.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(ip) );
+            return UnityEngine.Network.player.ipAddress;
         }
     }
 }

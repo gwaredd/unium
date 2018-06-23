@@ -22,7 +22,7 @@ public class Test : MonoBehaviour
 
         if( IPText != null )
         {
-            IPText.text = Util.GetIPAddress().ToString();
+            IPText.text = Util.GetIPAddress();
         }
     }
 

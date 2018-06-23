@@ -115,7 +115,7 @@ public class UniumComponent : MonoBehaviour
 
         if( Application.isEditor == false )
         {
-            mServer.Settings.Address = Util.GetIPAddress();
+            mServer.Settings.Address = IPAddress.Parse( Util.GetIPAddress() );
         }
 
         mServer.Settings.Port = Port;

@@ -110,13 +110,13 @@ namespace gw.unium
             Interpreters.Add( typeof( GameObject[] ),   new InterpreterGameObjectArray() );
             Interpreters.Add( typeof( Root ),           new InterpreterSearchRoot() );
 
-            // /q/scene queries all root-level game objects
+            // /q/scene queries root-level game objects from all loaded scenes, and the "DontDestroyOnScene" pseudo-scene if running
 
             Func<object> scene = () =>
                 Enumerable
                     .Range( 0, SceneManager.sceneCount )
-                    .SelectMany( i => SceneManager.GetSceneAt(i).GetRootGameObjects() )         // all loaded scenes
-                    .Concat( UniumComponent.Singleton.gameObject.scene.GetRootGameObjects() )   // don't destroy on load 'scene'
+                    .SelectMany( i => SceneManager.GetSceneAt(i).GetRootGameObjects() )
+                    .Concat( UniumComponent.Singleton ? UniumComponent.Singleton.gameObject.scene.GetRootGameObjects() : Enumerable.Empty<GameObject>() )  
                     .ToArray();
 
             Root.Add( "scene",  scene );

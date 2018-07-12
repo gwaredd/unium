@@ -39,7 +39,7 @@ namespace gw.proto.utils
             UnityEngine.Debug.LogError( string.Format( "[{0:HH:mm:ss.ffff}] {1}", DateTime.Now, string.Format( msg, args ) ) );
         }
 
-        public static string GetIPAddress()
+        public static string DetectPublicIPAddress()
         {
             if( NetworkInterface.GetIsNetworkAvailable() == false )
             {

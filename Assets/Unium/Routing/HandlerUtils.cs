@@ -138,7 +138,7 @@ namespace gw.unium
                 Product     = Application.productName,
                 Company     = Application.companyName,
                 Version     = Application.version,
-                IPAddress   = Util.GetIPAddress(),
+                IPAddress   = Util.DetectPublicIPAddress(),
                 FPS         = 1.0f / Time.smoothDeltaTime,
                 RunningTime = Time.realtimeSinceStartup,
                 Scene       = SceneManager.GetActiveScene().name,

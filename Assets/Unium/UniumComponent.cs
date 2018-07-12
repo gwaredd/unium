@@ -27,6 +27,13 @@ public class UniumComponent : MonoBehaviour
     public bool     AutoStart       = true;
     public string   StaticFiles     = null;
 
+    public enum AddressStrategy
+    {
+        AllInterfaces,
+        PublicIp,
+        PublicIpInPlayer,
+    }
+    public AddressStrategy ServeOn = AddressStrategy.AllInterfaces;
 
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
@@ -113,9 +120,9 @@ public class UniumComponent : MonoBehaviour
 
         mServer = new Server();
 
-        if( Application.isEditor == false )
+        if( ServeOn == AddressStrategy.PublicIp || (ServeOn == AddressStrategy.PublicIpInPlayer && !Application.isEditor) )
         {
-            mServer.Settings.Address = IPAddress.Parse( Util.GetIPAddress() );
+            mServer.Settings.Address = IPAddress.Parse( Util.DetectPublicIPAddress() );
         }
 
         mServer.Settings.Port = Port;

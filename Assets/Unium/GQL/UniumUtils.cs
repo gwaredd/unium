@@ -21,7 +21,7 @@ namespace gw.gql
 
             while( xf != null )
             {
-                path.Add( string.Format( "{0}@{1}:{2}", xf.name, xf.gameObject.scene.buildIndex, xf.GetSiblingIndex() ) );
+                path.Add( string.Format( "{0}[iid={1}]", xf.name, xf.gameObject.GetInstanceID() ) );
                 xf = xf.parent;
             }
 

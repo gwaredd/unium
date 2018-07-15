@@ -42,6 +42,10 @@ namespace gw.unium
                 {
                     return UniumUtils.Path( go );
                 }
+                else if( name == "iid" )
+                {
+                    return go.GetInstanceID();
+                }
 
                 // find component
 

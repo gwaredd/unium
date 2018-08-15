@@ -48,7 +48,7 @@ class SocketsDemo extends React.Component {
 
     ws.onerror    = ()  => { demo.Log( "Error connecting to game - is it running?" ) }
     ws.onclose    = ()  => { demo.Log( "Connection closed" ) }
-    ws.onmessage  = (m) => { demo.Log( "Recieved: " + m.data ) }
+    ws.onmessage  = (m) => { demo.Log( "Received: " + m.data ) }
 
     this.state.ws = ws
 
@@ -81,7 +81,7 @@ class SocketsBasicDemo extends SocketsDemo {
       demo.send({ id:'some_id', q:'/about' })
     };
 
-    ws.onmessage = (m) => { demo.Log( "Recieved: " + m.data ); ws.close() }
+    ws.onmessage = (m) => { demo.Log( "Received: " + m.data ); ws.close() }
   }
 }
 

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Collections.Specialized;
 
 namespace gw.proto.utils
 {
@@ -52,6 +53,30 @@ namespace gw.proto.utils
                 .LastOrDefault() // seems to be the convention :o
                 .ToString()
             ;
+        }
+
+        public static NameValueCollection ParseQueryString( string query )
+        {
+            NameValueCollection bag = new NameValueCollection();
+
+            char[] parameterDelimiters = new char[] { '?', '&' };
+            string[] parameters = query.Split( parameterDelimiters, System.StringSplitOptions.RemoveEmptyEntries );
+
+            char[] keyValueDelimiters = new char[] { '=' };
+            for ( int i = 0; i < parameters.Length; ++i )
+            {
+                string[] keyValue = parameters[ i ].Split ( keyValueDelimiters, System.StringSplitOptions.None );
+
+                if ( keyValue.Length >= 2 )
+                {
+                    bag.Add( UnityEngine.WWW.UnEscapeURL( keyValue[ 0 ] ), UnityEngine.WWW.UnEscapeURL( keyValue[ 1 ] ) );
+                }
+                else if (keyValue.Length == 1)
+                {
+                    bag.Add( UnityEngine.WWW.UnEscapeURL( keyValue[ 0 ] ), "");
+                }
+            }
+            return bag;
         }
     }
 }

@@ -42,7 +42,7 @@ namespace gw.proto.utils
             foreach( var field in type.GetFields( BindingFlags.Instance | BindingFlags.Public ) )
             {
                 var value = field.GetValue( obj );
-                var valueType = value.GetType();
+                var valueType = field.FieldType;
 
                 if( valueType.IsPrimitive || valueType == typeof( string ) )
                 {

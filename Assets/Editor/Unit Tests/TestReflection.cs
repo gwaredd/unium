@@ -69,6 +69,34 @@ public class TestReflection
 
         Assert.AreEqual( @"{""{ x = 1 }"":1,""{ z = 1 }"":2,""{ fish = 1, z = 2 }"":3}", JsonReflector.Reflect( nonStringKeys ) );
     }
+
+
+    class A
+    {
+
+    }
+
+    class B : A
+    {
+
+    }
+
+    public class SerialiseType : JsonSerialiser
+    {
+        override public string Convert( object o )
+        {
+            return o.GetType().ToString();
+        }
+    }
+
+    [Test]
+    public void Converters()
+    {
+        JsonSerialiser aSerializer = new SerialiseType();
+        JsonReflector.Add(typeof(A), aSerializer);
+        Assert.AreEqual( @"TestReflection+A", JsonReflector.Reflect( new A() ));
+        Assert.AreEqual( @"TestReflection+B", JsonReflector.Reflect( new B() ));
+    }
 }
 
 

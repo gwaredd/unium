@@ -81,7 +81,7 @@ namespace gw.proto.utils
                     }
 
                     var value = prop.GetValue( obj, null );
-                    var valueType = value.GetType();
+                    var valueType = prop.PropertyType;
 
                     if( valueType.IsPrimitive || valueType == typeof( string ) )
                     {

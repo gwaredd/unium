@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace gw.proto.utils
 {
@@ -65,16 +66,23 @@ namespace gw.proto.utils
 
         public bool HasOverride( Type type )
         {
-            return mConverters.ContainsKey( type );
+            return FindFirstConverter (type) != null;
+        }
+
+        // note doesn't take into account if there's a better converter down the class hierarchy
+        private JsonSerialiser FindFirstConverter(Type type) {
+            Type t = mConverters.Keys.FirstOrDefault (item => item.IsAssignableFrom (type));
+            return t != null ? mConverters [t] : null;
         }
 
         public string Serialise( object o )
         {
             var type = o.GetType();
 
-            if( mConverters.ContainsKey( type ) )
+            JsonSerialiser serializer = FindFirstConverter (type);
+            if( serializer != null )
             {
-                return mConverters[ type ].Convert( o );
+                return serializer.Convert( o );
             }
 
             return SerialiseValueType( o );

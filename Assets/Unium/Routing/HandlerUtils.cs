@@ -12,6 +12,7 @@ using gw.proto.http;
 using gw.proto.utils;
 
 using System.Collections;
+using System.Collections.Specialized;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,14 +29,36 @@ namespace gw.unium
 
         public static void Screenshot( RequestAdapter req, string path )
         {
-            UniumComponent.Singleton.StartCoroutine( TakeScreenshot( req, path ) );
+            NameValueCollection query = Util.ParseQueryString(req.Query);
+
+            int width   = query[ "width" ]  != null ? Int32.Parse( query[ "width" ] )  : -1;
+            int height  = query[ "height" ] != null ? Int32.Parse( query[ "height" ] ) : -1;
+            float scale = query[ "scale" ]  != null ? float.Parse( query[ "scale" ], System.Globalization.CultureInfo.InvariantCulture ) : -1.0f;
+
+            UniumComponent.Singleton.StartCoroutine( TakeScreenshot( req, path, width, height, scale ) );
         }
 
-        static IEnumerator TakeScreenshot( RequestAdapter req, string path )
+        static IEnumerator TakeScreenshot( RequestAdapter req, string path, int width, int height, float scale )
         {
             // render cameras to render texture
 
-            var screenshot = new RenderTexture( Screen.width, Screen.height, 24 );
+            int tWidth = Screen.width;
+            int tHeight = Screen.height;
+            if ( width >= 0 )
+            {
+                tWidth = width;
+            }
+            if ( height >= 0 )
+            {
+                tHeight = height;
+            }
+            if ( scale >= 0f )
+            {
+              tWidth = (int) ( tWidth * scale );
+              tHeight = (int) ( tHeight * scale );
+            }
+
+            var screenshot = new RenderTexture( tWidth, tHeight, 24 );
 
             if( screenshot == null )
             {

@@ -29,36 +29,28 @@ namespace gw.unium
 
         public static void Screenshot( RequestAdapter req, string path )
         {
-            NameValueCollection query = Util.ParseQueryString(req.Query);
-
-            int width   = query[ "width" ]  != null ? Int32.Parse( query[ "width" ] )  : -1;
-            int height  = query[ "height" ] != null ? Int32.Parse( query[ "height" ] ) : -1;
-            float scale = query[ "scale" ]  != null ? float.Parse( query[ "scale" ], System.Globalization.CultureInfo.InvariantCulture ) : -1.0f;
-
-            UniumComponent.Singleton.StartCoroutine( TakeScreenshot( req, path, width, height, scale ) );
+            UniumComponent.Singleton.StartCoroutine( TakeScreenshot( req ) );
         }
 
-        static IEnumerator TakeScreenshot( RequestAdapter req, string path, int width, int height, float scale )
+        static IEnumerator TakeScreenshot( RequestAdapter req )
         {
+            var query  = Util.ParseQueryString( req.Query );
+            var width  = query[ "width" ]  != null ? Int32.Parse( query[ "width" ] )  : -1;
+            var height = query[ "height" ] != null ? Int32.Parse( query[ "height" ] ) : -1;
+            var scale  = query[ "scale" ]  != null ? float.Parse( query[ "scale" ], System.Globalization.CultureInfo.InvariantCulture ) : -1.0f;
+
             // render cameras to render texture
 
-            int tWidth = Screen.width;
-            int tHeight = Screen.height;
-            if ( width >= 0 )
+            int texWidth  = width > 0 ? width : Screen.width;
+            int texHeight = height > 0 ? height : Screen.height;
+
+            if( scale > 0.0f )
             {
-                tWidth = width;
-            }
-            if ( height >= 0 )
-            {
-                tHeight = height;
-            }
-            if ( scale >= 0f )
-            {
-              tWidth = (int) ( tWidth * scale );
-              tHeight = (int) ( tHeight * scale );
+                texWidth  = (int) ( texWidth * scale );
+                texHeight = (int) ( texHeight * scale );
             }
 
-            var screenshot = new RenderTexture( tWidth, tHeight, 24 );
+            var screenshot = new RenderTexture( texWidth, texHeight, 24 );
 
             if( screenshot == null )
             {

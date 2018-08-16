@@ -24,15 +24,15 @@ namespace gw.proto.http
 
         public Dictionary<string,string> Headers { get; private set; }
 
-        public uint         ID          { get; private set; }
-        public string       Method      { get; private set; }
-        public string       URL         { get; private set; }
+        public uint         ID              { get; private set; }
+        public string       Method          { get; private set; }
+        public string       URL             { get; private set; }
         public string       QueryParameters { get; private set; }
         public byte[]       Body;
 
-        public HttpResponse Response    { get; private set; }
+        public HttpResponse Response        { get; private set; }
 
-        public Dispatcher   Dispatch    { get; private set; }
+        public Dispatcher   Dispatch        { get; private set; }
 
         private Stream      mStream;
 

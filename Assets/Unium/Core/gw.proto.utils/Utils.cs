@@ -3,12 +3,12 @@
 //#define GW_LOGGING
 
 using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Collections.Specialized;
 
 namespace gw.proto.utils
 {
@@ -57,25 +57,21 @@ namespace gw.proto.utils
 
         public static NameValueCollection ParseQueryString( string query )
         {
-            NameValueCollection bag = new NameValueCollection();
+            var bag = new NameValueCollection();
 
-            char[] parameterDelimiters = new char[] { '?', '&' };
-            string[] parameters = query.Split( parameterDelimiters, System.StringSplitOptions.RemoveEmptyEntries );
+            var parameterDelimiters = new char[] { '?', '&' };
+            var keyValueDelimiters  = new char[] { '=' };
 
-            char[] keyValueDelimiters = new char[] { '=' };
-            for ( int i = 0; i < parameters.Length; ++i )
+            var parameters = query.Split( parameterDelimiters, StringSplitOptions.RemoveEmptyEntries );
+
+            foreach( var param in parameters )
             {
-                string[] keyValue = parameters[ i ].Split ( keyValueDelimiters, System.StringSplitOptions.None );
+                var keyValue = param.Split( keyValueDelimiters, StringSplitOptions.None );
+                var value    = keyValue.Length >= 2 ? keyValue[ 1 ] : "";
 
-                if ( keyValue.Length >= 2 )
-                {
-                    bag.Add( UnityEngine.WWW.UnEscapeURL( keyValue[ 0 ] ), UnityEngine.WWW.UnEscapeURL( keyValue[ 1 ] ) );
-                }
-                else if (keyValue.Length == 1)
-                {
-                    bag.Add( UnityEngine.WWW.UnEscapeURL( keyValue[ 0 ] ), "");
-                }
+                bag.Add( UnityEngine.WWW.UnEscapeURL( keyValue[ 0 ] ), UnityEngine.WWW.UnEscapeURL( value ) );
             }
+
             return bag;
         }
     }

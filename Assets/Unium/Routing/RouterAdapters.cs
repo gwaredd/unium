@@ -11,7 +11,7 @@ namespace gw.unium
     public abstract class RequestAdapter
     {
         public virtual  string  Path                                { get { return null; } }
-        public virtual  string  Query                                { get { return null; } }
+        public virtual  string  Query                               { get { return null; } }
         public virtual  byte[]  Body                                { get { return null; } }
 
         public abstract void Reject( ResponseCode code );

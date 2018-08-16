@@ -78,6 +78,9 @@ namespace gw.unium
 
             RenderTexture.active = previousActiveRTex;
 
+            screenshot.Release();
+            GameObject.Destroy(screenshot);
+
             // return png
 
             var bytes = pixels.EncodeToPNG();

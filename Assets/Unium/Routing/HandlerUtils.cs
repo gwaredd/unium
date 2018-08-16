@@ -12,6 +12,7 @@ using gw.proto.http;
 using gw.proto.utils;
 
 using System.Collections;
+using System.Collections.Specialized;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,14 +29,28 @@ namespace gw.unium
 
         public static void Screenshot( RequestAdapter req, string path )
         {
-            UniumComponent.Singleton.StartCoroutine( TakeScreenshot( req, path ) );
+            UniumComponent.Singleton.StartCoroutine( TakeScreenshot( req ) );
         }
 
-        static IEnumerator TakeScreenshot( RequestAdapter req, string path )
+        static IEnumerator TakeScreenshot( RequestAdapter req )
         {
+            var query  = Util.ParseQueryString( req.Query );
+            var width  = query[ "width" ]  != null ? Int32.Parse( query[ "width" ] )  : -1;
+            var height = query[ "height" ] != null ? Int32.Parse( query[ "height" ] ) : -1;
+            var scale  = query[ "scale" ]  != null ? float.Parse( query[ "scale" ], System.Globalization.CultureInfo.InvariantCulture ) : -1.0f;
+
             // render cameras to render texture
 
-            var screenshot = new RenderTexture( Screen.width, Screen.height, 24 );
+            int texWidth  = width > 0 ? width : Screen.width;
+            int texHeight = height > 0 ? height : Screen.height;
+
+            if( scale > 0.0f )
+            {
+                texWidth  = (int) ( texWidth * scale );
+                texHeight = (int) ( texHeight * scale );
+            }
+
+            var screenshot = new RenderTexture( texWidth, texHeight, 24 );
 
             if( screenshot == null )
             {

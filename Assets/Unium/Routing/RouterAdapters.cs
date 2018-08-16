@@ -11,6 +11,7 @@ namespace gw.unium
     public abstract class RequestAdapter
     {
         public virtual  string  Path                                { get { return null; } }
+        public virtual  string  Query                               { get { return null; } }
         public virtual  byte[]  Body                                { get { return null; } }
 
         public abstract void Reject( ResponseCode code );
@@ -36,6 +37,7 @@ namespace gw.unium
         public RequestAdapterHTTP( HttpRequest req )                { mRequest = req; mPath = WWW.UnEscapeURL( req.URL ); }
 
         public override String  Path                                { get { return mPath; } }
+        public override String  Query                               { get { return mRequest.QueryParameters; } }
         public override byte[]  Body                                { get { return mRequest.Method == "POST" ? mRequest.Body : null; } }
 
         public override void Reject( ResponseCode code )            { mRequest.Reject( code ); }

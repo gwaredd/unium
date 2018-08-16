@@ -66,20 +66,22 @@ namespace gw.proto.utils
 
         public bool HasOverride( Type type )
         {
-            return FindFirstConverter (type) != null;
+            return FindFirstConverter( type ) != null;
         }
 
         // note doesn't take into account if there's a better converter down the class hierarchy
-        private JsonSerialiser FindFirstConverter(Type type) {
-            Type t = mConverters.Keys.FirstOrDefault (item => item.IsAssignableFrom (type));
-            return t != null ? mConverters [t] : null;
+        private JsonSerialiser FindFirstConverter( Type type )
+        {
+            Type t = mConverters.Keys.FirstOrDefault( item => item.IsAssignableFrom( type ) );
+            return t != null ? mConverters[t] : null;
         }
 
         public string Serialise( object o )
         {
             var type = o.GetType();
 
-            JsonSerialiser serializer = FindFirstConverter (type);
+            JsonSerialiser serializer = FindFirstConverter( type );
+
             if( serializer != null )
             {
                 return serializer.Convert( o );
@@ -121,7 +123,7 @@ namespace gw.proto.utils
                 switch( ch )
                 {
                     // escape backslash and quotes
-                    
+
                     case '\\':
                     case '"':
                         text[ index++ ] = '\\';
@@ -145,7 +147,7 @@ namespace gw.proto.utils
                         continue;
 
                     // ignore these control characters
-                    
+
                     case '\0':
                     case '\f':
                     case '\r':
@@ -161,5 +163,3 @@ namespace gw.proto.utils
         }
     }
 }
-
-

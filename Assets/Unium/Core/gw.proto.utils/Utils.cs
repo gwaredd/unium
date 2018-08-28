@@ -59,6 +59,11 @@ namespace gw.proto.utils
         {
             var bag = new NameValueCollection();
 
+            if( string.IsNullOrEmpty( query ) )
+            {
+                return bag;
+            }
+
             var parameterDelimiters = new char[] { '?', '&' };
             var keyValueDelimiters  = new char[] { '=' };
 

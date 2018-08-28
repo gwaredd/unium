@@ -12,7 +12,7 @@ using gw.proto.http;
 using gw.proto.utils;
 
 using System.Collections;
-using System.Collections.Specialized;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -94,7 +94,7 @@ namespace gw.unium
             RenderTexture.active = previousActiveRTex;
 
             screenshot.Release();
-            GameObject.Destroy(screenshot);
+            UnityEngine.Object.Destroy( screenshot);
 
             // return png
 
@@ -109,6 +109,8 @@ namespace gw.unium
             {
                 req.Reject( ResponseCode.InternalServerError );
             }
+
+            UnityEngine.Object.Destroy( pixels );
         }
 
 

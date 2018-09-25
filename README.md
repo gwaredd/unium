@@ -30,7 +30,7 @@ Documentation can be found in the corresponding [unium.pdf](https://github.com/g
 
 To install unium into your project.
 
-* Copy the Unium library (Assets/Unium directory) into your project
+* Copy the Unium library ([Assets/Unium directory](https://github.com/gwaredd/unium_lib)) into your project
 * Add the UniumComponent to an empty game object in your scene
 * Enjoy
 

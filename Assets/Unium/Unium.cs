@@ -60,6 +60,7 @@ namespace gw.unium
 
             RoutesHTTP.Add( "/utils/debug",         HandlerUtils.DebugOutput );
             RoutesHTTP.Add( "/utils/screenshot",    HandlerUtils.Screenshot );
+            RoutesHTTP.Add( "/utils/appscreenshot", HandlerUtils.ApplicationScreenshot );
             RoutesHTTP.Add( "/utils/scene",         HandlerUtils.HandlerScene );
             RoutesHTTP.Add( "/utils",               HandlerUtils.NotFound );
 

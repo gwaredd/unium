@@ -114,6 +114,34 @@ namespace gw.unium
         }
 
 
+        //------------------------------------------------------------------------------
+
+        public static void ApplicationScreenshot( RequestAdapter req, string path )
+        {
+            UniumComponent.Singleton.StartCoroutine( ApplicationScreenshot( req ) );
+        }
+
+        static IEnumerator ApplicationScreenshot( RequestAdapter req )
+        {
+            var filename = "screenshot.png";
+
+            if( Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer )
+            {
+                filename = Application.persistentDataPath + '/' + filename;
+            }
+
+#if UNITY_5
+            Application.CaptureScreenshot( filename );
+#else
+            ScreenCapture.CaptureScreenshot( filename );
+#endif
+
+            yield return new WaitForSeconds( 1.0f );
+
+            req.Redirect( "/file/persistent/screenshot.png?" + Util.RandomString( 6 ) );
+        }
+
+
         //----------------------------------------------------------------------------------------------------
         // return the debug output
 

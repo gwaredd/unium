@@ -13,7 +13,7 @@ var config = {
   entry: APP_DIR + '/app.jsx',
   output: {
     path: BUILD_DIR,
-    filename: 'tutorial.js'
+    filename: 'tutorial.jsx'
   },
   plugins: [ new HtmlWebpackPlugin( { template:'./src/index.html' } ) ],
   module : {

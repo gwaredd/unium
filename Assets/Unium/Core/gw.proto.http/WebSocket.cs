@@ -355,7 +355,7 @@ namespace gw.proto.http
                     buffer[ 0 ] = code;
                     buffer[ 1 ] = (byte) numBytes;
                 }
-                else if( totalBytes < 65536 )
+                else if( numBytes < 65536 )
                 {
                     headerSize = 4;
 

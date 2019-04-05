@@ -10,6 +10,10 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
+#if UNITY_2017_3_OR_NEWER
+using UnityEngine.Networking;
+#endif
+
 namespace gw.proto.utils
 {
     public static class Util
@@ -74,7 +78,15 @@ namespace gw.proto.utils
                 var keyValue = param.Split( keyValueDelimiters, StringSplitOptions.None );
                 var value    = keyValue.Length >= 2 ? keyValue[ 1 ] : "";
 
-                bag.Add( UnityEngine.WWW.UnEscapeURL( keyValue[ 0 ] ), UnityEngine.WWW.UnEscapeURL( value ) );
+#if UNITY_2017_3_OR_NEWER
+                var ekey   = UnityWebRequest.UnEscapeURL( keyValue[ 0 ] );
+                var evalue = UnityWebRequest.UnEscapeURL( value );
+#else
+                var ekey   = UnityEngine.WWW.UnEscapeURL( keyValue[ 0 ] );
+                var evalue = UnityEngine.WWW.UnEscapeURL( value );
+#endif
+
+                bag.Add( ekey, evalue );
             }
 
             return bag;

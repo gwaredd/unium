@@ -2,7 +2,10 @@
 
 using System;
 using gw.proto.http;
-using UnityEngine;
+
+#if UNITY_2017_3_OR_NEWER
+using UnityEngine.Networking;
+#endif
 
 namespace gw.unium
 {
@@ -34,7 +37,11 @@ namespace gw.unium
         HttpRequest mRequest;
         string      mPath;
 
-        public RequestAdapterHTTP( HttpRequest req )                { mRequest = req; mPath = WWW.UnEscapeURL( req.URL ); }
+#if UNITY_2017_3_OR_NEWER
+        public RequestAdapterHTTP( HttpRequest req )                { mRequest = req; mPath = UnityWebRequest.UnEscapeURL( req.URL ); }
+#else
+        public RequestAdapterHTTP( HttpRequest req )                { mRequest = req; mPath = UnityEngine.WWW.UnEscapeURL( req.URL ); }
+#endif
 
         public override String  Path                                { get { return mPath; } }
         public override String  Query                               { get { return mRequest.QueryParameters; } }

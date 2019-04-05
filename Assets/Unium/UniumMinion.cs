@@ -7,6 +7,10 @@ using System.Text;
 using gw.unium;
 using gw.proto.http;
 
+#if UNITY_2017_3_OR_NEWER
+using UnityEngine.Networking;
+#endif
+
 // registers a the running game with an external manager application
 
 public class UniumMinion : MonoBehaviour
@@ -72,11 +76,19 @@ public class UniumMinion : MonoBehaviour
         }
 
         // post data to end point
+        bool isError = false;
 
+#if UNITY_2017_3_OR_NEWER
+        var www = UnityWebRequest.Post( URL, req.Data );
+        yield return www.SendWebRequest();
+        isError = www.isNetworkError || www.isHttpError;
+#else
         var www = new WWW( URL, Encoding.UTF8.GetBytes( req.Data ) );
         yield return www;
+        isError = www.error != null;
+#endif
 
-        if( www.error != null )
+        if( isError )
         {
             Debug.LogWarning( "UniumMinion failed to register with overlord: " + www.error );
         }
@@ -85,7 +97,6 @@ public class UniumMinion : MonoBehaviour
             Debug.Log( "UniumMinion registered with overlord OK" );
         }
     }
-
 
 #endif
 }

@@ -45,6 +45,10 @@ NB: Remember to enable the `development build` flag if you are making builds (un
 
 [![Unium Tutorial Video](http://img.youtube.com/vi/7mTaPr2oaG4/0.jpg)](http://www.youtube.com/watch?v=7mTaPr2oaG4 "Unium Tutorial Video")
 
+### Unium working with Appium
+[![Unium with Appium](http://img.youtube.com/vi/UbPk2VljW78/0.jpg)](https://youtu.be/UbPk2VljW78 "Unium with Appium")
+
+
 ### Questionnaire
 
 If you have been using unium or even if you decided it wasn't for you, I would appreciate some feedback to help improve the library. Here is a link to [very short questionnaire](https://docs.google.com/forms/d/e/1FAIpQLSdZUC9cnz0zXnjjAqPAXpUrOePSsZRZk6hJb32ShBU7gL7HKA/viewform). All feedback very welcome.

@@ -48,7 +48,10 @@ namespace gw.unium
 
             foreach( var c in components )
             {
-                json.StringValue( c.GetType().Name );
+                if( c != null )
+                {
+                    json.StringValue( c.GetType().Name );
+                }
             }
 
             json.EndArray();
@@ -60,7 +63,10 @@ namespace gw.unium
 
             foreach( Transform child in go.transform )
             {
-                json.StringValue( child.name );
+                if( child != null )
+                {
+                    json.StringValue( child.name );
+                }
             }
 
             json.EndArray();
@@ -107,7 +113,10 @@ namespace gw.unium
 
             foreach( Transform c in t )
             {
-                json.StringValue( c.name );
+                if( c != null )
+                {
+                    json.StringValue( c.name );
+                }
             }
 
             json.EndArray();

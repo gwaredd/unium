@@ -15,10 +15,13 @@ namespace gw.gql
             {
                 return Enum.Parse( type, value );
             }
-
-            if( type == typeof( Vector3 ) )
+            else if( type == typeof( Vector3 ) )
             {
                 return value.FromJson<Vector3>();
+            }
+            else if( value.Length > 0 && value[0] == '{' )
+            {
+                return JsonUtility.FromJson( value, type );
             }
 
             return Convert.ChangeType( value, type );

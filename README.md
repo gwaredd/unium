@@ -1,14 +1,15 @@
 
 # unium
-> An open source test automation framework for Unity games and the occasional debug tool
+> An open source remote API for Unity games
 
-Unium is an experimental library for the purposes of facilitating automated testing and tool development for your Unity games.
+Unium is an experimental library that provides an external API to your game during development. This is intended for for tools or automated testing.
 
-The main idea is twofold. Firstly, embed a web server into your project to provide an interface onto the game. Secondly, implement a query language that to some degree takes care of the tedious bits.
+There are two parts:
 
-The advantages of a web server is that HTTP provides a technology agnostic protocol that places no restrictions on whatever tools and frameworks you wish to use. It also means it will work whether the game is running in editor, on device or on some headless server in the clouds.
+* A web server that is embedded into the game
+* A query language that lets you search the scene graph
 
-Hopefully the query language and automatic reflection reduces the amount of manual serialization code that often makes these kind of systems a pain to work with.
+The web server provides both RESTful HTTP and WebSockets, allowing you to develop tools and tests in your preferred framework.
 
 
 ## Getting Started
@@ -26,16 +27,26 @@ Your default browser should open automatically. The tutorial is best experienced
 Documentation can be found in the corresponding [unium.pdf](https://github.com/gwaredd/unium/blob/master/unium.pdf) file. 
 
 
-### Install For Your Project
+### Installing Unium into your Project
 
 To install unium into your project.
 
-* Copy the Unium library ([Assets/Unium directory](https://github.com/gwaredd/unium_lib)) into your project
+* Copy the Unium library `Assets/Unium directory` into your project
 * Add the UniumComponent to an empty game object in your scene
 * Enjoy
 
-NB: Remember to enable the `development build` flag if you are making builds (unium is disabled for release by default).
+**NB:** Remember to enable the `development build` flag if you are making builds (unium is disabled for release by default).
 
+### Writing Tests
+
+The Unium API facilitates automated tests but is not a testing framework. Below are a number of popular frameworks that have been used with Unium.
+
+* [Mocha](https://mochajs.org/) and [Chai](https://www.chaijs.com/) - JavaScript
+* [Jest](https://jestjs.io/) - JavaScript
+* [PyTest](https://pytest.org) - Python
+* [RSpec](https://rspec.info/) - Ruby
+* [SpecFlow](https://specflow.org/) - C#
+* [JUnit](https://junit.org/) - Java
 
 ### Compatibility
 

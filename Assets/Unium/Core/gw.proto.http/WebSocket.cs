@@ -89,6 +89,7 @@ namespace gw.proto.http
 
         long            mCloseStarted       = 0;
         long            mLastRecv           = 0;
+        long            mPingTime           = 0;                        // ping pong test
         bool            mSentPing           = false;
 
 
@@ -192,7 +193,7 @@ namespace gw.proto.http
                 {
                     // wait for pong response
 
-                    if( now - mLastRecv > PingPongTimeout )
+                    if( now - mPingTime > PingPongTimeout )
                     {
                         Detail( "[ws:{0}] Pong not received, closing connection ({1},{2})", ID, now, mLastRecv );
                         Close();
@@ -283,7 +284,7 @@ namespace gw.proto.http
         {
             Detail( "[ws:{0}] Send ping", ID );
 
-            mLastRecv = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            mPingTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             mSentPing = true;
 
             SendAsync( null, WebSocketOpCode.Ping );

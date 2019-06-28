@@ -49,7 +49,6 @@ function GQL_Functions() {
 //--------------------------------------------------------------------------------
 
 const pages = [
-  null,
   React.createFactory( GQL_Actions ),
   React.createFactory( GQL_SetVector3 ),
   React.createFactory( GQL_Functions ),
@@ -61,27 +60,44 @@ export default class Tutorial extends React.Component {
 
   constructor( props ) {
     super( props )
-    this.state = { activePage: 1 }
+    this.state = { activePage: 0 }
   }
 
   onSelect(n) {
-    this.setState({activePage: n})
+    this.setState({ activePage: n })
   }
 
   render() {
 
+    const numPages = pages.length;
+    const {activePage} = this.state;
+ 
+    const items = Array.from( {length: numPages}, (v,i) => (
+      <Pagination.Item
+        key={`page_${i}`}
+        active={i === activePage}
+        onClick={()=>this.onSelect(i)}
+      >
+        {i+1}
+      </Pagination.Item>
+    ));
+
     return (
       <div>
         
-        <Pagination
-          items={3}
-          next={true}
-          prev={true}
-          activePage={ this.state.activePage }
-          onSelect={(n) => this.onSelect(n) }
+        <Pagination>
+          <Pagination.Prev
+            disabled={activePage===0}
+            onClick={()=>this.onSelect( activePage - 1 )}
           />
+          {items}
+          <Pagination.Next
+            disabled={activePage===numPages-1}
+            onClick={()=>this.onSelect( activePage + 1 )}
+          />
+        </Pagination>
 
-          { pages[ this.state.activePage ]() }
+        { pages[ activePage ]() }
 
       </div>
     )

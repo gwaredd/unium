@@ -1,13 +1,11 @@
-# Focus
---------------------------------------------------------------------------------
-
-* publishing alacarte
-
-
 # Now
 --------------------------------------------------------------------------------
 
-* write an alacarte blog post
+* review security warnings
+* remove old projects
+* add test examples
+* test in 2019
+* updated release
 
 
 # Next
@@ -50,8 +48,8 @@
   * remove regex for path parsing
 
 * features
-  * callout feature - establish connection by calling out to a web server
-  * do we need to (optinally) return type meta data on GQL queries?
+  * call out feature - establish connection by calling out to a web server
+  * do we need to (optionally) return type meta data on GQL queries?
 
 
 # Later
@@ -67,13 +65,4 @@
 
   * run tests on connected clients
 
-
-# Extensions
---------------------------------------------------------------------------------
-
-* A la Carte / Omakase - debug menu maker
-* Record and playback - externally and in editor?
-* Overlord - device manger / test runner
-* Editor Extensions - mimicking changes in editor to device
-* "Drivers" for different langugages
-
+* AWS tests

@@ -3,9 +3,8 @@ import React from 'react'
 
 import {
   Form,
-  FormGroup,
   Col,
-  FormControl,
+  Row,
   Dropdown,
   DropdownButton,
   InputGroup
@@ -36,14 +35,15 @@ export default class OptionsTable extends React.Component {
   render() {
 
     return (
-
       <div>
 
-        <FormGroup controlId="formFilter">
-          <Col componentClass={Form.Label} sm={2}>Filter</Col>
+        <Form.Group as={Row} controlId="formFilter">
+          <Form.Label>
+            Filter
+          </Form.Label>
           <Col sm={10}>
             <InputGroup>
-              <FormControl
+              <Form.Control
                 type="text"
                 value={this.state.filter}
                 onChange={this.onChangeFilter}
@@ -58,15 +58,15 @@ export default class OptionsTable extends React.Component {
               Comma separated list of key names (or leave blank to ignore)
             </Form.Text>
           </Col>
-        </FormGroup>
+        </Form.Group>
 
-        <FormGroup>
+        <Form.Group>
           <Col smOffset={2} sm={10}>
             <Form.Check checked={this.state.fetchOnStartup} onChange={this.onChangeFetch} >
               Fetch on start up
             </Form.Check>
           </Col>
-        </FormGroup>
+        </Form.Group>
 
       </div>
     )

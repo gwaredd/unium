@@ -37,7 +37,7 @@ export default class WidgetLink extends React.Component {
 
     return (
       <Button
-        bsStyle="default"
+        variant="default"
         className="acWidget"
         style={{ backgroundColor: widget.colour, color: widget.textColour }}
         block

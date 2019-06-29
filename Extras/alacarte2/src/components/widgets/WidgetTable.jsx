@@ -231,14 +231,14 @@ export default class WidgetTable extends React.Component {
         <div className="panel-body">
 
         { this.state.error != null && (
-          <Alert bsStyle="danger">
+          <Alert variant="danger">
             Failed to fetch data<br/>
             { this.state.error }
           </Alert>
         )}
 
         { this.state.error === null && this.state.data === null && (
-          <Alert bsStyle="info">
+          <Alert variant="info">
             Data not fetched yet
           </Alert>
         )}

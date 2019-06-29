@@ -45,11 +45,12 @@ class AcTabs extends React.Component {
   onSelectTab = (id) => {
 
     const { dispatch } = this.props
+    const tabId = parseInt( id, 10 )
 
-    if( id === -1 ) {
+    if( tabId === -1 ) {
       dispatch( App.AddTab( this.onAddTabConfirm ) )
     } else {
-      dispatch( Actions.TabSelect( id ) )
+      dispatch( Actions.TabSelect( tabId ) )
     }
   }
 

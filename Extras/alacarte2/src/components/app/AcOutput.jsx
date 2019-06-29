@@ -10,7 +10,7 @@ import * as Log from '../../actions/Logging'
 import _ from 'lodash'
 
 import {
-  FormGroup,
+  Form,
   InputGroup,  
 } from 'react-bootstrap'
 
@@ -180,12 +180,12 @@ class AcOutput extends React.Component {
           <div ref='outputContent' className='acOutputContent'>
             { contents }
           </div>
-          <FormGroup className='acOutputInput'>
+          <Form.Group className='acOutputInput'>
             <InputGroup.Prepend>
               <InputGroup.Text>Query</InputGroup.Text>
-              {/*TODO: <FormControl type="text" onKeyDown={this.onKeyDown} inputRef={ref => { this.input = ref }}/> */}
+              {/*TODO: <Form.Control type="text" onKeyDown={this.onKeyDown} inputRef={ref => { this.input = ref }}/> */}
             </InputGroup.Prepend>
-          </FormGroup>
+          </Form.Group>
         </div>
       </div>
    )

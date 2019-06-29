@@ -9,8 +9,6 @@ import AcTabs from './components/app/AcTabs'
 import AcDialogs from './components/app/AcDialogs'
 import AcOutput from './components/app/AcOutput'
 
-import 'react-toastify/dist/ReactToastify.min.css'
-
 import Store from './model/Store'
 
 //-------------------------------------------------------------------------------

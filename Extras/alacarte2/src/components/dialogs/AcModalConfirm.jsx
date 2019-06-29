@@ -26,8 +26,8 @@ export default class AcModalConfirm extends React.Component {
             <h4>{ dialog.question }</h4>
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="default" onClick={ onCancel }>Cancel</Button>
-            <Button bsStyle="danger" onClick={ onOK }>Confirm</Button>
+            <Button variant="default" onClick={ onCancel }>Cancel</Button>
+            <Button variant="danger" onClick={ onOK }>Confirm</Button>
           </Modal.Footer>          
       </Modal>
     )

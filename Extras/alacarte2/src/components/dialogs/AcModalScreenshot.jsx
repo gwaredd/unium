@@ -39,14 +39,14 @@ export default class AcModalScreenshot extends React.Component {
           <Modal.Body>
 
             { !this.state.loaded && this.state.error === null &&
-              <Alert bsStyle="info">
+              <Alert variant="info">
                 <h4>Taking Screenshot</h4>
                 <p>Please wait ...</p>
               </Alert>
             }
 
             { !this.state.loaded && this.state.error != null &&
-              <Alert bsStyle="danger">
+              <Alert variant="danger">
                 <h4>Failed</h4>
                 <p>{ this.state.error }</p>
               </Alert>
@@ -63,7 +63,7 @@ export default class AcModalScreenshot extends React.Component {
 
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="success" onClick={onCancel}>Close</Button>
+            <Button variant="success" onClick={onCancel}>Close</Button>
           </Modal.Footer>          
       </Modal>
     )

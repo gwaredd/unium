@@ -10,9 +10,8 @@ import {
   Modal,
   Button,
   Form,
-  FormGroup,
   Col,
-  FormControl,
+  Row,
   Dropdown,
   DropdownButton,
   InputGroup
@@ -102,10 +101,12 @@ export default class AcModalAddWidget extends React.Component {
           </Modal.Header>
           <Modal.Body>
 
-          <Form horizontal onSubmit={this.onOK}>
+          <Form onSubmit={this.onOK}>
 
-            <FormGroup controlId="formType">
-              <Col componentClass={Form.Label} sm={2}>Name</Col>
+            <Form.Group as={Row} controlId="formType">
+              <Form.Label>
+                Name
+              </Form.Label>
               <Col sm={10}>
                 <InputGroup>
                   <InputGroup.Addon style={{padding: '0px'}}>
@@ -119,7 +120,7 @@ export default class AcModalAddWidget extends React.Component {
                       <span style={{backgroundColor: this.state.colour, height:'100%', width:'100%'}} />
                     </div>
                   </InputGroup.Addon>                
-                  <FormControl
+                  <Form.Control
                     type="text"
                     value={this.state.name}
                     onChange={this.onChangeName}
@@ -132,41 +133,43 @@ export default class AcModalAddWidget extends React.Component {
                   </DropdownButton>
                 </InputGroup>
               </Col>
-            </FormGroup>
+            </Form.Group>
 
             { this.state.showColours && 
-              <FormGroup>
+              <Form.Group>
                 <Col smOffset={2} sm={10}>
                   <GithubPicker width='215px' onChangeComplete={ this.onChangeColour }/>
                 </Col>
-              </FormGroup>
+              </Form.Group>
             }
 
-            <FormGroup>
-              <Col componentClass={Form.Label} sm={2}>Query</Col>
+            <Form.Group as={Row}>
+              <Form.Label>
+                Query
+              </Form.Label>
               <Col sm={10}>
-                <FormControl type="text" value={this.state.query} onChange={this.onChangeQuery}/>
+                <Form.Control type="text" value={this.state.query} onChange={this.onChangeQuery}/>
               </Col>
-            </FormGroup>
+            </Form.Group>
 
-            <FormGroup>
-              <Col componentClass={Form.Label} sm={2}>
+            <Form.Group as={Row}>
+              <Form.Label>
                 Output
-              </Col>
+              </Form.Label>
               <Col sm={10}>
                 <Form.Check checked={this.state.log} onChange={this.onChangeLog} >
                   Copy results to output window
                 </Form.Check>
               </Col>
-            </FormGroup>
+            </Form.Group>
 
-            <FormGroup>
+            <Form.Group>
               <Col smOffset={2} sm={10}>
                 <Form.Check checked={this.state.notify} onChange={this.onChangeNotify} >
                   Display successful notification toast message
                 </Form.Check>
               </Col>
-            </FormGroup>
+            </Form.Group>
 
             {element}
 
@@ -174,8 +177,8 @@ export default class AcModalAddWidget extends React.Component {
 
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="default" onClick={this.props.onCancel}>Cancel</Button>
-            <Button bsStyle="success" onClick={this.onOK}>
+            <Button variant="default" onClick={this.props.onCancel}>Cancel</Button>
+            <Button variant="success" onClick={this.onOK}>
             { this.props.dialog.widget ? "Update Widget" : "Create Widget" }
             </Button>
           </Modal.Footer>          

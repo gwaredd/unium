@@ -39,7 +39,7 @@ class AcNavBar extends React.Component {
   render() {
 
     return (
-      <Navbar>
+      <Navbar bg='light' expand='lg'>
         <Navbar.Brand>
           Unium: À La Carte
         </Navbar.Brand>

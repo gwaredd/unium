@@ -6,9 +6,8 @@ import {
   Modal,
   Button,
   Form,
-  FormGroup,
   Col,
-  FormControl
+  Row
 } from 'react-bootstrap'
 
 
@@ -49,33 +48,30 @@ export default class AcModalAddTab extends React.Component {
         
     return (
       <Modal show={true} onHide={onCancel}>
-          <Modal.Header closeButton>
-            <Modal.Title>Create a New Tab</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-
-          <Form horizontal onSubmit={onOK} >
-            <FormGroup controlId="formName">
-              <Col componentClass={Form.Label} sm={2}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create a New Tab</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={onOK} >
+            <Form.Group as={Row} controlId="formName">
+              <Form.Label>
                 Name
-              </Col>
+              </Form.Label>
               <Col sm={10}>
-                <FormControl
+                <Form.Control
                   type="text"
                   value={this.state.name}
                   onChange={this.onChangeName}
                   autoFocus={true}
                 />
               </Col>
-            </FormGroup>
-
+            </Form.Group>
           </Form>
-
-          </Modal.Body>
-          <Modal.Footer>
-            <Button bsStyle="default" onClick={onCancel}>Cancel</Button>
-            <Button bsStyle="success" onClick={onOK}>Create Tab</Button>
-          </Modal.Footer>          
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="default" onClick={onCancel}>Cancel</Button>
+          <Button variant="success" onClick={onOK}>Create Tab</Button>
+        </Modal.Footer>          
       </Modal>
     )
   }

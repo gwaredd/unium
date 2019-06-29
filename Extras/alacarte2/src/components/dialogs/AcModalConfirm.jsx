@@ -18,7 +18,7 @@ export default class AcModalConfirm extends React.Component {
     }
   
     return (
-      <Modal show={true} bsSize="large" onHide={onCancel}>
+      <Modal show={true} size='lg' onHide={onCancel}>
           <Modal.Header closeButton>
             <Modal.Title>{ dialog.title }</Modal.Title>
           </Modal.Header>

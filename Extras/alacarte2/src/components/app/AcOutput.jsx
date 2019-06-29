@@ -12,6 +12,7 @@ import _ from 'lodash'
 import {
   Form,
   InputGroup,  
+  Badge
 } from 'react-bootstrap'
 
 import { connect } from 'react-redux'
@@ -148,19 +149,17 @@ class AcOutput extends React.Component {
       <div className='acOutput'>
         <div className='acOutputTitle'>
           <span style={{width: "110px"}}>
-            <small>
-              { isConnected ?
-                <span className="label label-success" onClick={this.onDisconnect}>
-                  Connected
-                </span>
-              :
-                <span className="label label-warning" onClick={this.onConnect}>
-                  Not Connected
-                </span>
-              }
-            </small>
+            { isConnected ?
+              <Badge variant='success' onClick={this.onDisconnect}>
+                Connected
+              </Badge>
+            :
+              <Badge variant='success' onClick={this.onConnect}>
+                Not Connected
+              </Badge>
+            }
           </span>
-          <span onMouseDown={this.onMouseDown} onClick={this.onToggle} style={{width:'100%'}}>
+          <span onMouseDown={this.onMouseDown} onClick={this.onToggle} style={{width:'100%', marginLeft: '0.5em'}}>
             Output
           </span>
         

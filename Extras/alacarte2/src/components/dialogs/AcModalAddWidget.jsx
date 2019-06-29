@@ -95,7 +95,7 @@ export default class AcModalAddWidget extends React.Component {
     })
 
     return (
-      <Modal show={true} onHide={onCancel} bsSize="large">
+      <Modal show={true} onHide={onCancel} size="lg">
           <Modal.Header closeButton>
             <Modal.Title>Add { this.state.type }</Modal.Title>
           </Modal.Header>

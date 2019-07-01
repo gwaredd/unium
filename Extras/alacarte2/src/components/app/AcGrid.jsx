@@ -37,8 +37,9 @@ class AcGrid extends React.PureComponent {
 
     const { panels, tabId, layout }  = this.props
 
+    const activeTab = parseInt( tabId )
     const unlocked  = "edit" in panels.state ? panels.state.edit : 0
-    const panelList = _.filter( panels.byId, (v) => v.tab === tabId )
+    const panelList = _.filter( panels.byId, (v) => v.tab === activeTab )
     
     return (
       <ResponsiveReactGridLayout

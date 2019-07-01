@@ -38,7 +38,7 @@ export default class OptionsTable extends React.Component {
       <div>
 
         <Form.Group as={Row} controlId="formFilter">
-          <Form.Label>
+          <Form.Label column sm='2'>
             Filter
           </Form.Label>
           <Col sm={10}>
@@ -61,7 +61,7 @@ export default class OptionsTable extends React.Component {
         </Form.Group>
 
         <Form.Group>
-          <Col smOffset={2} sm={10}>
+          <Col sm={{offset:2, span:10}}>
             <Form.Check checked={this.state.fetchOnStartup} onChange={this.onChangeFetch} >
               Fetch on start up
             </Form.Check>

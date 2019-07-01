@@ -54,7 +54,7 @@ export default class AcModalAddTab extends React.Component {
         <Modal.Body>
           <Form onSubmit={onOK} >
             <Form.Group as={Row} controlId="formName">
-              <Form.Label>
+              <Form.Label column sm='2'>
                 Name
               </Form.Label>
               <Col sm={10}>

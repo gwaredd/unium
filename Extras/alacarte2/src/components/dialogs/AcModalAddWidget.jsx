@@ -104,12 +104,12 @@ export default class AcModalAddWidget extends React.Component {
           <Form onSubmit={this.onOK}>
 
             <Form.Group as={Row} controlId="formType">
-              <Form.Label>
+              <Form.Label column sm='2'>
                 Name
               </Form.Label>
               <Col sm={10}>
                 <InputGroup>
-                  <InputGroup.Addon style={{padding: '0px'}}>
+                  <InputGroup.Prepend style={{padding: '0px'}}>
                     <div style={{
                       backgroundColor: this.state.colour,
                       width:           '25px',
@@ -119,14 +119,14 @@ export default class AcModalAddWidget extends React.Component {
                     >
                       <span style={{backgroundColor: this.state.colour, height:'100%', width:'100%'}} />
                     </div>
-                  </InputGroup.Addon>                
+                  </InputGroup.Prepend>                
                   <Form.Control
                     type="text"
                     value={this.state.name}
                     onChange={this.onChangeName}
                     autoFocus={true}
                     />
-                  <DropdownButton componentClass={InputGroup.Button} id="formType" title={this.state.type}>
+                  <DropdownButton id="formType" title={this.state.type}>
                     <Dropdown.Item key="1" onSelect={()=>this.onChangeType('Button')}>Button</Dropdown.Item>
                     <Dropdown.Item key="2" onSelect={()=>this.onChangeType('Link')}>Link</Dropdown.Item>
                     <Dropdown.Item key="3" onSelect={()=>this.onChangeType('Table')}>Table</Dropdown.Item>
@@ -137,14 +137,14 @@ export default class AcModalAddWidget extends React.Component {
 
             { this.state.showColours && 
               <Form.Group>
-                <Col smOffset={2} sm={10}>
+                <Col sm={{offset:2, span:10}}>
                   <GithubPicker width='215px' onChangeComplete={ this.onChangeColour }/>
                 </Col>
               </Form.Group>
             }
 
             <Form.Group as={Row}>
-              <Form.Label>
+              <Form.Label column sm='2'>
                 Query
               </Form.Label>
               <Col sm={10}>
@@ -153,19 +153,19 @@ export default class AcModalAddWidget extends React.Component {
             </Form.Group>
 
             <Form.Group as={Row}>
-              <Form.Label>
+              <Form.Label column sm='2'>
                 Output
               </Form.Label>
               <Col sm={10}>
-                <Form.Check checked={this.state.log} onChange={this.onChangeLog} >
+                <Form.Check type='checkbox' checked={this.state.log} onChange={this.onChangeLog} >
                   Copy results to output window
                 </Form.Check>
               </Col>
             </Form.Group>
 
-            <Form.Group>
-              <Col smOffset={2} sm={10}>
-                <Form.Check checked={this.state.notify} onChange={this.onChangeNotify} >
+            <Form.Group as={Row}>
+              <Col sm={{offset:2, span:10}}>
+                <Form.Check type='checkbox' checked={this.state.notify} onChange={this.onChangeNotify} >
                   Display successful notification toast message
                 </Form.Check>
               </Col>

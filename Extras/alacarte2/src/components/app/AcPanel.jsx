@@ -73,14 +73,14 @@ class AcPanel extends React.Component {
     }
 
     return (
-      <div className="acPanel panel">
-        <div className="panel-heading panel-title" style={{backgroundColor: panel.colour, color: panel.textColour }}>
+      <div className="acPanel card">
+        <div className="card-header card-title" style={{backgroundColor: panel.colour, color: panel.textColour }}>
           { panel.name }
           <div className='pull-right'>
             { menu }
-          </div>
+          </div>s
         </div>
-        <div className="panel-body">
+        <div className="card-body">
           { _.map( panel.widgets, (wid,i) => {
 
             const widget = widgets.byId[ wid ]

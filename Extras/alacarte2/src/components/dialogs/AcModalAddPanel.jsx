@@ -69,7 +69,7 @@ export default class AcModalAddPanel extends React.Component {
           <Form onSubmit={onOK}>
 
             <Form.Group as={Row} controlId="formType">
-              <Form.Label>
+              <Form.Label column sm='2'>
                 Name
               </Form.Label>
               <Col sm={10}>
@@ -98,7 +98,7 @@ export default class AcModalAddPanel extends React.Component {
 
               { this.state.showColours && 
                 <Form.Group>
-                  <Col sm={{span:10, offset:1}}>
+                  <Col sm={{span:10, offset:2}}>
                     <GithubPicker width='215px' onChangeComplete={ this.onChangeColour }/>
                   </Col>
                 </Form.Group>

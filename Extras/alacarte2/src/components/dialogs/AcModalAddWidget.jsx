@@ -157,17 +157,22 @@ export default class AcModalAddWidget extends React.Component {
                 Output
               </Form.Label>
               <Col sm={10}>
-                <Form.Check type='checkbox' checked={this.state.log} onChange={this.onChangeLog} >
-                  Copy results to output window
-                </Form.Check>
+                <Form.Check
+                  type='checkbox'
+                  label='Copy results to output window'
+                  checked={this.state.log}
+                  onChange={this.onChangeLog} />
               </Col>
             </Form.Group>
 
             <Form.Group as={Row}>
               <Col sm={{offset:2, span:10}}>
-                <Form.Check type='checkbox' checked={this.state.notify} onChange={this.onChangeNotify} >
-                  Display successful notification toast message
-                </Form.Check>
+                <Form.Check
+                  type='checkbox'
+                  label='Display successful notification toast message'
+                  checked={this.state.notify}
+                  onChange={this.onChangeNotify} 
+                />
               </Col>
             </Form.Group>
 

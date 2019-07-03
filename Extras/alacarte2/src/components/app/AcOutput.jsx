@@ -29,7 +29,8 @@ class AcOutput extends React.Component {
     super(...args)
 
     this.state = {
-      locked: false
+      locked: false,
+      query: ''
     }
 
     this.dragOrigin    = 0
@@ -69,14 +70,21 @@ class AcOutput extends React.Component {
     this.props.dispatch( Connection.Disconnect() )
   }
 
+  onUpdateQuery = (e) => {
+    this.setState({
+      query: e.target.value.trim()
+    })
+  }
+
   onKeyDown = (e) => {
-    if( e.key !== 'Enter' || this.input.value === '' ) {
+
+    if( e.key !== 'Enter' || !this.state.query ) {
       return
     }
 
     const { dispatch, app } = this.props
     const { api }           = app.config
-    const input             = this.input.value
+    const input             = this.state.query
     const separator         = input.startsWith( '/' ) ? '': '/'
     const url               = api + separator + input
 
@@ -179,12 +187,19 @@ class AcOutput extends React.Component {
           <div ref='outputContent' className='acOutputContent'>
             { contents }
           </div>
-          <Form.Group className='acOutputInput'>
+          <InputGroup className='acOutputInput'>
             <InputGroup.Prepend>
               <InputGroup.Text>Query</InputGroup.Text>
-              {/*TODO: <Form.Control type="text" onKeyDown={this.onKeyDown} inputRef={ref => { this.input = ref }}/> */}
             </InputGroup.Prepend>
-          </Form.Group>
+            <Form.Control
+              type="text"
+              value={this.state.query}
+              onChange={this.onUpdateQuery}
+              onKeyDown={this.onKeyDown}
+              placeholder='q/scene/*.name'
+              ref='input'
+            />
+          </InputGroup>
         </div>
       </div>
    )

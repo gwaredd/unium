@@ -11,11 +11,12 @@ export function TabCreate( id, name ) {
   }
 }
 
-export function TabRemove( id ) {
+export function TabRemove( id, showTab ) {
   return {
     type    : "TAB_REMOVE",
     payload : {
-      id    : id
+      id      : id,
+      showTab : showTab
     }
   }
 }

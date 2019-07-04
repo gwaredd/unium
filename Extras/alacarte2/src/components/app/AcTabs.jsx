@@ -22,10 +22,14 @@ class AcTabs extends React.Component {
     const curTab = tabs.state.curTab
     const tab = tabs.byId[ curTab ]
 
+    const keys = Object.keys( tabs.byId )
+    const remainingTabs = _.reject( keys, (id) => id === `${curTab}` )
+    const selectTab = remainingTabs.length > 0 ? parseInt( _.first( remainingTabs ) ) : -1
+
     dispatch( App.Confirm(
       'Remove Tab',
       "Are you sure you want to remove '" + tab.name + "'",
-      (id) => dispatch( Actions.TabRemove( id ) ),
+      (id) => dispatch( Actions.TabRemove( id, selectTab ) ),
       curTab
     ))
   }
@@ -89,17 +93,19 @@ class AcTabs extends React.Component {
   render() {
 
     const { tabs } = this.props
+    const { curTab }  = tabs.state
 
     return (
       <Tabs
         id        = "tabs"
         className = 'acTabs'
+        activeKey = {curTab}
         //TODO:! transition = 'true'
         onSelect  = { this.onSelectTab }
       >
         { _.values( tabs.byId ).map( this.createTab ) }
         <Tab eventKey={-1} title="+" />
-      </Tabs>      
+      </Tabs>
     )
   }
 }

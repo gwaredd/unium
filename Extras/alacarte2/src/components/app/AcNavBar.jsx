@@ -22,11 +22,11 @@ class AcNavBar extends React.Component {
   onAddPanelConfirm = ( d ) => {
 
     const { dispatch, panels, tabs } = this.props
-    const tab = tabs.state.curTab
+    const { curTab } = tabs.state
 
     const keys    = _.map( _.keys( panels.byId ), (k) => parseInt(k) )
     const id      = keys.length === 0 ? 1 : _.max( keys ) + 1    
-    const payload = {...d, id: id, tab: tab }
+    const payload = {...d, id: id, tab: curTab }
 
     dispatch( ActionsTab.PanelCreate( payload ) )
   }
@@ -37,6 +37,8 @@ class AcNavBar extends React.Component {
 
 
   render() {
+
+    const { curTab } = this.props.tabs.state
 
     return (
       <Navbar bg='light' expand='lg'>
@@ -52,9 +54,11 @@ class AcNavBar extends React.Component {
             <Nav.Link eventKey={3} onClick={this.onScreenshot}>
               <FontAwesome name='camera' />
             </Nav.Link>
-            <Nav.Link eventKey={4} onClick={this.onAddPanel}>
-              <FontAwesome name='plus' />
-            </Nav.Link>
+            { curTab !== -1 && (
+              <Nav.Link eventKey={4} onClick={this.onAddPanel}>
+                <FontAwesome name='plus' />
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

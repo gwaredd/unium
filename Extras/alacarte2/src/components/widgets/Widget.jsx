@@ -175,7 +175,9 @@ class Widget extends React.Component {
       </div>
     )
 
-    return connectDragSource( connectDropTarget( html ) )
+    return html;
+
+    // TODO:! return connectDragSource( connectDropTarget( html ) )
   }
 }
 

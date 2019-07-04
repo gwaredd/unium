@@ -62,9 +62,11 @@ export default class OptionsTable extends React.Component {
 
         <Form.Group>
           <Col sm={{offset:2, span:10}}>
-            <Form.Check checked={this.state.fetchOnStartup} onChange={this.onChangeFetch} >
-              Fetch on start up
-            </Form.Check>
+            <Form.Check
+              checked={this.state.fetchOnStartup}
+              onChange={this.onChangeFetch}
+              label='Fetch on start up'
+            />
           </Col>
         </Form.Group>
 

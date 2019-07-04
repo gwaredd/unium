@@ -6,7 +6,8 @@ import FontAwesome from 'react-fontawesome'
 
 import {
   Table,
-  Alert
+  Alert,
+  Card
 
 } from 'react-bootstrap'
 
@@ -18,11 +19,8 @@ import * as Log from '../../actions/Logging'
 //-------------------------------------------------------------------------------
 
 export default class WidgetTable extends React.Component {
-
   constructor( ...args ) {
-
     super( ...args )
-
     this.state = {
       error:   null,
       data:    null,
@@ -219,34 +217,37 @@ export default class WidgetTable extends React.Component {
     const { widget, isEditing } = this.props
 
     return (
-      <div className="panel">
-        <div className="panel-heading panel-title" style={{backgroundColor: widget.colour, color: widget.textColour }}>
+      <Card>
+        <Card.Header
+          style={{
+            backgroundColor: widget.colour,
+            color: widget.textColour
+          }}
+        >
           { widget.name }
           { !isEditing && (
             <div className='pull-right'>
               <FontAwesome name='refresh' onClick={this.fetchData} />
             </div>
           )}
-        </div>
-        <div className="panel-body">
+        </Card.Header>
+        <Card.Body>
+          { this.state.error != null && (
+            <Alert variant="danger">
+              Failed to fetch data<br/>
+              { this.state.error }
+            </Alert>
+          )}
 
-        { this.state.error != null && (
-          <Alert variant="danger">
-            Failed to fetch data<br/>
-            { this.state.error }
-          </Alert>
-        )}
+          { this.state.error === null && this.state.data === null && (
+            <Alert variant="info">
+              Data not fetched yet
+            </Alert>
+          )}
 
-        { this.state.error === null && this.state.data === null && (
-          <Alert variant="info">
-            Data not fetched yet
-          </Alert>
-        )}
-
-        { this.state.data != null && this.renderTable() }
-
-        </div>
-      </div>
+          { this.state.data != null && this.renderTable() }
+        </Card.Body>
+      </Card>
     )
   }
 

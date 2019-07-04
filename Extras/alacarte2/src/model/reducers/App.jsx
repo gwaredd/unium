@@ -1,11 +1,10 @@
 //-------------------------------------------------------------------------------
 
-const server = document.location.host
+let server = document.location.host
 
-// TODO:!
-// if( DEVSERVER ) {
-//   server = server.replace( /:\d+/, ':8342' )
-// }
+if ( process.env.NODE_ENV === 'development' ) {
+  server = server.replace( /:\d+/, ':8342' )
+}
 
 const initial_state = {
   dialog      : null,

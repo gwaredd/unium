@@ -57,25 +57,28 @@ class AcTabs extends React.Component {
 
   //-------------------------------------------------------------------------------
 
-  createTab = ( id ) => {
+  createTab = ( tab ) => {
 
     const { tabs }    = this.props
     const { curTab }  = tabs.state
-    const tab         = tabs.byId[ id ]
 
-    const title = <span>{ tab.name } &nbsp; { id === curTab &&
-      <FontAwesome name='times' style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
-    }
-    </span>
+    const title = (
+      <span>
+        { tab.name } &nbsp;
+        { tab.id === curTab &&
+          <FontAwesome name='times' style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
+        }
+      </span>
+    )
 
     return (
       <Tab
-        key     = { id }
-        eventKey= { id }
+        key     = { `tab_${tab.id}` }
+        eventKey= { tab.id }
         title   = { title }
         mountOnEnter
       >
-        <AcGrid tabId={id} layout={tab.layout} />
+        <AcGrid tabId={tab.id} layout={tab.layout} />
       </Tab>
     )
   }
@@ -91,10 +94,10 @@ class AcTabs extends React.Component {
       <Tabs
         id        = "tabs"
         className = 'acTabs'
-        // TODO: animation = { true }
+        //TODO:! transition = 'true'
         onSelect  = { this.onSelectTab }
       >
-        { Object.keys( tabs.byId ).map( this.createTab ) }
+        { _.values( tabs.byId ).map( this.createTab ) }
         <Tab eventKey={-1} title="+" />
       </Tabs>      
     )

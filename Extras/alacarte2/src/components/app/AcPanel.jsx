@@ -72,6 +72,8 @@ class AcPanel extends React.Component {
       )
     }
 
+    const panelWidgets = _.values( widgets.byId ).filter( (w) => w.panel === panel.id );
+
     return (
       <div className="acPanel card">
         <div className="card-header card-title" style={{backgroundColor: panel.colour, color: panel.textColour }}>
@@ -81,18 +83,11 @@ class AcPanel extends React.Component {
           </div>s
         </div>
         <div className="card-body">
-          { _.map( panel.widgets, (wid,i) => {
-
-            const widget = widgets.byId[ wid ]
-
-            if( !widget ) {
-              return null
-            }
-            
+          { panelWidgets.map( (widget,i) => {
             return (
               <Widget
-                key={wid}
-                id={wid}
+                key={`wid${widget.id}`}
+                id={widget.id}
                 index={i}
                 appConfig={app.config}
                 widget={widget}

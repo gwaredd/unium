@@ -32,7 +32,12 @@ export default class AcModalScreenshot extends React.Component {
     const src = appConfig.api + '/utils/screenshot'
     
     return (
-      <Modal show={true} size='lg' onHide={onCancel}>
+      <Modal
+        show={true}
+        animation={true}
+        onHide={onCancel}
+        dialogClassName='acModelScreenshot'
+      >
           <Modal.Header closeButton>
             <Modal.Title>Screenshot</Modal.Title>
           </Modal.Header>

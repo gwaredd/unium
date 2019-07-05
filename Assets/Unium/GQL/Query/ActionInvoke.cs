@@ -34,52 +34,47 @@ namespace gw.gql
             {
                 try
                 {
-                    // get method
+                    // find something to invoke - either a method, event or field/property with an Invoke function (e.g. UnityEvent or Button)
 
-                    var target    = current;
-                    var type      = target.GetType();
-                    var method    = type.GetMethod( actionName );
-                    var multicast = null as MulticastDelegate;
+                    var target     = current;
+                    var targetType = target.GetType();
+                    var method     = null as MethodInfo;
+                    var multicast  = null as MulticastDelegate;
+
+                    var member     = targetType.GetMember( actionName );
+                    var memberType = member.Length > 0 ? member[ 0 ].MemberType : 0;
+
+                    if( memberType.HasFlag( MemberTypes.Method ) )
+                    {
+                        method = targetType.GetMethod( actionName );
+                    }
+                    else if( memberType.HasFlag( MemberTypes.Event ) )
+                    {
+                        var field = targetType.GetField( actionName, BindingFlags.Instance | BindingFlags.NonPublic );
+                        multicast = field == null ? null : field.GetValue( target ) as MulticastDelegate;
+                        method    = multicast == null ? null : multicast.GetMethodInfo();
+                    }
+                    else if( memberType.HasFlag( MemberTypes.Field ) )
+                    {
+                        var field = targetType.GetField( actionName );
+                        target = field == null  ? null : field.GetValue( target );
+                        method = target == null ? null : target.GetType().GetMethod( "Invoke" );
+                    }
+                    else if( memberType.HasFlag( MemberTypes.Property ) )
+                    {
+                        var prop = targetType.GetProperty( actionName );
+                        target   = prop == null   ? null : prop.GetValue( target );
+                        method   = target == null ? null : target.GetType().GetMethod( "Invoke" );
+                    }
+
+                    // if we didn't find anything invokable then skip this object
 
                     if( method == null )
                     {
-                        // if no method then is there an event?
-
-                        var field = type.GetField( actionName, BindingFlags.Instance | BindingFlags.NonPublic );
-
-                        if( field != null )
-                        {
-                            multicast = field.GetValue( target ) as MulticastDelegate;
-                            method    = multicast != null ? multicast.GetMethodInfo() : null;
-                        }
-                        else
-                        {
-                            // if no event, is there a field or property with an Invoke function (e.g. UnityEvent or buttons)
-
-                            field  = type.GetField( actionName );
-
-                            if( field != null )
-                            {
-                                target = field.GetValue( target );
-                            }
-                            else
-                            {
-                                var prop = type.GetProperty( actionName );
-                                target = prop.GetValue( target );
-                            }
-
-                            method = target != null ? target.GetType().GetMethod( "Invoke" ) : null;
-                        }
-
-                        // if unable to find something to invoke then skip this object
-
-                        if( method == null )
-                        {
-                            continue;
-                        }
+                        continue;
                     }
-
-                    // convert arguments
+                    
+                    // otherwise, convert arguments passed in to the appropriate types
 
                     if( strArgs != null )
                     {

@@ -44,26 +44,31 @@ namespace gw.gql
                     var member     = targetType.GetMember( actionName );
                     var memberType = member.Length > 0 ? member[ 0 ].MemberType : 0;
 
-                    if( memberType.HasFlag( MemberTypes.Method ) )
+                    if( ( memberType & MemberTypes.Method ) == MemberTypes.Method )
                     {
                         method = targetType.GetMethod( actionName );
                     }
-                    else if( memberType.HasFlag( MemberTypes.Event ) )
+                    else if( ( memberType & MemberTypes.Event ) == MemberTypes.Event )
                     {
                         var field = targetType.GetField( actionName, BindingFlags.Instance | BindingFlags.NonPublic );
                         multicast = field == null ? null : field.GetValue( target ) as MulticastDelegate;
-                        method    = multicast == null ? null : multicast.GetMethodInfo();
+
+                        if( multicast != null )
+                        {
+                            var delegateList = multicast.GetInvocationList();
+                            method = delegateList.Length > 0 ? delegateList[ 0 ].Method : null;
+                        }
                     }
-                    else if( memberType.HasFlag( MemberTypes.Field ) )
+                    else if( ( memberType & MemberTypes.Field ) == MemberTypes.Field )
                     {
                         var field = targetType.GetField( actionName );
                         target = field == null  ? null : field.GetValue( target );
                         method = target == null ? null : target.GetType().GetMethod( "Invoke" );
                     }
-                    else if( memberType.HasFlag( MemberTypes.Property ) )
+                    else if( ( memberType & MemberTypes.Property ) == MemberTypes.Property  )
                     {
                         var prop = targetType.GetProperty( actionName );
-                        target   = prop == null   ? null : prop.GetValue( target );
+                        target   = prop == null   ? null : prop.GetValue( target, null );
                         method   = target == null ? null : target.GetType().GetMethod( "Invoke" );
                     }
 

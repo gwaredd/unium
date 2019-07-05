@@ -1,7 +1,5 @@
 import React from 'react'
-import AceEditor from 'react-ace'
 import { Button, Pagination } from 'react-bootstrap'
-import TryNow from './try_now.jsx'
 
 
 //--------------------------------------------------------------------------------
@@ -50,7 +48,8 @@ class SocketsDemo extends React.Component {
     ws.onclose    = ()  => { demo.Log( "Connection closed" ) }
     ws.onmessage  = (m) => { demo.Log( "Received: " + m.data ) }
 
-    this.state.ws = ws
+    this.setState({ws});
+    // this.state.ws = ws
 
     return ws
   }
@@ -58,7 +57,7 @@ class SocketsDemo extends React.Component {
   render() {
    return (
      <div>
-      <Button bsStyle="info" onClick={()=>this.Run()}>Try Now</Button>
+      <Button variant="info" onClick={()=>this.Run()}>Try Now</Button>
       <br/><br/>
       <pre id='output'>
       </pre>
@@ -166,7 +165,7 @@ class SocketsBindDemo extends SocketsDemo {
 
       if( msg.info ) {
         demo.send({ id:'hello', q:'/q/scene/Game.Tutorial.SayHello()' })
-      } else if( msg.data && msg.id == 'hello' ) {
+      } else if( msg.data && msg.id === 'hello' ) {
         ws.close()
       }
     }
@@ -198,7 +197,6 @@ function Sockets_Bind() {
 //--------------------------------------------------------------------------------
 
 const pages = [
-  null,
   React.createFactory( Sockets_Basic ),
   React.createFactory( Sockets_Watcher ),
   React.createFactory( Sockets_Bind ),
@@ -212,7 +210,7 @@ export default class Tutorial extends React.Component {
 
   constructor( props ) {
     super( props )
-    this.state = { activePage: 1 }
+    this.state = { activePage: 0 }
   }
 
   onSelect(n) {
@@ -220,16 +218,36 @@ export default class Tutorial extends React.Component {
   }
 
   render() {
-   return (
+    const numPages = pages.length;
+    const {activePage} = this.state;
+ 
+    const items = Array.from( {length: numPages}, (v,i) => (
+      <Pagination.Item
+        key={`page_${i}`}
+        active={i === activePage}
+        onClick={()=>this.onSelect(i)}
+      >
+        {i+1}
+      </Pagination.Item>
+    ));
+
+    return (
       <div>
-        <Pagination
-          items={3}
-          next={true}
-          prev={true}
-          activePage={ this.state.activePage }
-          onSelect={(n) => this.onSelect(n) }
+        
+        <Pagination>
+          <Pagination.Prev
+            disabled={activePage===0}
+            onClick={()=>this.onSelect( activePage - 1 )}
           />
-          { pages[ this.state.activePage ]() }
+          {items}
+          <Pagination.Next
+            disabled={activePage===numPages-1}
+            onClick={()=>this.onSelect( activePage + 1 )}
+          />
+        </Pagination>
+
+        { pages[ activePage ]() }
+
       </div>
     )
   }

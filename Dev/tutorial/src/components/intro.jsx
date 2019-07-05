@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Jumbotron, Button } from 'react-bootstrap'
 
 export default class Intro extends React.Component {
@@ -16,7 +15,7 @@ export default class Intro extends React.Component {
             This is an interactive tutorial that uses the tutorial scene. If the browser opened automatically when you ran the scene then it is all good. If not, please ensure the tutorial scene is running in the editor.
           </p>
           <p>
-            <Button bsStyle="primary" onClick={ ()=>this.props.setPage(1) }>Begin</Button>
+            <Button variant="primary" onClick={ ()=>this.props.setPage(1) }>Begin</Button>
           </p>
         </Jumbotron>
       </div>

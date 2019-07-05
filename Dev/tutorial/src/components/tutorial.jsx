@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ListGroup, ListGroupItem, Panel } from 'react-bootstrap'
+import { Button, ListGroup, ListGroupItem, Card } from 'react-bootstrap'
 
 import TutorialServer from './tutorial_server.jsx'
 import TutorialRoutes from './tutorial_routes.jsx'
@@ -20,12 +20,8 @@ const pages = [
 
 export default class Tutorial extends React.Component {
 
-  constructor( props ) {
-    super( props )
-  }
-
   MenuItem(name,index) {
-    return <ListGroupItem key={index} onClick={()=>this.props.setPage(index)} active={index==0} bsStyle={index==this.props.page ? 'success' : null}>{name}</ListGroupItem>
+    return <ListGroupItem key={index} onClick={()=>this.props.setPage(index)} active={index===0} variant={index===this.props.page ? 'success' : null}>{name}</ListGroupItem>
   }
 
   Next() {
@@ -45,15 +41,17 @@ export default class Tutorial extends React.Component {
             </ListGroup>
           </div>
           <div className="col-sm-10">
-            <Panel header={ page.name } bsStyle="primary">
-              { page.component( this.props ) }
-              { this.props.page != pages.length - 1 && (
-                <div>
-                  <hr/>
-                  <Button className="pull-right" bsStyle="success" onClick={()=>this.Next()}>Next</Button>
-                </div>
-              )}
-            </Panel>
+            <Card header={ page.name } variant="primary">
+              <Card.Body>
+                { page.component( this.props ) }
+                { this.props.page !== pages.length - 1 && (
+                  <div>
+                    <hr/>
+                    <Button className="pull-right" variant="success" onClick={()=>this.Next()}>Next</Button>
+                  </div>
+                )}
+              </Card.Body>
+            </Card>
           </div>
         </div>
       </div>

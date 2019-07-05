@@ -2,7 +2,7 @@ import React from 'react'
 import Axios from 'axios'
 import AceEditor from 'react-ace'
 
-import { FormGroup, InputGroup, FormControl, Glyphicon, Button, Alert } from 'react-bootstrap'
+import { FormGroup, InputGroup, FormControl, Button, Alert } from 'react-bootstrap'
 
 
 export default class Tutorial extends React.Component {
@@ -59,6 +59,10 @@ public static void HandlerAbout( RequestAdapter req, string path )
     })
   }
 
+  onOpen() {
+    window.open( Tutorial.url, '_blank' )
+  }
+
   render() {
     return (
       <div>
@@ -90,25 +94,25 @@ The default routes along with the other configuration can be found in the Unium.
         </p>
 
         <div style={{ padding: '3em'}}>
+
           <FormGroup>
             <InputGroup>
-              <FormControl type="text" value={Tutorial.url} readOnly />
-              <InputGroup.Addon>
-                <a href={Tutorial.url} target='_blank'>
-                  <Glyphicon glyph="share-alt" />
-                </a>
-              </InputGroup.Addon>
+              <FormControl value={Tutorial.url} readOnly />
+              <InputGroup.Append>
+                <Button variant='info' onClick={()=>this.onOpen()}>&gt;&gt;</Button>
+              </InputGroup.Append>
             </InputGroup>
           </FormGroup>
-          <Button bsStyle="info" onClick={()=>this.screenshot()}>Take screenshot</Button>
+
+          <Button variant="info" onClick={()=>this.screenshot()}>Take screenshot</Button>
 
           { this.state.hasImage && (
             <center style={{marginTop:'3em'}}>
-              <img src={this.state.imageData} width="80%" />
+              <img src={this.state.imageData} alt='screenshot' width="80%" />
             </center>
           )}
           { this.state.error && (
-            <Alert bsStyle="danger">
+            <Alert variant="danger">
               <h4>Oops! Something went wrong :/</h4>
               <p>
                 {this.state.error}

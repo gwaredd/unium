@@ -1,11 +1,9 @@
 # Now
 --------------------------------------------------------------------------------
-
 invoking events
 
   * add automated tests
   * add to help / docs
-
 
 
 # Next
@@ -45,8 +43,8 @@ invoking events
   * remove regex for path parsing
 
 * features
-  * callout feature - establish connection by calling out to a web server
-  * do we need to (optinally) return type meta data on GQL queries?
+  * call out feature - establish connection by calling out to a web server
+  * do we need to (optionally) return type meta data on GQL queries?
 
 
 # Later
@@ -62,4 +60,5 @@ invoking events
 
   * run tests on connected clients
 
+* AWS tests
 

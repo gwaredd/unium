@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace gw.gql
 {
@@ -12,9 +13,9 @@ namespace gw.gql
     {
         List<object> ActionInvoke()
         {
-            var functionName = SearchPath.Target;
+            var actionName = SearchPath.Target;
 
-            if( string.IsNullOrEmpty( functionName ) )
+            if( string.IsNullOrEmpty( actionName ) )
             {
                 UniumComponent.Warn( "No function name given for Invoke() call" );
                 return null;
@@ -33,14 +34,26 @@ namespace gw.gql
             {
                 try
                 {
-                    // get function pointer
+                    // get method
 
-                    var type    = obj.GetType();
-                    var method  = type.GetMethod( functionName );
+                    var type      = obj.GetType();
+                    var method    = type.GetMethod( actionName );
+                    var multicast = null as MulticastDelegate;
 
                     if( method == null )
                     {
-                        continue;
+                        // if we can't find a method, try an event instead
+
+                        var field = type.GetField( actionName, BindingFlags.Instance | BindingFlags.NonPublic );
+                        multicast = field.GetValue( obj ) as MulticastDelegate;
+
+                        if( multicast == null )
+                        {
+                            // can't find either so skip this object
+                            continue;
+                        }
+
+                        method = multicast.GetMethodInfo();
                     }
 
                     // convert arguments
@@ -73,14 +86,24 @@ namespace gw.gql
 
                     // invoke method
 
-                    var result = method.Invoke( obj, args );
+                    object result = null;
+
+                    if( multicast != null )
+                    {
+                        result = multicast.DynamicInvoke( args );
+                    }
+                    else
+                    {
+                        result = method.Invoke( obj, args );
+                    }
+
                     results.Add( result );
                 }
                 catch( Exception e )
                 {
                     if( UniumComponent.IsDebug )
                     {
-                        UniumComponent.Warn( string.Format( "Failed to invoke '{0}' - {1}", functionName, e.Message ) );
+                        UniumComponent.Warn( string.Format( "Failed to invoke '{0}' - {1}", actionName, e.Message ) );
                     }
                 }
             }

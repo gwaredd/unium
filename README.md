@@ -50,7 +50,8 @@ The Unium API facilitates automated tests but is not a testing framework. Below 
 
 ### Compatibility
 
-* Compatible with Unity v5.4.2 and up
+* Compatible with Unity 2017.4.30 and up
+* The aim to is to keep it compatible with the lowest LTS version supported officially supported by Unity
 
 ### Tutorial Video
 

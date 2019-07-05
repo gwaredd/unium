@@ -30,36 +30,53 @@ namespace gw.gql
             var results = new List<object>();
 
 
-            foreach( var obj in Selected )
+            foreach( var current in Selected )
             {
                 try
                 {
                     // get method
 
-                    var type      = obj.GetType();
+                    var target    = current;
+                    var type      = target.GetType();
                     var method    = type.GetMethod( actionName );
                     var multicast = null as MulticastDelegate;
 
                     if( method == null )
                     {
-                        // if we can't find a method, try an event instead
+                        // if no method then is there an event?
 
                         var field = type.GetField( actionName, BindingFlags.Instance | BindingFlags.NonPublic );
 
-                        if( field == null )
+                        if( field != null )
+                        {
+                            multicast = field.GetValue( target ) as MulticastDelegate;
+                            method    = multicast != null ? multicast.GetMethodInfo() : null;
+                        }
+                        else
+                        {
+                            // if no event, is there a field or property with an Invoke function (e.g. UnityEvent or buttons)
+
+                            field  = type.GetField( actionName );
+
+                            if( field != null )
+                            {
+                                target = field.GetValue( target );
+                            }
+                            else
+                            {
+                                var prop = type.GetProperty( actionName );
+                                target = prop.GetValue( target );
+                            }
+
+                            method = target != null ? target.GetType().GetMethod( "Invoke" ) : null;
+                        }
+
+                        // if unable to find something to invoke then skip this object
+
+                        if( method == null )
                         {
                             continue;
                         }
-
-                        multicast = field.GetValue( obj ) as MulticastDelegate;
-
-                        if( multicast == null )
-                        {
-                            // can't find either so skip this object
-                            continue;
-                        }
-
-                        method = multicast.GetMethodInfo();
                     }
 
                     // convert arguments
@@ -100,7 +117,7 @@ namespace gw.gql
                     }
                     else
                     {
-                        result = method.Invoke( obj, args );
+                        result = method.Invoke( target, args );
                     }
 
                     results.Add( result );

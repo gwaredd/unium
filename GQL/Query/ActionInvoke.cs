@@ -45,6 +45,12 @@ namespace gw.gql
                         // if we can't find a method, try an event instead
 
                         var field = type.GetField( actionName, BindingFlags.Instance | BindingFlags.NonPublic );
+
+                        if( field == null )
+                        {
+                            continue;
+                        }
+
                         multicast = field.GetValue( obj ) as MulticastDelegate;
 
                         if( multicast == null )

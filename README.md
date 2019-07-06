@@ -1,5 +1,5 @@
 
-# unium
+# Unium
 > A library for game automation.
 
 Unium is a library for game automation.
@@ -15,21 +15,21 @@ This provides a flexible interface so you can remotely control and inspect your 
 
 ## Philosophy
 
-### It should just work
+#### It should just work
 
 You should not have to modify you game in any way in order to automate it.
 
-### It should work for game developers
+#### It should work for game developers
 
 It should fit with game developer ways of working.
 
-The intended audience is game developers first and technical testers second. It should not compromise their experience for other considerations.
+The intended audience is game developers first and technical testers second. It should not compromise their experience with other considerations.
 
-### It should not lock you into a specific language or framework
+#### It should not lock you into a specific language or framework
 
 You should be able to write your automation and test scripts in any language or framework you choose. Unium should come with no dependencies or stipulations.
 
-### It should be open source
+#### It should be open source
 
 Both in spirit and practice.
 
@@ -53,7 +53,7 @@ Documentation can be found in the corresponding [unium.pdf](https://github.com/g
 
 To install unium into your project.
 
-* Copy the Unium library (this `Assets/Unium` directory) to your project
+* Copy the Unium library (the `Assets/Unium` directory) to your project
 * Add the UniumComponent to an empty game object in your scene
 * Enjoy
 
@@ -89,6 +89,7 @@ Future release plan to make the following breaking changes
 
 [![Unium Tutorial Video](http://img.youtube.com/vi/7mTaPr2oaG4/0.jpg)](http://www.youtube.com/watch?v=7mTaPr2oaG4 "Unium Tutorial Video")
 
-### Unium working with Appium
+### Demonstration of Unium and Appium working together
+
 [![Unium with Appium](http://img.youtube.com/vi/UbPk2VljW78/0.jpg)](https://youtu.be/UbPk2VljW78 "Unium with Appium")
 

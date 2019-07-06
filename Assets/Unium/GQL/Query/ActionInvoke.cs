@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace gw.gql
 {
@@ -12,9 +13,9 @@ namespace gw.gql
     {
         List<object> ActionInvoke()
         {
-            var functionName = SearchPath.Target;
+            var actionName = SearchPath.Target;
 
-            if( string.IsNullOrEmpty( functionName ) )
+            if( string.IsNullOrEmpty( actionName ) )
             {
                 UniumComponent.Warn( "No function name given for Invoke() call" );
                 return null;
@@ -29,21 +30,56 @@ namespace gw.gql
             var results = new List<object>();
 
 
-            foreach( var obj in Selected )
+            foreach( var current in Selected )
             {
                 try
                 {
-                    // get function pointer
+                    // find something to invoke - either a method, event or field/property with an Invoke function (e.g. UnityEvent or Button)
 
-                    var type    = obj.GetType();
-                    var method  = type.GetMethod( functionName );
+                    var target     = current;
+                    var targetType = target.GetType();
+                    var method     = null as MethodInfo;
+                    var multicast  = null as MulticastDelegate;
+
+                    var member     = targetType.GetMember( actionName );
+                    var memberType = member.Length > 0 ? member[ 0 ].MemberType : 0;
+
+                    if( ( memberType & MemberTypes.Method ) == MemberTypes.Method )
+                    {
+                        method = targetType.GetMethod( actionName );
+                    }
+                    else if( ( memberType & MemberTypes.Event ) == MemberTypes.Event )
+                    {
+                        var field = targetType.GetField( actionName, BindingFlags.Instance | BindingFlags.NonPublic );
+                        multicast = field == null ? null : field.GetValue( target ) as MulticastDelegate;
+
+                        if( multicast != null )
+                        {
+                            var delegateList = multicast.GetInvocationList();
+                            method = delegateList.Length > 0 ? delegateList[ 0 ].Method : null;
+                        }
+                    }
+                    else if( ( memberType & MemberTypes.Field ) == MemberTypes.Field )
+                    {
+                        var field = targetType.GetField( actionName );
+                        target = field == null  ? null : field.GetValue( target );
+                        method = target == null ? null : target.GetType().GetMethod( "Invoke" );
+                    }
+                    else if( ( memberType & MemberTypes.Property ) == MemberTypes.Property  )
+                    {
+                        var prop = targetType.GetProperty( actionName );
+                        target   = prop == null   ? null : prop.GetValue( target, null );
+                        method   = target == null ? null : target.GetType().GetMethod( "Invoke" );
+                    }
+
+                    // if we didn't find anything invokable then skip this object
 
                     if( method == null )
                     {
                         continue;
                     }
-
-                    // convert arguments
+                    
+                    // otherwise, convert arguments passed in to the appropriate types
 
                     if( strArgs != null )
                     {
@@ -73,14 +109,24 @@ namespace gw.gql
 
                     // invoke method
 
-                    var result = method.Invoke( obj, args );
+                    object result = null;
+
+                    if( multicast != null )
+                    {
+                        result = multicast.DynamicInvoke( args );
+                    }
+                    else
+                    {
+                        result = method.Invoke( target, args );
+                    }
+
                     results.Add( result );
                 }
                 catch( Exception e )
                 {
                     if( UniumComponent.IsDebug )
                     {
-                        UniumComponent.Warn( string.Format( "Failed to invoke '{0}' - {1}", functionName, e.Message ) );
+                        UniumComponent.Warn( string.Format( "Failed to invoke '{0}' - {1}", actionName, e.Message ) );
                     }
                 }
             }

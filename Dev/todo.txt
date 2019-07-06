@@ -1,11 +1,9 @@
 # Now
 --------------------------------------------------------------------------------
+invoking events
 
-* review security warnings
-* remove old projects
-* add test examples
-* test in 2019
-* updated release
+  * add automated tests
+  * add to help / docs
 
 
 # Next
@@ -13,10 +11,7 @@
 
 * look/fix integration tests
 
-* alacarte
-  * allow listing and deleting of files from the persistent storage
-  * support for HTTP data encodings?
-
+* passing complex types as parameters / post requests
 
 * named queries
 
@@ -66,3 +61,4 @@
   * run tests on connected clients
 
 * AWS tests
+

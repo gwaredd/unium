@@ -100,7 +100,6 @@ class AcTabs extends React.Component {
         id        = "tabs"
         className = 'acTabs'
         activeKey = {curTab}
-        //TODO:! transition = 'true'
         onSelect  = { this.onSelectTab }
       >
         { _.values( tabs.byId ).map( this.createTab ) }

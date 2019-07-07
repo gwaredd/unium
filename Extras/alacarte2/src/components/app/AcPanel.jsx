@@ -72,7 +72,7 @@ class AcPanel extends React.Component {
       )
     }
 
-    const panelWidgets = _.values( widgets.byId ).filter( (w) => w.panel === panel.id );
+    const panelWidgets = panel.widgets.map( (id) => widgets.byId[id] )
 
     return (
       <DndProvider backend={HTML5Backend}>

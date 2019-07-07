@@ -56,7 +56,7 @@ function reduceById( state={}, action ) {
         const panel = state[ panelID ]
         const widgets = [ ...panel.widgets ]
 
-        if( _.find( widgets, (w) => w === widget.id ) === null ) {
+        if( ! _.find( widgets, (w) => w === widget.id ) ) {
           widgets.push( widget.id )
         }
 
@@ -92,6 +92,8 @@ function reduceById( state={}, action ) {
     }
 
     case 'WIDGET_MOVE': {
+
+      console.log( action.payload )
 
       const { id, dragIndex, hoverIndex } = action.payload
 

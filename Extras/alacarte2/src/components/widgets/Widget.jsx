@@ -69,6 +69,8 @@ const cardTarget = {
       return
     }
 
+    console.log( )
+
     // Time to actually perform the action
     props.moveWidget( dragIndex, hoverIndex )
 

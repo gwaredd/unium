@@ -1,15 +1,37 @@
 
-# unium
-> An open source remote API for Unity games
+# Unium
+> A library for game automation.
 
-Unium is an experimental library that provides an external API to your game during development. This is intended for for tools or automated testing.
+Unium is a library for game automation.
+
+It exposes an external API intended for external tools and automated testing.
 
 There are two parts:
 
 * A web server that is embedded into the game
-* A query language that lets you search the scene graph
+* A query language that lets you search and manipulate the scene graph
 
-The web server provides both RESTful HTTP and WebSockets, allowing you to develop tools and tests in your preferred framework.
+This provides a flexible interface so you can remotely control and inspect your game as it runs.
+
+## Philosophy
+
+#### It should just work
+
+You should not have to modify you game in any way in order to automate it.
+
+#### It should work for game developers
+
+It should fit with game developer ways of working.
+
+The intended audience is game developers first and technical testers second. It should not compromise their experience with other considerations.
+
+#### It should not lock you into a specific language or framework
+
+You should be able to write your automation and test scripts in any language or framework you choose. Unium should come with no dependencies or stipulations.
+
+#### It should be open source
+
+Both in spirit and practice.
 
 
 ## Getting Started
@@ -31,11 +53,13 @@ Documentation can be found in the corresponding [unium.pdf](https://github.com/g
 
 To install unium into your project.
 
-* Copy the Unium library `Assets/Unium directory` into your project
+* Copy the Unium library (the `Assets/Unium` directory) to your project
 * Add the UniumComponent to an empty game object in your scene
 * Enjoy
 
 **NB:** Remember to enable the `development build` flag if you are making builds (unium is disabled for release by default).
+
+## Notes
 
 ### Writing Tests
 
@@ -53,17 +77,19 @@ The Unium API facilitates automated tests but is not a testing framework. Below 
 * Compatible with Unity 2017.4.30 and up
 * The aim to is to keep it compatible with the lowest LTS version officially supported by Unity
 
+### Upcoming Breaking Changes
+
+Future release plan to make the following breaking changes
+
+* The Unium Overlord project and `UniumMinion` component will be removed
+* The `UniumRegister` component will be removed
+
+
 ### Tutorial Video
 
 [![Unium Tutorial Video](http://img.youtube.com/vi/7mTaPr2oaG4/0.jpg)](http://www.youtube.com/watch?v=7mTaPr2oaG4 "Unium Tutorial Video")
 
-### Unium working with Appium
+### Demonstration of Unium and Appium working together
+
 [![Unium with Appium](http://img.youtube.com/vi/UbPk2VljW78/0.jpg)](https://youtu.be/UbPk2VljW78 "Unium with Appium")
-
-
-### Questionnaire
-
-If you have been using unium or even if you decided it wasn't for you, I would appreciate some feedback to help improve the library. Here is a link to [very short questionnaire](https://docs.google.com/forms/d/e/1FAIpQLSdZUC9cnz0zXnjjAqPAXpUrOePSsZRZk6hJb32ShBU7gL7HKA/viewform). All feedback very welcome.
-
-Many thanks.
 

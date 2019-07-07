@@ -3,22 +3,18 @@
 import _ from 'lodash'
 import React from 'react'
 import { GithubPicker } from 'react-color'
-import ItemTypes from '../../Utils.jsx'
-import { Options } from '../app/AcWidgets.jsx'
+import ItemTypes from '../../Utils'
+import { Options } from '../app/AcWidgets'
 
 import {
   Modal,
   Button,
   Form,
-  FormGroup,
   Col,
-  FormControl,
-  ControlLabel,
+  Row,
+  Dropdown,
   DropdownButton,
-  InputGroup,
-  MenuItem,
-  Checkbox,
-  Panel
+  InputGroup
 } from 'react-bootstrap'
 
 
@@ -70,17 +66,15 @@ export default class AcModalAddWidget extends React.Component {
 
     e.preventDefault()
 
-    if( this.state.name != '' ) {
+    if( this.state.name !== '' ) {
 
-      var options = {}
+      let options = {}
 
       if( this.refs != null && this.refs.options != null ) {
         options = this.refs.options.state
       }
 
-      var widget = { ...this.state, options: options }
-      widget = _.omit( widget, 'showColours' )
-
+      const widget = _.omit( { ...this.state, options: options }, 'showColours' )
       dialog.callback( widget )
     }
 
@@ -92,24 +86,30 @@ export default class AcModalAddWidget extends React.Component {
 
   render() {
 
-    const { dialog, onCancel } = this.props
+    const { onCancel } = this.props
 
-    const $options = Options[ this.state.type.toLowerCase() ]
+    const options = Options[ this.state.type.toLowerCase() ]
+    const element = options && React.createElement( options, {
+      ref: 'options',
+      options: this.state.options
+    })
 
     return (
-      <Modal show={true} onHide={onCancel} bsSize="large">
+      <Modal show={true} onHide={onCancel} size="lg">
           <Modal.Header closeButton>
             <Modal.Title>Add { this.state.type }</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 
-          <Form horizontal onSubmit={this.onOK}>
+          <Form onSubmit={this.onOK}>
 
-            <FormGroup controlId="formType">
-              <Col componentClass={ControlLabel} sm={2}>Name</Col>
+            <Form.Group as={Row} controlId="formType">
+              <Form.Label column sm='2'>
+                Name
+              </Form.Label>
               <Col sm={10}>
                 <InputGroup>
-                  <InputGroup.Addon style={{padding: '0px'}}>
+                  <InputGroup.Prepend style={{padding: '0px'}}>
                     <div style={{
                       backgroundColor: this.state.colour,
                       width:           '25px',
@@ -119,64 +119,71 @@ export default class AcModalAddWidget extends React.Component {
                     >
                       <span style={{backgroundColor: this.state.colour, height:'100%', width:'100%'}} />
                     </div>
-                  </InputGroup.Addon>                
-                  <FormControl
+                  </InputGroup.Prepend>                
+                  <Form.Control
                     type="text"
                     value={this.state.name}
                     onChange={this.onChangeName}
                     autoFocus={true}
                     />
-                  <DropdownButton componentClass={InputGroup.Button} id="formType" title={this.state.type}>
-                    <MenuItem key="1" onSelect={()=>this.onChangeType('Button')}>Button</MenuItem>
-                    <MenuItem key="2" onSelect={()=>this.onChangeType('Link')}>Link</MenuItem>
-                    <MenuItem key="3" onSelect={()=>this.onChangeType('Table')}>Table</MenuItem>
+                  <DropdownButton id="formType" title={this.state.type}>
+                    <Dropdown.Item key="1" onSelect={()=>this.onChangeType('Button')}>Button</Dropdown.Item>
+                    <Dropdown.Item key="2" onSelect={()=>this.onChangeType('Link')}>Link</Dropdown.Item>
+                    <Dropdown.Item key="3" onSelect={()=>this.onChangeType('Table')}>Table</Dropdown.Item>
                   </DropdownButton>
                 </InputGroup>
               </Col>
-            </FormGroup>
+            </Form.Group>
 
             { this.state.showColours && 
-              <FormGroup>
-                <Col smOffset={2} sm={10}>
+              <Form.Group>
+                <Col sm={{offset:2, span:10}}>
                   <GithubPicker width='215px' onChangeComplete={ this.onChangeColour }/>
                 </Col>
-              </FormGroup>
+              </Form.Group>
             }
 
-            <FormGroup>
-              <Col componentClass={ControlLabel} sm={2}>Query</Col>
+            <Form.Group as={Row}>
+              <Form.Label column sm='2'>
+                Query
+              </Form.Label>
               <Col sm={10}>
-                <FormControl type="text" value={this.state.query} onChange={this.onChangeQuery}/>
+                <Form.Control type="text" value={this.state.query} onChange={this.onChangeQuery}/>
               </Col>
-            </FormGroup>
+            </Form.Group>
 
-            <FormGroup>
-              <Col componentClass={ControlLabel} sm={2}>
+            <Form.Group as={Row}>
+              <Form.Label column sm='2'>
                 Output
-              </Col>
+              </Form.Label>
               <Col sm={10}>
-                <Checkbox checked={this.state.log} onChange={this.onChangeLog} >
-                  Copy results to output window
-                </Checkbox>
+                <Form.Check
+                  type='checkbox'
+                  label='Copy results to output window'
+                  checked={this.state.log}
+                  onChange={this.onChangeLog} />
               </Col>
-            </FormGroup>
+            </Form.Group>
 
-            <FormGroup>
-              <Col smOffset={2} sm={10}>
-                <Checkbox checked={this.state.notify} onChange={this.onChangeNotify} >
-                  Display successful notification toast message
-                </Checkbox>
+            <Form.Group as={Row}>
+              <Col sm={{offset:2, span:10}}>
+                <Form.Check
+                  type='checkbox'
+                  label='Display successful notification toast message'
+                  checked={this.state.notify}
+                  onChange={this.onChangeNotify} 
+                />
               </Col>
-            </FormGroup>
+            </Form.Group>
 
-            { $options != null && (<$options ref='options' options={this.state.options}/>) }
+            {element}
 
           </Form>
 
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="default" onClick={this.props.onCancel}>Cancel</Button>
-            <Button bsStyle="success" onClick={this.onOK}>
+            <Button variant="default" onClick={this.props.onCancel}>Cancel</Button>
+            <Button variant="success" onClick={this.onOK}>
             { this.props.dialog.widget ? "Update Widget" : "Create Widget" }
             </Button>
           </Modal.Footer>          

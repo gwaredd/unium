@@ -4,14 +4,14 @@ import { combineReducers, applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 
-import App from './reducers/App.jsx'
-import Tabs from './reducers/Tabs.jsx'
-import Panels from './reducers/Panels.jsx'
-import Widgets from './reducers/Widgets.jsx'
-import Output from './reducers/Output.jsx'
+import App from './reducers/App'
+import Tabs from './reducers/Tabs'
+import Panels from './reducers/Panels'
+import Widgets from './reducers/Widgets'
+import Output from './reducers/Output'
 
-import AppMiddleware from './middleware/App.jsx'
-import ConnectionMiddleware from './middleware/Connection.jsx'
+import AppMiddleware from './middleware/App'
+import ConnectionMiddleware from './middleware/Connection'
 
 
 //-------------------------------------------------------------------------------
@@ -24,16 +24,15 @@ const reducers = {
   output  : Output,
 }
 
-var middleware = [
+const middleware = [
   thunk,
   AppMiddleware,
   ConnectionMiddleware
 ]
 
-if( DEVSERVER ) {
+if ( process.env.NODE_ENV === 'development' ) {
   middleware.push( createLogger() )
 }
-
 
 //-------------------------------------------------------------------------------
 

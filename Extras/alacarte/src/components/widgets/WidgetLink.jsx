@@ -2,6 +2,7 @@
 
 import React from 'react'
 import FontAwesome from 'react-fontawesome'
+import * as Log from '../../actions/Logging'
 
 import { Button } from 'react-bootstrap'
 
@@ -9,7 +10,6 @@ import { Button } from 'react-bootstrap'
 //-------------------------------------------------------------------------------
 
 export default class WidgetLink extends React.Component {
-  
 
   //-------------------------------------------------------------------------------
 
@@ -17,14 +17,14 @@ export default class WidgetLink extends React.Component {
     
     const { widget, dispatch, appConfig } = this.props
   
-    if( !"query" in widget ) {
+    if( !("query" in widget) ) {
       dispatch( Log.Warning( "Widget '" + widget.name + "'has no query" ) )
       return
     }
 
     const url = widget.query.startsWith( "http" ) ? widget.query : appConfig.api + widget.query
     
-    var win = window.open( url, '_blank' )
+    const win = window.open( url, '_blank' )
     win.focus();
 
   }
@@ -37,7 +37,7 @@ export default class WidgetLink extends React.Component {
 
     return (
       <Button
-        bsStyle="default"
+        variant="default"
         className="acWidget"
         style={{ backgroundColor: widget.colour, color: widget.textColour }}
         block

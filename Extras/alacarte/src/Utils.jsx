@@ -16,7 +16,7 @@ export default {
   },
 
   Fetch: (url, appConfig) => {
-    var uri = url.startsWith( "http" ) ? url : appConfig.api + url
+    const uri = url.startsWith( "http" ) ? url : appConfig.api + url
     return Axios.get( uri )
   }
 }

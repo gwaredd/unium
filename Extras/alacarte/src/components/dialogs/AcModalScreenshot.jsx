@@ -27,26 +27,31 @@ export default class AcModalScreenshot extends React.Component {
 
   render() {
 
-    const { dialog, appConfig, onCancel } = this.props
+    const { appConfig, onCancel } = this.props
 
     const src = appConfig.api + '/utils/screenshot'
     
     return (
-      <Modal show={true} bsSize="large" onHide={onCancel}>
+      <Modal
+        show={true}
+        animation={true}
+        onHide={onCancel}
+        dialogClassName='acModelScreenshot'
+      >
           <Modal.Header closeButton>
             <Modal.Title>Screenshot</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 
-            { !this.state.loaded && this.state.error == null &&
-              <Alert bsStyle="info">
+            { !this.state.loaded && this.state.error === null &&
+              <Alert variant="info">
                 <h4>Taking Screenshot</h4>
                 <p>Please wait ...</p>
               </Alert>
             }
 
             { !this.state.loaded && this.state.error != null &&
-              <Alert bsStyle="danger">
+              <Alert variant="danger">
                 <h4>Failed</h4>
                 <p>{ this.state.error }</p>
               </Alert>
@@ -54,6 +59,7 @@ export default class AcModalScreenshot extends React.Component {
 
             <center>
               <img
+                alt='screenshot'
                 src={src}
                 onLoad={this.onSuccess}
                 onError={this.onError}
@@ -62,7 +68,7 @@ export default class AcModalScreenshot extends React.Component {
 
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="success" onClick={onCancel}>Close</Button>
+            <Button variant="success" onClick={onCancel}>Close</Button>
           </Modal.Footer>          
       </Modal>
     )

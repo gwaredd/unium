@@ -5,43 +5,28 @@ import React from 'react'
 import FontAwesome from 'react-fontawesome'
 
 import {
-  Modal,
-  Button,
-  Form,
-  FormGroup,
-  Col,
-  FormControl,
-  ControlLabel,
-  DropdownButton,
-  InputGroup,
-  MenuItem,
-  Checkbox,
-  Panel,
-  HelpBlock,
   Table,
-  Alert
+  Alert,
+  Card
 
 } from 'react-bootstrap'
 
 
-import Utils from '../../Utils.jsx'
-import * as Log from '../../actions/Logging.jsx'
+import Utils from '../../Utils'
+import * as Log from '../../actions/Logging'
 
 
 //-------------------------------------------------------------------------------
 
 export default class WidgetTable extends React.Component {
-
   constructor( ...args ) {
-
     super( ...args )
-
     this.state = {
       error:   null,
       data:    null,
       headers: null
     }
-  }
+  } 
 
 
   //-------------------------------------------------------------------------------
@@ -51,7 +36,7 @@ export default class WidgetTable extends React.Component {
     const { widget } = this.props
 
     if( keyMap != null ) {
-      if( widget.options.type == 'Include' ) {
+      if( widget.options.type === 'Include' ) {
         data = _.pickBy( data, (v,k) => k in keyMap )
       } else {
         data = _.omitBy( data, (v,k) => k in keyMap )
@@ -65,10 +50,9 @@ export default class WidgetTable extends React.Component {
 
     const { widget } = this.props
 
-    var keyMap = null
+    let keyMap = null
 
-    if( widget.options.filter != "" ) {
-
+    if( widget.options.filter !== "" ) {
       const keys = widget.options.filter.split( /\s*,\s*/ )
       keyMap = _.zipObject( keys, _.map( keys, () => true ) )
     }
@@ -77,28 +61,28 @@ export default class WidgetTable extends React.Component {
 
     if( _.isArray( data ) ) {
     
-      if( data.length == 1 ) {
+      if( data.length === 1 ) {
         this.setObject( data[0], keyMap )
         return
       }
 
       // data
 
-      if( _.isObject( data[0] ) == false ) {
+      if( _.isObject( data[0] ) === false ) {
         const keys = _.map( data, (k,i) => i )
         this.setState( { data: _.zipObject( keys, data ) } )
         return
       }
 
-      var headers = []
+      let headers = []
 
-      if( keyMap == null ) {
+      if( keyMap === null ) {
 
         headers = _.keys( data[0] )
 
       } else {
 
-        const include = widget.options.type == 'Include'        
+        const include = widget.options.type === 'Include'        
 
         headers = _.keys( keyMap )
         data    = _.map( data, (v,k) => include ? _.pickBy( v, (o,n) => n in keyMap ): _.omitBy( v, (o,n) => n in keyMap ) )
@@ -131,7 +115,7 @@ export default class WidgetTable extends React.Component {
 
     const { widget, dispatch, appConfig } = this.props
 
-    if( !"query" in widget ) {
+    if( !("query" in widget ) ) {
       dispatch( Log.Warning( "Widget '" + widget.name + "'has no query" ) )
       return
     }
@@ -233,34 +217,37 @@ export default class WidgetTable extends React.Component {
     const { widget, isEditing } = this.props
 
     return (
-      <div className="panel">
-        <div className="panel-heading panel-title" style={{backgroundColor: widget.colour, color: widget.textColour }}>
+      <Card>
+        <Card.Header
+          style={{
+            backgroundColor: widget.colour,
+            color: widget.textColour
+          }}
+        >
           { widget.name }
           { !isEditing && (
             <div className='pull-right'>
               <FontAwesome name='refresh' onClick={this.fetchData} />
             </div>
           )}
-        </div>
-        <div className="panel-body">
+        </Card.Header>
+        <Card.Body>
+          { this.state.error != null && (
+            <Alert variant="danger">
+              Failed to fetch data<br/>
+              { this.state.error }
+            </Alert>
+          )}
 
-        { this.state.error != null && (
-          <Alert bsStyle="danger">
-            Failed to fetch data<br/>
-            { this.state.error }
-          </Alert>
-        )}
+          { this.state.error === null && this.state.data === null && (
+            <Alert variant="info">
+              Data not fetched yet
+            </Alert>
+          )}
 
-        { this.state.error == null && this.state.data == null && (
-          <Alert bsStyle="info">
-            Data not fetched yet
-          </Alert>
-        )}
-
-        { this.state.data != null && this.renderTable() }
-
-        </div>
-      </div>
+          { this.state.data != null && this.renderTable() }
+        </Card.Body>
+      </Card>
     )
   }
 

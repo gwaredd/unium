@@ -1,8 +1,8 @@
 //-------------------------------------------------------------------------------
 
-var server = document.location.host
+let server = document.location.host
 
-if( DEVSERVER ) {
+if ( process.env.NODE_ENV === 'development' ) {
   server = server.replace( /:\d+/, ':8342' )
 }
 
@@ -26,6 +26,7 @@ export default function App( state=initial_state, action ) {
     case 'CON_CONNECTED':     return { ...state, connected: action.payload }
     case 'APP_DAILOG_SHOW':   return { ...state, dialog: action.payload }
     case 'APP_DIALOG_CANCEL': return { ...state, dialog: null }
+    default: break;
   }
 
   return state

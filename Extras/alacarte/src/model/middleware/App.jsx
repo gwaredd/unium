@@ -5,8 +5,8 @@ import Axios from 'axios'
 import { toast } from 'react-toastify'
 import _ from 'lodash'
 
-import * as Connection from '../../actions/Connection.jsx'
-import * as Log from '../../actions/Logging.jsx'
+import * as Connection from '../../actions/Connection'
+import * as Log from '../../actions/Logging'
 
 const persistentConfig = '/file/persistent/alacarte.json'
 const streamingConfig = '/file/streaming/alacarte.json'
@@ -64,16 +64,16 @@ export default (function(){
 
       case 'APP_SAVE': {
 
-        var data = { ...store.getState() }
+        const data = { ...store.getState() }
         const { api } = data.app.config
 
         
         delete data[ 'output' ]
         data.app = _.pick( data.app, 'settings' )
-        data = JSON.stringify( data )
+        const json = JSON.stringify( data )
 
         Axios
-          .post( api + persistentConfig, data )
+          .post( api + persistentConfig, json )
           .then ( (res) => store.dispatch( Log.Success( 'Config saved to persistent data' ) ) )
           .catch( (err) => store.dispatch( Log.Error( 'Failed to save config: ' + err.toString() ) ) )
     
@@ -83,9 +83,6 @@ export default (function(){
       //-------------------------------------------------------------------------------
 
       case 'APP_DELETE': {
-
-        var data = store.getState()
-        const { api } = data.app.config
 
         global.localStorage.removeItem( localStorageKey )
 
@@ -108,6 +105,7 @@ export default (function(){
           case 'success': toast.success( text ); break
           case 'warning': toast.warn( text ); break
           case 'danger':  toast.error( text ); break
+          default: break
         }
         
         break
@@ -134,7 +132,7 @@ export default (function(){
 
       case 'SOCK_DEBUG': {
 
-        var msg = action.payload
+        const msg = action.payload
 
         if( "info" in msg ) {
           store.dispatch( Log.Info( "Debug messages bound" ) )
@@ -144,6 +142,10 @@ export default (function(){
           store.dispatch( Log.Print( msg.data.message ) )
         }
 
+        break
+      }
+
+      default: {
         break
       }
     }

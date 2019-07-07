@@ -1,8 +1,8 @@
 //-------------------------------------------------------------------------------
 // websocket connection to game as redux middleware
 
-import * as Log from '../../actions/Logging.jsx'
-import * as Action from '../../actions/Connection.jsx'
+import * as Log from '../../actions/Logging'
+import * as Action from '../../actions/Connection'
 
 
 //-------------------------------------------------------------------------------
@@ -17,17 +17,17 @@ class Connection
   }
 
   onOpen = () => { 
-    var store = this.store
+    const store = this.store
     return () => store.dispatch( Action.SetState( true ) )
   }
 
   onClose = () => { 
-    var store = this.store
+    const store = this.store
     return () => store.dispatch( Action.SetState( false ) )
   }
 
   onMessage = () => {
-    var store = this.store
+    const store = this.store
     return (e) => {
       const msg = JSON.parse( e.data )
       store.dispatch({
@@ -38,7 +38,7 @@ class Connection
   }
 
   onError = () => {
-    var store = this.store
+    const store = this.store
     return (e) => {
       store.dispatch( Log.Error( "Failed to connect to game" ) )
     }
@@ -80,7 +80,7 @@ class Connection
 
 function ConnectionMiddleware() { 
 
-  var gConnection = null
+  let gConnection = null
 
   return store => next => action => {
     

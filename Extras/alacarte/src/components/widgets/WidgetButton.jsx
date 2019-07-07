@@ -4,8 +4,8 @@ import React from 'react'
 
 import { Button } from 'react-bootstrap'
 
-import Utils from '../../Utils.jsx'
-import * as Log from '../../actions/Logging.jsx'
+import Utils from '../../Utils'
+import * as Log from '../../actions/Logging'
 
 
 //-------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ export default class WidgetButton extends React.Component {
     
     const { widget, dispatch, appConfig } = this.props
   
-    if( !"query" in widget ) {
+    if( !("query" in widget ) ) {
       dispatch( Log.Warning( "Widget '" + widget.name + "'has no query" ) )
       return
     }
@@ -52,7 +52,7 @@ export default class WidgetButton extends React.Component {
 
     return (
       <Button
-        bsStyle="default"
+        variant="default"
         className="acWidget"
         style={{ backgroundColor: widget.colour, color: widget.textColour }}
         block

@@ -19,10 +19,14 @@ export default function( state=[], action ) {
         timestamp : moment().format( 'HH:mm:ss.SS' )
       }
       
-      var output = state.slice()
+      const output = state.slice()
       output.push( log )
 
       return output
+    }
+
+    default: {
+      break
     }
   } 
 

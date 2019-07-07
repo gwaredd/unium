@@ -4,27 +4,16 @@ import React from 'react'
 import FontAwesome from 'react-fontawesome'
 import Axios from 'axios'
 
-import * as Connection from '../../actions/Connection.jsx'
-import * as Log from '../../actions/Logging.jsx'
+import * as Connection from '../../actions/Connection'
+import * as Log from '../../actions/Logging'
 
 import _ from 'lodash'
 
 import {
-  Navbar,
-  Glyphicon,
-  PanelGroup,
-  Button,
-  Panel,
-  Collapse,
-  Label,
   Form,
-  FormGroup,
-  FormControl,
-  ControlLabel,
   InputGroup,  
+  Badge
 } from 'react-bootstrap'
-
-import * as App from '../../actions/App.jsx'
 
 import { connect } from 'react-redux'
 
@@ -33,20 +22,15 @@ const EventListenerMode = { capture: true }
 
 //-------------------------------------------------------------------------------
 
-@connect( (store) => {
-  return {
-    app     : store.app,
-    output  : store.output
-  }
-})
-export default class AcOutput extends React.Component {
+class AcOutput extends React.Component {
 
   constructor(...args) {
     
     super(...args)
 
     this.state = {
-      locked: false
+      locked: false,
+      query: ''
     }
 
     this.dragOrigin    = 0
@@ -57,7 +41,7 @@ export default class AcOutput extends React.Component {
 
   componentDidUpdate () {
     if( !this.state.locked ) {
-      var el = this.refs.outputContent
+      const el = this.refs.outputContent
       el.scrollTop = el.scrollHeight
     }
   }
@@ -80,20 +64,27 @@ export default class AcOutput extends React.Component {
     this.props.dispatch( Connection.Connect() )
   }
 
-  onDisconnect = () => {
+  onDisconnect = (e) => {
     e.stopPropagation()
     e.nativeEvent.stopImmediatePropagation()
     this.props.dispatch( Connection.Disconnect() )
   }
 
+  onUpdateQuery = (e) => {
+    this.setState({
+      query: e.target.value.trim()
+    })
+  }
+
   onKeyDown = (e) => {
-    if( e.key != 'Enter' || this.input.value == '' ) {
+
+    if( e.key !== 'Enter' || !this.state.query ) {
       return
     }
 
     const { dispatch, app } = this.props
     const { api }           = app.config
-    const input             = this.input.value
+    const input             = this.state.query
     const separator         = input.startsWith( '/' ) ? '': '/'
     const url               = api + separator + input
 
@@ -153,7 +144,7 @@ export default class AcOutput extends React.Component {
     const isConnected = app.connected
     
 
-    var contents = null
+    let contents = null
 
     if( output.length > 0 ) {
       contents = _.map( output, (o,i) =>  <pre key={i} className={'text-' + o.type}>[{o.timestamp}] { o.text }</pre> )
@@ -166,15 +157,17 @@ export default class AcOutput extends React.Component {
       <div className='acOutput'>
         <div className='acOutputTitle'>
           <span style={{width: "110px"}}>
-            <small>
-              { isConnected ?
-                <Label bsStyle="success" onClick={this.onDisconnect}>Connected</Label>
-              :
-                <Label bsStyle="warning" onClick={this.onConnect}>Not Connected</Label>
-              }
-            </small>
+            { isConnected ?
+              <Badge variant='success' onClick={this.onDisconnect}>
+                Connected
+              </Badge>
+            :
+              <Badge variant='success' onClick={this.onConnect}>
+                Not Connected
+              </Badge>
+            }
           </span>
-          <span onMouseDown={this.onMouseDown} onClick={this.onToggle} style={{width:'100%'}}>
+          <span onMouseDown={this.onMouseDown} onClick={this.onToggle} style={{width:'100%', marginLeft: '0.5em'}}>
             Output
           </span>
         
@@ -194,14 +187,30 @@ export default class AcOutput extends React.Component {
           <div ref='outputContent' className='acOutputContent'>
             { contents }
           </div>
-          <FormGroup className='acOutputInput'>
-            <InputGroup>
-              <InputGroup.Addon>Query</InputGroup.Addon>
-              <FormControl type="text" onKeyDown={this.onKeyDown} inputRef={ref => { this.input = ref }}/>
-            </InputGroup>
-          </FormGroup>
+          <InputGroup className='acOutputInput'>
+            <InputGroup.Prepend>
+              <InputGroup.Text>Query</InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              value={this.state.query}
+              onChange={this.onUpdateQuery}
+              onKeyDown={this.onKeyDown}
+              placeholder='q/scene/*.name'
+              ref='input'
+            />
+          </InputGroup>
         </div>
       </div>
    )
   }
 }
+
+const mapStateToProps = ( state, ownProps ) => {
+  return {
+    app     : state.app,
+    output  : state.output
+  }
+}
+
+export default connect( mapStateToProps )( AcOutput );

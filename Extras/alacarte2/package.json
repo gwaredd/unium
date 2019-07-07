@@ -12,6 +12,7 @@
     "react-bootstrap": "^1.0.0-beta.9",
     "react-color": "^2.17.3",
     "react-dnd": "^8.0.3",
+    "react-dnd-html5-backend": "^9.0.0",
     "react-dom": "^16.8.6",
     "react-fontawesome": "^1.6.1",
     "react-grid-layout": "^0.16.6",

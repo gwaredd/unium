@@ -4,7 +4,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-fontawesome'
 
-// import { DragDropContext } from 'react-dnd'
+import { DndProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 import Widget from '../widgets/Widget'
 
@@ -14,7 +15,6 @@ import * as Tabs from '../../actions/Tabs'
 
 //-------------------------------------------------------------------------------
 
-// TODO: ! export default @DragDropContext( HTML5Backend )
 class AcPanel extends React.Component {
 
   //-------------------------------------------------------------------------------
@@ -75,29 +75,31 @@ class AcPanel extends React.Component {
     const panelWidgets = _.values( widgets.byId ).filter( (w) => w.panel === panel.id );
 
     return (
-      <div className="acPanel card">
-        <div className="card-header card-title" style={{backgroundColor: panel.colour, color: panel.textColour }}>
-          { panel.name }
-          <div className='pull-right'>
-            { menu }
-          </div>s
+      <DndProvider backend={HTML5Backend}>
+        <div className="acPanel card">
+          <div className="card-header card-title" style={{backgroundColor: panel.colour, color: panel.textColour }}>
+            { panel.name }
+            <div className='pull-right'>
+              { menu }
+            </div>s
+          </div>
+          <div className="card-body">
+            { panelWidgets.map( (widget,i) => {
+              return (
+                <Widget
+                  key={`wid${widget.id}`}
+                  id={widget.id}
+                  index={i}
+                  appConfig={app.config}
+                  widget={widget}
+                  isEditing={isEditing}
+                  moveWidget={this.moveWidget}
+                />
+              )
+            })}
+          </div>
         </div>
-        <div className="card-body">
-          { panelWidgets.map( (widget,i) => {
-            return (
-              <Widget
-                key={`wid${widget.id}`}
-                id={widget.id}
-                index={i}
-                appConfig={app.config}
-                widget={widget}
-                isEditing={isEditing}
-                moveWidget={this.moveWidget}
-              />
-            )
-          })}
-        </div>
-      </div>
+      </DndProvider>
     )
   }
 }
@@ -109,4 +111,4 @@ const mapStateToProps = ( state, ownProps ) => {
   }
 }
 
-export default connect( mapStateToProps )( AcPanel );
+export default connect( mapStateToProps )( AcPanel )

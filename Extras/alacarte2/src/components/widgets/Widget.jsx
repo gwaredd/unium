@@ -4,9 +4,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 // drag and drop
-// import { findDOMNode } from 'react-dom'
-// import { DragSource, DropTarget } from 'react-dnd'
-// import ItemTypes from '../../Utils'
+import { findDOMNode } from 'react-dom'
+import { DragSource, DropTarget } from 'react-dnd'
+import ItemTypes from '../../Utils'
 
 // widgets
 import FontAwesome from 'react-fontawesome'
@@ -19,8 +19,7 @@ import * as Tabs from '../../actions/Tabs'
 
 //-------------------------------------------------------------------------------
 // dragging
-/*
-TODO:!
+
 const cardSource = {
   beginDrag(props) {
     return {
@@ -84,15 +83,6 @@ const cardTarget = {
 
 //-------------------------------------------------------------------------------
 
-//TODO:!
-// @DropTarget( ItemTypes.WIDGET, cardTarget, connect => ({
-//   connectDropTarget: connect.dropTarget(),
-// }))
-// @DragSource( ItemTypes.WIDGET, cardSource, (connect, monitor) => ({
-//   connectDragSource: connect.dragSource(),
-//   isDragging:        monitor.isDragging(),
-// }))
-*/
 class Widget extends React.Component {
   
 
@@ -175,9 +165,7 @@ class Widget extends React.Component {
       </div>
     )
 
-    return html;
-
-    // TODO:! return connectDragSource( connectDropTarget( html ) )
+    return connectDragSource( connectDropTarget( html ) )
   }
 }
 
@@ -187,4 +175,16 @@ const mapStateToProps = ( state, ownProps ) => {
   }
 }
 
-export default connect( mapStateToProps )( Widget );
+const WidgetDropTarget = DropTarget( ItemTypes.WIDGET, cardTarget, connect => ({
+    connectDropTarget: connect.dropTarget(),
+  }))( Widget );
+
+const WidgetDragSource = DragSource( ItemTypes.WIDGET, cardSource, (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging:        monitor.isDragging(),
+  }))( WidgetDropTarget )
+
+const WidgetStore = connect( mapStateToProps )( WidgetDragSource );
+
+export default WidgetStore;
+

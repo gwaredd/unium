@@ -26,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "release": "react-scripts build && coffee release.coffee",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -45,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "fs-extra": "^8.1.0",
     "glob": "^7.1.4"
   }
 }

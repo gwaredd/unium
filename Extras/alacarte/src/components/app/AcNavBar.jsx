@@ -1,45 +1,32 @@
 //-------------------------------------------------------------------------------
 
 import React from 'react'
-import ReactDOM from 'react-dom'
 import FontAwesome from 'react-fontawesome'
+import _ from 'lodash'
 
-import * as Actions from '../../actions/App.jsx'
-import * as ActionsTab from '../../actions/Tabs.jsx'
+import * as Actions from '../../actions/App'
+import * as ActionsTab from '../../actions/Tabs'
 
 import { connect } from 'react-redux'
 
 import { 
   Navbar,
-  Nav,
-  NavItem,
-  NavDropdown,
-  MenuItem,
-  Glyphicon,
-  Label
+  Nav
 } from 'react-bootstrap'
 
 
 //-------------------------------------------------------------------------------
 
-@connect( (store) => {
-  return {
-    panels : store.panels,
-    tabs   : store.tabs
-  }
-})
-export default class AcNavBar extends React.Component {
-
-  //-------------------------------------------------------------------------------
+class AcNavBar extends React.Component {
 
   onAddPanelConfirm = ( d ) => {
 
-    var { dispatch, panels, tabs } = this.props
-    var tab = tabs.state.curTab
+    const { dispatch, panels, tabs } = this.props
+    const { curTab } = tabs.state
 
     const keys    = _.map( _.keys( panels.byId ), (k) => parseInt(k) )
-    const id      = keys.length == 0 ? 1 : _.max( keys ) + 1    
-    const payload = {...d, id: id, tab: tab }
+    const id      = keys.length === 0 ? 1 : _.max( keys ) + 1    
+    const payload = {...d, id: id, tab: curTab }
 
     dispatch( ActionsTab.PanelCreate( payload ) )
   }
@@ -49,33 +36,42 @@ export default class AcNavBar extends React.Component {
   onSave        = () => this.props.dispatch( Actions.Save() )
 
 
-  //-------------------------------------------------------------------------------
-
   render() {
 
+    const { curTab } = this.props.tabs.state
+
     return (
-      <Navbar fixedTop>
-        <Navbar.Header>
-          <Navbar.Brand>
-            Unium: À La Carte
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
+      <Navbar bg='light' expand='lg'>
+        <Navbar.Brand>
+          Unium: À La Carte
+        </Navbar.Brand>
+        <Navbar.Toggle />
         <Navbar.Collapse>
-          <Nav pullRight>
-            <NavItem eventKey={3} onClick={this.onSave}>
+          <Nav  className="justify-content-end">
+            <Nav.Link eventKey={3} onClick={this.onSave}>
               <FontAwesome name='floppy-o' />
-            </NavItem>
-            <NavItem eventKey={3} onClick={this.onScreenshot}>
+            </Nav.Link>
+            <Nav.Link eventKey={3} onClick={this.onScreenshot}>
               <FontAwesome name='camera' />
-            </NavItem>
-            <NavItem eventKey={4} onClick={this.onAddPanel}>
-              <FontAwesome name='plus' />
-            </NavItem>
+            </Nav.Link>
+            { curTab !== -1 && (
+              <Nav.Link eventKey={4} onClick={this.onAddPanel}>
+                <FontAwesome name='plus' />
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
     )
   }
 }
+
+const mapStateToProps = ( state, ownProps ) => {
+  return {
+    panels : state.panels,
+    tabs   : state.tabs
+  }
+}
+
+export default connect( mapStateToProps )( AcNavBar );
 

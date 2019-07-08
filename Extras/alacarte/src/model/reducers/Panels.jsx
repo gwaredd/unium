@@ -40,7 +40,7 @@ function reduceById( state={}, action ) {
       const { payload } = action
       const { id }      = payload
       
-      return _.omitBy( state, (t) => t.tab == id )
+      return _.omitBy( state, (t) => t.tab === id )
     }
 
 
@@ -54,13 +54,13 @@ function reduceById( state={}, action ) {
       if( panelID in state ) {
 
         const panel = state[ panelID ]
-        var widgets = [ ...panel.widgets ]
+        const widgets = [ ...panel.widgets ]
 
-        if( _.find( widgets, (w) => w == widget.id ) == null ) {
+        if( ! _.find( widgets, (w) => w === widget.id ) ) {
           widgets.push( widget.id )
         }
 
-        var newPanel = { ...panel, widgets: widgets }
+        const newPanel = { ...panel, widgets: widgets }
   
         return { ...state, [ panelID ]: newPanel }
 
@@ -79,12 +79,12 @@ function reduceById( state={}, action ) {
       if( panel in state ) {
 
         const oldPanel = state[ panel ]
-        const widgets = _.reject( oldPanel.widgets, (wid) => wid == id )
+        const widgets = _.reject( oldPanel.widgets, (wid) => wid === id )
 
         return { ...state, [ panel ]: { ...oldPanel, widgets: widgets } }
 
      } else {
-        console.warn( "Can't find panel " + widget.panel )
+        console.warn( "Can't find panel " + panel )
         break
       }
 
@@ -93,16 +93,22 @@ function reduceById( state={}, action ) {
 
     case 'WIDGET_MOVE': {
 
+      console.log( action.payload )
+
       const { id, dragIndex, hoverIndex } = action.payload
 
       const panel   = state[ id ]
       const dragged = panel.widgets[ dragIndex ]
 
-      var widgets = [ ...panel.widgets.slice( 0, dragIndex ), ...panel.widgets.slice( dragIndex + 1 ) ]
+      const widgets = [ ...panel.widgets.slice( 0, dragIndex ), ...panel.widgets.slice( dragIndex + 1 ) ]
 
       widgets.splice( hoverIndex, 0, dragged )
 
       return { ...state, [ id ]: { ...panel, widgets: widgets } }
+    }
+
+    default: {
+      break;
     }
           
   }
@@ -118,9 +124,13 @@ function reduceState( state={}, action ) {
 
   switch( action.type ) {
 
-    case "APP_PANEL_STATE":
+    case "APP_PANEL_STATE": {
       return { ...state, ...action.payload }
-      break
+    }
+
+    default: {
+      break;
+    }
   }
 
   return state

@@ -49,9 +49,9 @@ Your default browser should open automatically. The tutorial is best experienced
 Documentation can be found in the corresponding [unium.pdf](https://github.com/gwaredd/unium/blob/master/unium.pdf) file. 
 
 
-### Installing Unium into your Project
+### Installing Unium to your Project
 
-To install unium into your project.
+To install unium to your project.
 
 * Copy the Unium library (the `Assets/Unium` directory) to your project
 * Add the UniumComponent to an empty game object in your scene
@@ -76,14 +76,6 @@ The Unium API facilitates automated tests but is not a testing framework. Below 
 
 * Compatible with Unity 2017.4.30 and up
 * The aim to is to keep it compatible with the lowest LTS version officially supported by Unity
-
-### Upcoming Breaking Changes
-
-Future release plan to make the following breaking changes
-
-* The Unium Overlord project and `UniumMinion` component will be removed
-* The `UniumRegister` component will be removed
-
 
 ### Tutorial Video
 

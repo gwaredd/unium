@@ -6,16 +6,15 @@ import { connect } from 'react-redux'
 // drag and drop
 import { findDOMNode } from 'react-dom'
 import { DragSource, DropTarget } from 'react-dnd'
-import ItemTypes from '../../Utils.jsx'
+import ItemTypes from '../../Utils'
 
 // widgets
 import FontAwesome from 'react-fontawesome'
-import { Controls } from '../app/AcWidgets.jsx'
+import { Controls } from '../app/AcWidgets'
 
 // actions
-import * as Actions from '../../actions/App.jsx'
-import * as Log from '../../actions/Logging.jsx'
-import * as Tabs from '../../actions/Tabs.jsx'
+import * as Actions from '../../actions/App'
+import * as Tabs from '../../actions/Tabs'
 
 
 //-------------------------------------------------------------------------------
@@ -39,7 +38,7 @@ const cardTarget = {
 
     // Don't replace items with themselves
 
-    if (dragIndex === hoverIndex) {
+    if (dragIndex  === hoverIndex) {
       return
     }
 
@@ -70,6 +69,8 @@ const cardTarget = {
       return
     }
 
+    console.log( )
+
     // Time to actually perform the action
     props.moveWidget( dragIndex, hoverIndex )
 
@@ -84,19 +85,7 @@ const cardTarget = {
 
 //-------------------------------------------------------------------------------
 
-@DropTarget( ItemTypes.WIDGET, cardTarget, connect => ({
-  connectDropTarget: connect.dropTarget(),
-}))
-@DragSource( ItemTypes.WIDGET, cardSource, (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging:        monitor.isDragging(),
-}))
-@connect( (store) => {
-  return {
-    widgets : store.widgets
-  }
-})
-export default class Widget extends React.Component {
+class Widget extends React.Component {
   
 
   //-------------------------------------------------------------------------------
@@ -110,7 +99,7 @@ export default class Widget extends React.Component {
 
     e.stopPropagation()
     
-    var { dispatch, id, widgets } = this.props
+    const { dispatch, id, widgets } = this.props
     const widget = widgets.byId[ id ]
     
     dispatch( Actions.AddWidget( this.onEditWidgetConfirm, widget ) )
@@ -125,7 +114,7 @@ export default class Widget extends React.Component {
     e.stopPropagation()
     e.nativeEvent.stopImmediatePropagation()
 
-    var { dispatch, id, widgets } = this.props
+    const { dispatch, id, widgets } = this.props
     const widget = widgets.byId[ id ]
     
     dispatch( Actions.Confirm(
@@ -142,13 +131,17 @@ export default class Widget extends React.Component {
   render() {
 
     const { isEditing, widget } = this.props
-
     
-    const $control = Controls[ widget.type.toLowerCase() ]
-
+    const component = Controls[ widget.type.toLowerCase() ]
+    const element = React.createElement( component, {
+      widget: widget,
+      dispatch: this.props.dispatch,
+      appConfig: this.props.appConfig,
+      isEditing: isEditing
+    })
 
     if( !isEditing ) {
-      return <$control widget={widget} dispatch={this.props.dispatch} appConfig={this.props.appConfig} isEditing={false}/>
+      return element;
     }
 
     // editing ...
@@ -165,7 +158,7 @@ export default class Widget extends React.Component {
     
     const html = (
       <div style={style} onMouseDown={(e)=>{e.stopPropagation()}}>
-        <$control widget={widget} dispatch={this.props.dispatch} appConfig={this.props.appConfig} isEditing={true}/>
+        {element}
         <div className='acEdit' style={{color: widget.textColour}}>
             <FontAwesome className='acPanelIcon' name='pencil' onClick={this.onEditWidget} />
             &nbsp;
@@ -177,4 +170,23 @@ export default class Widget extends React.Component {
     return connectDragSource( connectDropTarget( html ) )
   }
 }
+
+const mapStateToProps = ( state, ownProps ) => {
+  return {
+    widgets : state.widgets
+  }
+}
+
+const WidgetDropTarget = DropTarget( ItemTypes.WIDGET, cardTarget, connect => ({
+    connectDropTarget: connect.dropTarget(),
+  }))( Widget );
+
+const WidgetDragSource = DragSource( ItemTypes.WIDGET, cardSource, (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging:        monitor.isDragging(),
+  }))( WidgetDropTarget )
+
+const WidgetStore = connect( mapStateToProps )( WidgetDragSource );
+
+export default WidgetStore;
 

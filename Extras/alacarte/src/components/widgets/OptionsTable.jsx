@@ -1,20 +1,13 @@
 
 import React from 'react'
-import Widget from './Widget.jsx'
 
 import {
-  Modal,
   Form,
-  FormGroup,
   Col,
-  FormControl,
-  ControlLabel,
+  Row,
+  Dropdown,
   DropdownButton,
-  InputGroup,
-  MenuItem,
-  Checkbox,
-  HelpBlock
-
+  InputGroup
 } from 'react-bootstrap'
 
 const initialState = {
@@ -42,35 +35,40 @@ export default class OptionsTable extends React.Component {
   render() {
 
     return (
-
       <div>
 
-        <FormGroup controlId="formFilter">
-          <Col componentClass={ControlLabel} sm={2}>Filter</Col>
+        <Form.Group as={Row} controlId="formFilter">
+          <Form.Label column sm='2'>
+            Filter
+          </Form.Label>
           <Col sm={10}>
             <InputGroup>
-              <FormControl
+              <Form.Control
                 type="text"
                 value={this.state.filter}
                 onChange={this.onChangeFilter}
                 autoFocus={true}
                 />
               <DropdownButton componentClass={InputGroup.Button} id="formFilterType" title={this.state.type}>
-                <MenuItem key="1" onSelect={()=>this.onChangeFilterType('Include')}>Include</MenuItem>
-                <MenuItem key="2" onSelect={()=>this.onChangeFilterType('Exclude')}>Exclude</MenuItem>
+                <Dropdown.Item key="1" onSelect={()=>this.onChangeFilterType('Include')}>Include</Dropdown.Item>
+                <Dropdown.Item key="2" onSelect={()=>this.onChangeFilterType('Exclude')}>Exclude</Dropdown.Item>
               </DropdownButton>
             </InputGroup>
-            <HelpBlock>Comma separated list of key names (or leave blank to ignore)</HelpBlock>
+            <Form.Text className="text-muted">
+              Comma separated list of key names (or leave blank to ignore)
+            </Form.Text>
           </Col>
-        </FormGroup>
+        </Form.Group>
 
-        <FormGroup>
-          <Col smOffset={2} sm={10}>
-            <Checkbox checked={this.state.fetchOnStartup} onChange={this.onChangeFetch} >
-              Fetch on start up
-            </Checkbox>
+        <Form.Group>
+          <Col sm={{offset:2, span:10}}>
+            <Form.Check
+              checked={this.state.fetchOnStartup}
+              onChange={this.onChangeFetch}
+              label='Fetch on start up'
+            />
           </Col>
-        </FormGroup>
+        </Form.Group>
 
       </div>
     )

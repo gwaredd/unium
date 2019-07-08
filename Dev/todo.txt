@@ -1,12 +1,17 @@
 # Now
 --------------------------------------------------------------------------------
-invoking events
 
-  * add automated tests
-  * add to help / docs
-
+* mocha example
+* deprecate UniumMinion and UniumRegister
+* create new release
 
 # Next
+--------------------------------------------------------------------------------
+
+* AWS variant ('callout' websocket version)
+
+
+# Later
 --------------------------------------------------------------------------------
 
 * look/fix integration tests
@@ -45,20 +50,4 @@ invoking events
 * features
   * call out feature - establish connection by calling out to a web server
   * do we need to (optionally) return type meta data on GQL queries?
-
-
-# Later
---------------------------------------------------------------------------------
-
-* call out to server
-
-  * list of connected clients - user name, ip, version, level, in editor or in game, development build, etc
-  * historical list / log
-  * click to launch on-device debug menu for client
-  * off-device debug menu?
-  * "terminal mode" for "chatting" with client
-
-  * run tests on connected clients
-
-* AWS tests
 

@@ -2,35 +2,34 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Tabs, Tab, Nav, NavItem, Glyphicon, Row, Col } from 'react-bootstrap'
+import { Tabs, Tab } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 import _ from 'lodash'
 
-import AcGrid from './AcGrid.jsx'
+import AcGrid from './AcGrid'
 
-import * as App from '../../actions/App.jsx'
-import * as Actions from '../../actions/Tabs.jsx'
+import * as App from '../../actions/App'
+import * as Actions from '../../actions/Tabs'
 
 
 //-------------------------------------------------------------------------------
 
-@connect( (store) => {
-  return {
-    tabs: store.tabs
-  }
-})
-export default class AcTabs extends React.Component {
+class AcTabs extends React.Component {
 
   onRemoveTab = () => {
     
-    var { dispatch, tabs } = this.props
-    var curTab = tabs.state.curTab
-    var tab = tabs.byId[ curTab ]
+    const { dispatch, tabs } = this.props
+    const curTab = tabs.state.curTab
+    const tab = tabs.byId[ curTab ]
+
+    const keys = Object.keys( tabs.byId )
+    const remainingTabs = _.reject( keys, (id) => id === `${curTab}` )
+    const selectTab = remainingTabs.length > 0 ? parseInt( _.first( remainingTabs ) ) : -1
 
     dispatch( App.Confirm(
       'Remove Tab',
       "Are you sure you want to remove '" + tab.name + "'",
-      (id) => dispatch( Actions.TabRemove( id ) ),
+      (id) => dispatch( Actions.TabRemove( id, selectTab ) ),
       curTab
     ))
   }
@@ -39,47 +38,51 @@ export default class AcTabs extends React.Component {
 
   onAddTabConfirm = ( s ) => {
     
-    var { dispatch, tabs } = this.props
+    const { dispatch, tabs } = this.props
     
-    var keys  = _.map( _.keys( tabs.byId ), (k) => parseInt(k) )
-    var id    = keys.length == 0 ? 1 : _.max( keys ) + 1
+    const keys  = _.map( _.keys( tabs.byId ), (k) => parseInt(k) )
+    const id    = keys.length === 0 ? 1 : _.max( keys ) + 1
         
     dispatch( Actions.TabCreate( id, s.name ) )
   }
     
   onSelectTab = (id) => {
 
-    var { dispatch } = this.props
+    const { dispatch } = this.props
+    const tabId = parseInt( id, 10 )
 
-    if( id == -1 ) {
+    if( tabId === -1 ) {
       dispatch( App.AddTab( this.onAddTabConfirm ) )
     } else {
-      dispatch( Actions.TabSelect( id ) )
+      dispatch( Actions.TabSelect( tabId ) )
     }
   }
 
 
   //-------------------------------------------------------------------------------
 
-  createTab = ( id ) => {
+  createTab = ( tab ) => {
 
-    var { tabs }    = this.props
-    var { curTab }  = tabs.state
-    var tab         = tabs.byId[ id ]
+    const { tabs }    = this.props
+    const { curTab }  = tabs.state
 
-    var title = <span>{ tab.name } &nbsp; { id == curTab &&
-      <FontAwesome name='times' style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
-    }
-    </span>
+    const title = (
+      <span>
+        { tab.name } &nbsp;
+        { tab.id === curTab &&
+          <FontAwesome name='times' style={{fontSize:'10px'}} onClick={ this.onRemoveTab }/>
+        }
+      </span>
+    )
 
     return (
       <Tab
-        key     = { id }
-        eventKey= { id }
+        key     = { `tab_${tab.id}` }
+        eventKey= { tab.id }
         title   = { title }
         mountOnEnter
       >
-        <AcGrid tabId={id} layout={tab.layout} />
+        <AcGrid tabId={tab.id} layout={tab.layout} />
       </Tab>
     )
   }
@@ -89,20 +92,28 @@ export default class AcTabs extends React.Component {
 
   render() {
 
-    var { tabs } = this.props
-    var { curTab } = tabs.state
+    const { tabs } = this.props
+    const { curTab }  = tabs.state
 
     return (
       <Tabs
         id        = "tabs"
         className = 'acTabs'
-        animation = { true }
+        activeKey = {curTab}
         onSelect  = { this.onSelectTab }
       >
-        { Object.keys( tabs.byId ).map( this.createTab ) }
+        { _.values( tabs.byId ).map( this.createTab ) }
         <Tab eventKey={-1} title="+" />
-      </Tabs>      
+      </Tabs>
     )
   }
 }
+
+const mapStateToProps = ( state, ownProps ) => {
+  return {
+    tabs: state.tabs
+  }
+}
+
+export default connect( mapStateToProps )( AcTabs );
 

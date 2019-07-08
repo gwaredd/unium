@@ -1,15 +1,13 @@
-
-import WidgetButton from '../widgets/WidgetButton.jsx'
-import WidgetTable from '../widgets/WidgetTable.jsx'
-import WidgetLink from '../widgets/WidgetLink.jsx'
+import WidgetButton from '../widgets/WidgetButton'
+import WidgetTable from '../widgets/WidgetTable'
+import WidgetLink from '../widgets/WidgetLink'
+import OptionsTable from '../widgets/OptionsTable'
 
 export const Controls = {
   button: WidgetButton,
   link:   WidgetLink,
   table:  WidgetTable,
 }
-
-import OptionsTable from '../widgets/OptionsTable.jsx'
 
 export const Options = {
   table:  OptionsTable,

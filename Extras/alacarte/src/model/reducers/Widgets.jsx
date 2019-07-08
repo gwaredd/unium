@@ -36,7 +36,7 @@ function reduceById( state={}, action ) {
       const { payload } = action
       const { id }      = payload
       
-      return _.omitBy( state, (w) => w.panel == id )
+      return _.omitBy( state, (w) => w.panel === id )
       
     }
     
@@ -45,14 +45,15 @@ function reduceById( state={}, action ) {
       const { payload } = action
       const { id }      = payload
       
-      return _.omitBy( state, (w) => w.tab == id )
+      return _.omitBy( state, (w) => w.tab === id )
       
     }
-  }
 
-  return state
+    default: {
+      return state
+    }
+  }
 }
-  
 
 //-------------------------------------------------------------------------------
 

@@ -5,12 +5,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Responsive, WidthProvider } from 'react-grid-layout'
 
-import AcPanel from './AcPanel.jsx'
+import AcPanel from './AcPanel'
 
-import GridStyle from 'react-grid-layout/css/styles.css'
-import ResizeStyle from 'react-resizable/css/styles.css'
+import 'react-grid-layout/css/styles.css'
+import 'react-resizable/css/styles.css'
 
-import * as Tabs from '../../actions/Tabs.jsx'
+import * as Tabs from '../../actions/Tabs'
 
 
 const ResponsiveReactGridLayout = WidthProvider( Responsive )
@@ -18,12 +18,7 @@ const ResponsiveReactGridLayout = WidthProvider( Responsive )
 
 //-------------------------------------------------------------------------------
 
-@connect( (store) => {
-  return {
-    panels: store.panels
-  }
-})
-export default class AcGrid extends React.PureComponent {
+class AcGrid extends React.PureComponent {
 
   static defaultProps = {
     className   : "layout",
@@ -38,14 +33,13 @@ export default class AcGrid extends React.PureComponent {
     dispatch( Tabs.TabLayout( tabId, layouts ) )
   }
 
-  //-------------------------------------------------------------------------------
-
   render() {
 
     const { panels, tabId, layout }  = this.props
 
+    const activeTab = parseInt( tabId )
     const unlocked  = "edit" in panels.state ? panels.state.edit : 0
-    const panelList = _.filter( panels.byId, (v) => v.tab == tabId )
+    const panelList = _.filter( panels.byId, (v) => v.tab === activeTab )
     
     return (
       <ResponsiveReactGridLayout
@@ -56,7 +50,7 @@ export default class AcGrid extends React.PureComponent {
       {
         _.map( panelList, (p,i) =>
           <div key={i}>
-            <AcPanel panel={p} isEditing={p.id == unlocked} />
+            <AcPanel panel={p} isEditing={p.id === unlocked} />
           </div>
         )
       }
@@ -64,3 +58,12 @@ export default class AcGrid extends React.PureComponent {
     )
   }
 }
+
+const mapStateToProps = ( state, ownProps ) => {
+  return {
+    panels: state.panels
+  }
+}
+
+export default connect( mapStateToProps )( AcGrid );
+

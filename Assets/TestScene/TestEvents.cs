@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#pragma warning disable 0067
+
+using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]

@@ -62,6 +62,8 @@ describe 'GQL Recursive Find', ->
         body = JSON.parse res.body
         body.should.eql [ 'Cube', 'Cube', 'Cube', 'Cube' ]
 
+        return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to find objects with components', ->
@@ -73,6 +75,8 @@ describe 'GQL Recursive Find', ->
         body = JSON.parse res.body
         body.should.eql [ false, false, false, false ]
 
+        return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to find objects with attribute chains', ->
@@ -83,6 +87,8 @@ describe 'GQL Recursive Find', ->
         res.code.should.equal 200
         body = JSON.parse res.body
         body.should.eql [ false, false, false, false ]
+
+        return true
 
 
 

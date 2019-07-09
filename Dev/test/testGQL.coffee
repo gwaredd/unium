@@ -21,6 +21,8 @@ describe 'GQL Positive Tests', ->
       body[0].should.have.property 'FPS'
       body[0].should.have.property 'Scene'
       
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to query the scene graph', ->
@@ -29,6 +31,8 @@ describe 'GQL Positive Tests', ->
       res.code.should.equal 200
       body = JSON.parse res.body
       body.should.be.an "array"
+
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -40,6 +44,8 @@ describe 'GQL Positive Tests', ->
       body.should.be.an "array"
       body.should.have.length.above 1
 
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to get the cubes', ->
@@ -49,6 +55,8 @@ describe 'GQL Positive Tests', ->
       body = JSON.parse res.body
       body.should.be.an "array"
       body.should.have.length 4
+
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -62,6 +70,8 @@ describe 'GQL Positive Tests', ->
       body.should.include 0
       body.should.include 5
 
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to call functions', ->
@@ -72,6 +82,8 @@ describe 'GQL Positive Tests', ->
       body.should.be.an "array"
       body.should.have.length 1
       body.should.include 1
+
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -84,6 +96,8 @@ describe 'GQL Positive Tests', ->
       body.should.have.length 1
       body.should.include 7
 
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to call multiple functions with parameters', ->
@@ -95,6 +109,8 @@ describe 'GQL Positive Tests', ->
       body.should.have.length 4
       body.should.eql [7,7,7,7]
 
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to set variables', ->
@@ -105,6 +121,8 @@ describe 'GQL Positive Tests', ->
       body.should.be.an "array"
       body.should.have.length 1
       body.should.eql [ 7 ]
+
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -120,6 +138,8 @@ describe 'GQL Positive Tests', ->
       body.should.have.length 4
       body.should.eql [ 89, 89, 89, 89 ]
 
+      return true
+
     # check they were actually set
 
     .then -> req.get "#{ config.url }/q/scene/Game/Cube[0].TestBehaviour.RandomValue" 
@@ -130,12 +150,16 @@ describe 'GQL Positive Tests', ->
       body.should.have.length 1
       body.should.eql [ 89 ]
 
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should not be able to call socket commands',  ->
     req
       .get "#{ config.url }/socket/cmd.ping()"
       .catch (res) -> res.code.should.equal 404
+
+      return true
 
 
 #################################################################################
@@ -150,6 +174,8 @@ describe 'GQL Negative Tests', ->
       body.should.be.an "array"
       body.should.have.length 0
 
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to handle functions that do not exist', ->
@@ -158,6 +184,8 @@ describe 'GQL Negative Tests', ->
       body = JSON.parse res.body
       body.should.be.an "array"
       body.should.have.length 0
+
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -168,6 +196,8 @@ describe 'GQL Negative Tests', ->
       body.should.be.an "array"
       body.should.have.length 0
 
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to handle bad function parameters conversions', ->
@@ -177,6 +207,8 @@ describe 'GQL Negative Tests', ->
       body.should.be.an "array"
       body.should.have.length 0
   
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to handle function without enough parameters', ->
@@ -185,6 +217,8 @@ describe 'GQL Negative Tests', ->
       body = JSON.parse res.body
       body.should.be.an "array"
       body.should.have.length 0
+
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -195,6 +229,8 @@ describe 'GQL Negative Tests', ->
       body.should.be.an "array"
       body.should.have.length 0
 
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should be able to handle bad variable conversions', ->
@@ -204,6 +240,8 @@ describe 'GQL Negative Tests', ->
       body.should.be.an "array"
       body.should.have.length 0
 
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should not reflect events', ->
@@ -212,4 +250,6 @@ describe 'GQL Negative Tests', ->
       body = JSON.parse res.body
       body.should.be.an "array"
       body.should.have.length 0
+
+      return true
 

@@ -3,23 +3,23 @@
   "version": "1.0.0",
   "description": "unium development scripts",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --opts ./test/mocha.opts ./test",
+    "test": "node node_modules/mocha/bin/mocha --opts ./test/mocha.opts ./test/*.coffee",
     "compile": "coffee -c -b -m -o ./tmp ./scripts/"
   },
   "author": "gwaredd@hotmail.com",
   "license": "MIT",
   "repository": "https://github.com/gwaredd/unium.git",
   "dependencies": {
-    "chai": "^3.5.0",
-    "chalk": "^1.1.3",
-    "coffee-script": "^1.12.7",
-    "mocha": "^3.3.0",
-    "moment": "^2.18.1",
-    "npmlog": "^4.1.0",
+    "chai": "^4.2.0",
+    "chalk": "^2.4.2",
+    "coffeescript": "^2.4.1",
+    "mocha": "^6.1.4",
+    "moment": "^2.24.0",
+    "npmlog": "^4.1.2",
     "optimist": "^0.6.1",
-    "q": "^1.5.0",
+    "q": "^1.5.1",
     "requestify": "^0.2.5",
-    "underscore": "^1.8.3",
-    "ws": "^2.3.1"
+    "underscore": "^1.9.1",
+    "ws": "^7.1.0"
   }
 }

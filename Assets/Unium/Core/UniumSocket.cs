@@ -211,7 +211,7 @@ namespace gw.unium
 
             if( mRepeaters.Count == num )
             {
-                Send( id, "error", "not found" );
+                Send( id, "error", JsonTypeConverters.EscapedString( "not found" ) );
             }
         }
 
@@ -244,7 +244,7 @@ namespace gw.unium
 
             if( mListeners.Count == num )
             {
-                Send( id, "error", "not found" );
+                Send( id, "error", JsonTypeConverters.EscapedString( "not found" ) );
             }
         }
 

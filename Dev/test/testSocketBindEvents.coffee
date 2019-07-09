@@ -1,5 +1,6 @@
 #--------------------------------------------------------------------------------
 
+_         = require 'underscore'
 config    = require './config'
 req       = require 'requestify'
 assert    = require( 'chai' ).assert
@@ -184,8 +185,16 @@ describe 'Sockets Bind Events', ->
     ws.on 'close',  -> done()
 
 
-    count = [0,0]
+    count = 0
     open = 0
+    unbind = false
+
+    received = {
+      1: false
+      2: false
+      3: false
+      4: false
+    }
 
     ws.on 'message', (data) ->
 
@@ -197,7 +206,9 @@ describe 'Sockets Bind Events', ->
       # handle info
 
       if msg.info?
-        return ++open if msg.info == "bound"
+        if msg.info == "bound"
+          ++count
+          return ++open
         if msg.info == "unbound"
           --open
           setTimeout (-> ws.close()), 2000 if open==0
@@ -209,9 +220,12 @@ describe 'Sockets Bind Events', ->
       msg.should.have.property 'data'
       msg.data.should.have.property 'id'
       msg.data.should.have.property 'levelTime'
-      count[0].should.be.at.most 3
-      count[1].should.be.at.most 3
 
-      count[ msg.data.id - 1 ]++
+      id = msg.data.id
+      id.should.be.within 1,4
 
-      ws.send JSON.stringify id:"tick", q:"/socket.unbind(multi)" if count[0]==3 and count[1]==3
+      received[ id ] = true
+
+      if not unbind
+        unbind = Object.values( received ).reduce ((a,b) -> a && b), true
+        ws.send JSON.stringify id:"tick", q:"/socket.unbind(multi)" if unbind

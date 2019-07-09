@@ -17,6 +17,7 @@ describe 'Basic Connectivity', ->
 
       body = JSON.parse res.body
       body.should.have.property 'Unium'
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -32,6 +33,7 @@ describe 'Basic Connectivity', ->
       body.should.have.property 'RunningTime'
       body.should.have.property 'FPS'
       body.should.have.property 'Scene'
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -42,6 +44,7 @@ describe 'Basic Connectivity', ->
       body = JSON.parse res.body
       body.should.have.property 'test'
       body.test.should.equal "ok"
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -49,6 +52,7 @@ describe 'Basic Connectivity', ->
 
     req.get( "#{ config.url }/notfound" ).fail (res) ->
       res.code.should.equal 404
+      return true
 
 
   #--------------------------------------------------------------------------------
@@ -68,6 +72,8 @@ describe 'Basic Connectivity', ->
       body[0].should.have.property 'FPS'
       body[0].should.have.property 'Scene'
       
+      return true
+
 
   #--------------------------------------------------------------------------------
   it 'should have a GQL scene end point', ->
@@ -79,4 +85,6 @@ describe 'Basic Connectivity', ->
 
       body = JSON.parse res.body
       body.should.be.an "array"
+
+      return true
 

@@ -2,8 +2,8 @@
 --------------------------------------------------------------------------------
 
 * mocha example
-* deprecate UniumMinion and UniumRegister
-* create new release
+* update asset store version
+
 
 # Next
 --------------------------------------------------------------------------------
@@ -13,8 +13,6 @@
 
 # Later
 --------------------------------------------------------------------------------
-
-* look/fix integration tests
 
 * passing complex types as parameters / post requests
 
@@ -26,8 +24,6 @@
   pickups#/q/scene//Pickup
 
   /q/scene//[near($pickups)]
-
-
 
 * attribute selector
 

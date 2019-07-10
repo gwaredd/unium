@@ -2,6 +2,9 @@
 using UnityEngine;
 using System.Threading;
 
+#if UNITY_2017_3_OR_NEWER
+using UnityEngine.Networking;
+#endif
 
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
@@ -87,6 +90,28 @@ namespace gw.unium
 
         static void DownloadFileWWW( RequestAdapter req, string filepath )
         {
+#if UNITY_2017_3_OR_NEWER
+
+            var www = UnityWebRequest.Get( filepath );
+            var asyncOp = www.SendWebRequest();
+
+            while( !asyncOp.isDone )
+            {
+                Thread.Sleep( 10 );
+            }
+
+            if( www.isNetworkError || www.isHttpError )
+            {
+                req.Reject( ResponseCode.InternalServerError );
+            }
+            else
+            {
+                req.SetContentType( GetMimeType( filepath ) );
+                req.Respond( www.downloadHandler.data );
+            }
+
+#else
+
             var data = new WWW( filepath );
 
             while( !data.isDone )
@@ -103,6 +128,7 @@ namespace gw.unium
             {
                 req.Reject( ResponseCode.InternalServerError );
             }
+#endif
         }
 
 

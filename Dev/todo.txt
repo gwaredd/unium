@@ -2,7 +2,6 @@
 --------------------------------------------------------------------------------
 
 * mocha example
-* fix deprecation warning in android WWW
 * update asset store version
 
 

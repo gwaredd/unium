@@ -41,6 +41,5 @@ glob.sync( 'build/static/css/*.css').forEach rebase
 info 'copy to', dest
 fs.removeSync dest
 fs.copySync 'build', dest
-glob.sync( `#{examples}*.html` ).forEach rmf
 
 glob.sync( examples ).forEach cpf

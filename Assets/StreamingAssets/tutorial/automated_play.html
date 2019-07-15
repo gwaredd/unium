@@ -1,0 +1,187 @@
+<!-- --------------------------------------------------------------------------------
+  Bind to the debug event to watch the game debug menu
+  -------------------------------------------------------------------------------- -->
+<html>
+  <head>
+    <title>Unium Automated Play Example</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" />
+  </head>
+  <style>
+    body
+    {
+      margin-top: 100px;
+    }
+  </style>
+  <body>
+
+    <!-- --------------------------------------------------------------------------------
+      UI
+      -------------------------------------------------------------------------------- -->
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Unium Automated Play Example</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">About</h3>
+        </div>
+        <div class="panel-body">
+          This is more involved example that demonstrates automated play using couroutines (what JavaScript calls generators for some unfathomable reason and probably best left as a mystery ;)
+        </div>
+      </div>
+      
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Debug Output</h3>
+        </div>
+        <div class="panel-body">
+          <pre id='output'></pre>
+        </div>
+      </div>
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Code</h3>
+        </div>
+        <div class="panel-body">
+          <div id="editor" style='height:800px'></div>
+        </div>
+      </div>
+    </div>      
+
+
+    <!-- --------------------------------------------------------------------------------
+      Code
+      -------------------------------------------------------------------------------- -->
+
+<script id='sample' type="text/javascript">
+function Log( txt ) {
+  document.getElementById( 'output' ).innerHTML += txt + "\n";
+}
+
+
+var itr = null; // our 'generator' iterator
+var ws  = null; // the WebSocket
+
+// connect to game, coroutine continues on connection or throws an error
+
+function* Connect( url ) {
+  ws = new WebSocket( url );
+  ws.onopen     = () => itr.next();
+  ws.onerror    = () => itr.throw( "Failed to connect" );
+  ws.onmessage  = (m) => {
+    var msg = JSON.parse( m.data );
+    if( msg.error ) {
+      itr.throw( msg.error );
+    } else {
+      itr.next( msg );
+    }
+  };
+  yield;
+}
+
+// send query to game and return response
+
+function* Get( id, url ) {
+  var msg = { id:id, q:url };
+  ws.send( JSON.stringify( msg ));
+  return yield;
+}
+
+// tutorial play script
+
+function* PlayTutorial() {
+
+  var timeout;
+  var onTimeOut = () => itr.throw( "timed out" );
+
+  try {
+    var url = "ws://localhost:8342/ws";
+
+    Log( "Connecting to " + url );
+    yield* Connect( url );
+
+    Log( "Connected to game, checking we are in the tutorial scene" );
+    var about = (yield* Get( "about", "/about" ));
+    if( !about || !about.data || about.data.Scene != 'Tutorial' ) {
+      throw new Error( "Not running the tutorial scene" );
+    }
+    
+    Log( "Reload scene" );
+    var scene = (yield* Get( "reload", "/utils/scene/Tutorial" ));
+    if( !scene || !scene.data ) {
+      throw new Error( "Failed to load scene" );
+    }
+
+    Log( "Scene reloaded, collecting pickups" );
+    yield* Get( "onpickup", "/bind/scene/Game.Tutorial.OnPickupCollected" );
+
+    while( true ) {
+
+      // get position of first pickups
+      var pos = (yield* Get( "pos", "/q/scene/Game/Pickup[0].Transform.position" ));
+      if( !pos || !pos.data || pos.data.length === 0 ) {
+        break;
+      }
+
+      // move towards pickup
+      pos = JSON.stringify( pos.data[0] );
+      Log( "Collecting pickup at " + pos );
+
+      yield* Get( "moveto", "/q/scene/Game/Player.Player.MoveTo(" + pos + ")" );
+
+      timeout = setTimeout( onTimeOut, 10000 );
+      yield; // wait for onpickup event
+      clearTimeout( timeout );
+    }
+
+    Log( "Finished, all pickups collected" );
+
+  } catch(e) {
+    Log( "ERROR: " + e.toString() );
+  }
+
+  Log( "Connection closed" );
+}
+
+// kick off coroutine
+
+itr = PlayTutorial();
+itr.next();
+
+</script>
+
+
+    <!-- --------------------------------------------------------------------------------
+      do the code thing
+      -------------------------------------------------------------------------------- -->
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.7/ace.js' type='text/javascript'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.7/mode-javascript.js' type='text/javascript'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.7/theme-chrome.js' type='text/javascript'></script>
+
+    <script>
+
+      // init editor
+      var editor = ace.edit("editor")
+      editor.setTheme("ace/theme/chrome")
+      editor.getSession().setMode("ace/mode/javascript")
+
+      editor.setValue( document.getElementById( 'sample' ).innerText )
+
+      editor.setHighlightActiveLine( false )
+      editor.setReadOnly( true )
+      editor.setShowPrintMargin( false )
+      editor.selection.clearSelection()
+
+    </script>
+
+  </body>
+</html>

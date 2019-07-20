@@ -1,4 +1,5 @@
 [Ll]ibrary/
+[Ll]ogs/
 [Tt]emp/
 [Tt]mp/
 [Oo]bj/
@@ -53,5 +54,6 @@ node_modules
 yarn-error.log
 npm-error.log
 
-# tools
-checkout.bat
+__pycache__
+.pytest_cache
+node_modules

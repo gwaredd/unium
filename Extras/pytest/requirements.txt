@@ -1,0 +1,5 @@
+async_timeout
+pytest
+pytest-asyncio
+requests
+websockets

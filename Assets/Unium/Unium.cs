@@ -18,7 +18,7 @@ namespace gw.unium
     {
         public delegate void EventDelegate( object data );
 
-        public static readonly Version  Version         = new Version( 1, 0, 2 );
+        public static readonly Version  Version         = new Version( 1, 0, 3 );
         public static Router            RoutesHTTP      = new Router();
         public static Router            RoutesSocket    = new Router();
         public static Root              Root            = new Root();

@@ -20,6 +20,7 @@ rebase = (f,alt) ->
 rmf 'build/service-worker.js'
 glob.sync( 'build/*manifest*' ).forEach rmf
 glob.sync( 'build/static/css/*.map' ).forEach rmf
+glob.sync( 'build/static/js/*.map' ).forEach rmf
 
 rebase 'build/index.html'
 glob.sync( 'build/static/css/*.css').forEach rebase

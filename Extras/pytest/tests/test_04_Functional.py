@@ -13,9 +13,10 @@ async def test_webSocket( unium_socket ):
   # connect to the game
   async with websockets.connect( unium_socket ) as ws:
 
+    # use the WebsocketHelper to simplify the websocket stuff
     u = unium.WebsocketHelper( ws )
 
-    # check we have the unium project 
+    # check this it the unium executable
     about = await u.get( "/about" )
     assert about[ "Product" ] == "unium"
 
@@ -32,7 +33,7 @@ async def test_webSocket( unium_socket ):
     # register for OnPickupCollected events
     await u.bind( "/scene/Game.Tutorial.OnPickupCollected" )
 
-    # move to each pickup
+    # collect the pickups
     for pos in pickups:
       await u.get( f"/q/scene/Game/Player.Player.MoveTo({pos})" )
       await u.wait_for( "OnPickupCollected", timeout=10.0 )

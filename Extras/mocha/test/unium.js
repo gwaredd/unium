@@ -1,6 +1,7 @@
 // a class to make the websocket interface a little more test friendly
+// by providing a promise/async version of the websocket interface
 
-const chai      = require('chai');
+const chai      = require( 'chai' );
 const WebSocket = require( 'ws' );
 
 const { expect } = chai;
@@ -14,8 +15,10 @@ module.exports = class UniumHelper {
     this._once   = {};
   }
 
+  // async connect
+
   connect( uri ) {
-    return new Promise( (resolve,reject) => {
+    return new Promise( (resolve, reject) => {
       this.disconnect();
       this.ws = new WebSocket( uri );
       this.ws.on( 'open', resolve );
@@ -31,6 +34,8 @@ module.exports = class UniumHelper {
     }
   }
 
+
+  // when a message is received, invoke any handlers registered for this event
 
   onMessage( msg ) {
 
@@ -50,58 +55,8 @@ module.exports = class UniumHelper {
       delete this._once[ id ];
     }
   }
-  
-  wait_for( msg, timeout = 2 ) {
-    return new Promise( (resolve,reject) => {
-      const timeoutHandle = setTimeout( () => reject( 'timeout out' ), timeout * 1000 );
-      this.once( msg, (data) => {
-        clearTimeout( timeoutHandle );
-        resolve( data );
-      });
-    });
-  }
 
-  async send( uri, name ) {
-
-    const msg = {
-      id: name || `m${this.next_id++}`,
-      q: uri
-    };
-
-    this.ws.send( JSON.stringify( msg ) )
-
-    return msg.id;
-  }
-
-  async get( uri, timeout ) {
-
-    const mid = await this.send( uri );
-    const msg = await this.wait_for( mid, timeout );
-
-    expect( msg ).to.not.be.null;
-
-    msg.should.have.property( 'id' );
-    msg.should.not.have.property( 'error' );
-    msg.should.have.property( 'data' );
-    msg.id.should.equal( mid );
-
-    return msg.data;
-  }
-
-  async bind( uri, name ) {
-
-    const mid = name || uri.split('.').pop();
-
-    await this.send( `/bind${uri}`, mid );
-    const res = await this.wait_for( mid );
-
-    expect( res ).to.not.be.null;
-    res.should.have.property( 'id' );
-    res.should.not.have.property( 'error' );
-    res.should.have.property( 'info' );
-
-    return res;
-  }
+  // add event handlers
 
   on( event, fn ) {
     if( event in this._on ) {
@@ -117,5 +72,62 @@ module.exports = class UniumHelper {
     } else {
       this._once[ event ] = [ fn ];
     }
+  }
+
+  // send message, return message id
+
+  async send( uri, id ) {
+    const msg = {
+      id: id || `m${this.next_id++}`,
+      q: uri
+    };
+    this.ws.send( JSON.stringify( msg ) )
+    return msg.id;
+  }
+
+  // wait until we receive a message with a given id
+  
+  wait_for( id, timeout = 2 ) {
+    return new Promise( (resolve,reject) => {
+      const timeoutHandle = setTimeout( () => reject( 'timeout out' ), timeout * 1000 );
+      this.once( id, (data) => {
+        clearTimeout( timeoutHandle );
+        resolve( data );
+      });
+    });
+  }
+
+  // send a query and result the result (like a HTTP get)
+
+  async get( uri, timeout = 2 ) {
+
+    const id  = await this.send( uri );
+    const res = await this.wait_for( id, timeout );
+
+    expect( res ).to.not.be.null;
+    res.should.have.property( 'id' );
+    res.id.should.equal( id );
+    res.should.not.have.property( 'error' );
+    res.should.have.property( 'data' );
+
+    return res.data;
+  }
+  
+  // convenient function to binding to events
+  // use event name as id unless given on
+
+  async bind( uri, name ) {
+
+    const id = name || uri.split('.').pop();
+
+    await this.send( `/bind${uri}`, id );
+    const res = await this.wait_for( id );
+
+    expect( res ).to.not.be.null;
+    res.should.have.property( 'id' );
+    res.should.not.have.property( 'error' );
+    res.should.have.property( 'info' );
+
+    return res;
   }
 }

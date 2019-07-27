@@ -4,13 +4,11 @@ const UniumHelper = require( './unium' );
 
 context( 'An example functional test', () => {
  
-  let u = null;
+  const u = new UniumHelper();
 
   test( 'Check we can run around the tutorial level and collect all the pickups', async function() {
 
     this.timeout( 20000 )
-
-    u = new UniumHelper();
 
     await u.connect( config.ws );
 
@@ -36,20 +34,16 @@ context( 'An example functional test', () => {
     for( var pos of pickups ) {
       const p = JSON.stringify( pos );
       await u.get( `/q/scene/Game/Player.Player.MoveTo(${p})` );
-      await u.wait_for( "OnPickupCollected", 10.0 );
+      await u.wait_for( "OnPickupCollected", 10 );
     }
 
     // check there are no more pickups left in the level
     const pickups_remaining = await u.get( "/q/scene/Game/Pickup.name" );
     pickups_remaining.length.should.equal( 0 );
-
   });
 
   after( () => {
-    if(u) {
-      u.disconnect();
-      u = null;
-    }
+    u.disconnect();
   });
 
 });

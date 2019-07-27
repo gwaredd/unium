@@ -1,8 +1,9 @@
-// ensure all tests have access to should
+// global before
 
-// TODO: wrap in beforeAll()?
-
-require( 'chai' ).should();
+before( () => {
+  // ensure all tests have access to 'should'
+  require( 'chai' ).should();
+})
 
 // test config parameters
 

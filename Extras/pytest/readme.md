@@ -9,16 +9,13 @@ Examples and scaffolding for tests written in python using the [pytest](https://
 
 ## Running the tests
 
-Ensure you have everything installed
+Install dependencies
 
   ```
   pip install -r requirements.txt
   ```
 
-To run the tests, start the tutorial scene in the unity editor.
+Run tests
 
-Then run
-
-```
-pytest
-```
+  * Start the tutorial level in the editor
+  * run `pytest`

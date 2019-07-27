@@ -8,7 +8,7 @@ context( 'An example functional test', () => {
 
   test( 'Check we can run around the tutorial level and collect all the pickups', async function() {
 
-    this.timeout( 20000 )
+    this.timeout( 20 * 1000 )
 
     await u.connect( config.ws );
 
@@ -31,7 +31,7 @@ context( 'An example functional test', () => {
     await u.bind( "/scene/Game.Tutorial.OnPickupCollected" )
 
     // move towards each pickup
-    for( var pos of pickups ) {
+    for( let pos of pickups ) {
       const p = JSON.stringify( pos );
       await u.get( `/q/scene/Game/Player.Player.MoveTo(${p})` );
       await u.wait_for( "OnPickupCollected", 10 );

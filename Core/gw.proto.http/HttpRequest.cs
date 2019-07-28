@@ -196,7 +196,7 @@ namespace gw.proto.http
         {
             // check for connection upgrade headers
 
-            if( Header( "Connection" ) != "Upgrade" )
+            if( Header( "Connection" ).Contains( "Upgrade" ) == false )
             {
                 return false;
             }

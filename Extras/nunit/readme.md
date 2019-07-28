@@ -1,4 +1,4 @@
-# Nunit
+# NUnit
 
 Examples and scaffolding for tests written in C# using the [nunit](https://nunit.org/) framework.
 

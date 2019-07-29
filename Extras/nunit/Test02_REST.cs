@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,11 +17,12 @@ namespace Unium.Test
                 Assert.IsTrue( res.IsSuccessStatusCode );
 
                 var content = await res.Content.ReadAsStringAsync();
-                var about = JsonConvert.DeserializeObject<Helpers.About>( content );
+                dynamic about = JToken.Parse( content );
 
-                Assert.AreEqual( "gwaredd",  about.Company );
-                Assert.AreEqual( "unium",    about.Product );
-                Assert.AreEqual( "Tutorial", about.Scene );
+                Assert.IsNotNull( about );
+                Assert.AreEqual( "gwaredd",  (string) about.Company );
+                Assert.AreEqual( "unium",    (string) about.Product );
+                Assert.AreEqual( "Tutorial", (string) about.Scene );
             }
         }
     }

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Text;
 using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Unium.Test
 {
@@ -49,13 +50,13 @@ namespace Unium.Test
 
                 Assert.AreEqual( WebSocketMessageType.Text, recv.MessageType );
 
-                var response = Encoding.UTF8.GetString( buffer );
-                var aboutMsg = JsonConvert.DeserializeObject<Helpers.AboutMessage>( response );
-                var about    = aboutMsg.data;
+                var response  = Encoding.UTF8.GetString( buffer );
+                dynamic about = JToken.Parse( response );
 
-                Assert.AreEqual( "gwaredd",  about.Company );
-                Assert.AreEqual( "unium",    about.Product );
-                Assert.AreEqual( "Tutorial", about.Scene );
+                Assert.IsNotNull( about.data );
+                Assert.AreEqual( "gwaredd",  (string) about.data.Company );
+                Assert.AreEqual( "unium",    (string) about.data.Product );
+                Assert.AreEqual( "Tutorial", (string) about.data.Scene );
 
                 await ws.CloseAsync( WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None );
             }

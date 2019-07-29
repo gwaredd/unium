@@ -5,18 +5,11 @@ Examples and scaffolding for tests written in C# using the [nunit](https://nunit
 
 ## Prerequisites
 
-* [Visual Studio](https://visualstudio.microsoft.com/vs/) (2017+)
+* [Visual Studio](https://visualstudio.microsoft.com/vs/) (2017+, [.Net 4.6.1](https://dotnet.microsoft.com/download/visual-studio-sdks))
+
 
 ## Running the tests
 
-Install dependencies
-
-  ```
-  TODO
-  ```
-
-Run tests
-
   * Start the tutorial level in the editor
   * Open the Visual Studio solution
-  * Run `Test -> Run -> All Tests`
+  * `Test -> Run -> All Tests`

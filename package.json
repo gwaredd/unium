@@ -1,0 +1,14 @@
+{
+  "name": "com.gwaredd.unium",
+  "version": "1.0.3",
+  "displayName": "Unium",
+  "description": "Unium automation tool",
+  "unity": "2017.4",
+  "author": {
+    "name": "Gwaredd",
+    "email": "gwaredd@hotmail.com",
+    "url": "https://github.com/gwaredd/unium"
+  },
+  "dependencies": {
+  }
+}

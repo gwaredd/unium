@@ -1,14 +1,13 @@
 {
   "name": "com.gwaredd.unium",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "displayName": "Unium",
-  "description": "Unium automation tool",
+  "description": "API for external automation and tooling",
+  "license": "MIT",
   "unity": "2017.4",
   "author": {
     "name": "Gwaredd",
     "email": "gwaredd@hotmail.com",
     "url": "https://github.com/gwaredd/unium"
-  },
-  "dependencies": {
   }
 }

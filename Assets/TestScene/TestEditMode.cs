@@ -10,8 +10,10 @@ public class TestEditMode : MonoBehaviour
 {
     public static string ExecuteGQL(string queryString)
     {
-        var query = new Query(queryString, Unium.Root).Select();
-        return JsonReflector.Reflect(query.Execute());
+        // TODO: gw - temporarily ExecuteGQL test - protected class
+        //var query = new Query(queryString, Unium.Root).Select();
+        //return JsonReflector.Reflect(query.Execute());
+        return string.Empty;
     }
 }
 

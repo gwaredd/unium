@@ -7,9 +7,9 @@
     "test": "cucumber-js"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.19.2",
     "chai": "^4.2.0",
-    "cucumber": "^5.1.0",
-    "ws": "^7.1.1"
+    "cucumber": "^6.0.5",
+    "ws": "^7.2.5"
   }
 }

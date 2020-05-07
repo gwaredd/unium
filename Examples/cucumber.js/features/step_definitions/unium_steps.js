@@ -72,6 +72,12 @@ Then( 'the {string} property should be {string}', function( property, value ) {
   this.data[ property ].should.equal( value );
 });
 
+Then( 'the {string} message data should be {string}', function( property, value ) {
+  expect( this.data ).to.not.be.null;
+  this.data.should.have.property( 'data' );
+  this.data.data.should.have.property( property );
+  this.data.data[ property ].should.equal( value );
+});
 
 //--------------------------------------------------------------------------------
 // web sockets
@@ -87,7 +93,8 @@ Given( 'we have created a websocket connection', async function() {
 // send a query using the current websocket connection
 // remember the id of the message
 
-When( 'we send {string}', (uri) => {
+When( 'we send {string}', function(uri) {
+  expect( this.u ).to.not.be.undefined;
   expect( this.u ).to.not.be.null;
   this.mid = this.u.send( uri );
 });

@@ -7,6 +7,6 @@ Feature: The about endpoint using WebSockets
     Given we have created a websocket connection
     When  we send "/about"
     Then  we should receive a response
-    And   the "Product" property should be "unium"
-    And   the "Company" property should be "gwaredd"
-    And   the "Scene" property should be "Tutorial"
+    And   the "Product" message data should be "unium"
+    And   the "Company" message data should be "gwaredd"
+    And   the "Scene" message data should be "Tutorial"

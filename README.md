@@ -27,6 +27,7 @@ The tutorial is best experienced with the editor and browser side-by-side.
 
 Documentation can be found in [unium.pdf](https://github.com/gwaredd/unium/blob/master/Assets/Unium/unium.pdf). 
 
+See also the [FAQ](https://github.com/gwaredd/unium/wiki/FAQ)
 
 ### For Your Project
 

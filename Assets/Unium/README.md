@@ -12,7 +12,7 @@ This provides a flexible interface so you can remotely control and inspect your 
 
 * [github home](https://github.com/gwaredd/unium)
 * Documentation can be found in [unium.pdf](https://github.com/gwaredd/unium/blob/master/Assets/Unium/unium.pdf). 
-
+* [FAQ](https://github.com/gwaredd/unium/wiki/FAQ) is here
 
 ### Tutorial Video
 

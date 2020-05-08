@@ -42,6 +42,7 @@ namespace gw.unium
         {
             JsonReflector.Add( typeof( GameObject ),    new SerialiseGameObject() );
             JsonReflector.Add( typeof( Transform ),     new SerialiseTransform() );
+            JsonReflector.Add( typeof( Hash128 ),       new SerialiseHash128() );
         }
 
 

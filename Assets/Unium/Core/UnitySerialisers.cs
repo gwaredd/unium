@@ -126,6 +126,22 @@ namespace gw.unium
             return json.GetString();
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    // GameObject
+
+    public class SerialiseHash128 : JsonSerialiser
+    {
+        override public string Convert( object o )
+        {
+            if( o.GetType() != typeof( Hash128 ) )
+            {
+                return "null";
+            }
+
+            return "\"" + o.ToString() + "\"";
+        }
+    }
 }
 
 #endif

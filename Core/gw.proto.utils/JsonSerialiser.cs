@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace gw.proto.utils
@@ -100,7 +101,7 @@ namespace gw.proto.utils
             }
             else if( type.IsPrimitive )
             {
-                return o.ToString();
+                return Convert.ToString( o, CultureInfo.InvariantCulture );
             }
 
             return EscapedString( o.ToString() );

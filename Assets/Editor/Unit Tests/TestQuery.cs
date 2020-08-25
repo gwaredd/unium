@@ -86,7 +86,7 @@ public class TestQuery
         var root = new Dictionary<string,object>() {
             { "a", new { name = "childA", v = new { a = 3 } } },
             { "b", new { name = "childB", v = new { a = 4 } } },
-            { "c", new { name = "childC", v = new { a = 5 } } },
+            { "c (Clone)", new { name = "childC", v = new { a = 5 } } },
         };
 
         List<object> r;
@@ -108,6 +108,9 @@ public class TestQuery
         Assert.AreEqual( 1, r.Count );
         Assert.AreEqual( r[ 0 ], "childC" );
 
+        r = new Query( "/c (Clone).name", root ).Select().Execute();
+        Assert.AreEqual( 1, r.Count );
+        Assert.AreEqual( r[ 0 ], "childC" );
 
         // where clause
 
@@ -128,6 +131,12 @@ public class TestQuery
 
         r = new Query( "/a.x", root ).Select().Execute();
         Assert.AreEqual( 0, r.Count );
+
+        r = new Query( "/c (Clone).x", root ).Select().Execute();
+        Assert.AreEqual( 0, r.Count );
+
+        r = new Query( "/x (Clone).name", root ).Select().Execute();
+        Assert.AreEqual( 0, r.Count );
     }
 
 
@@ -138,7 +147,7 @@ public class TestQuery
     {
         var root = new Dictionary<string,TestObject>() {
             { "a", new TestObject() },
-            { "b", new TestObject() },
+            { "b (Clone)", new TestObject() },
         };
 
         List<object> r;
@@ -158,12 +167,16 @@ public class TestQuery
         Assert.AreEqual( typeof( string ), r[ 0 ].GetType() );
         Assert.AreEqual( "fish", r[ 0 ] );
 
+        r = new Query( "/b (Clone).prop=5", root ).Select().Execute();
+        Assert.AreEqual( 1, r.Count );
+        Assert.AreEqual( r[ 0 ], 5 );
+
         // set multiple
 
         r = new Query( "/*.v=5", root ).Select().Execute();
         Assert.AreEqual( 2, r.Count );
         Assert.AreEqual( 5, root[ "a" ].v );
-        Assert.AreEqual( 5, root[ "b" ].v );
+        Assert.AreEqual( 5, root[ "b (Clone)" ].v );
 
         // not found
 
@@ -190,7 +203,7 @@ public class TestQuery
     {
         var root = new Dictionary<string,TestObject>() {
             { "a", new TestObject() },
-            { "b", new TestObject() },
+            { "b (Clone)", new TestObject() },
         };
 
         List<object> r;
@@ -198,6 +211,10 @@ public class TestQuery
         // invoke 1
 
         r = new Query( "/a.Seven()", root ).Select().Execute();
+        Assert.AreEqual( 1, r.Count );
+        Assert.AreEqual( r[ 0 ], 7 );
+
+        r = new Query( "/b (Clone).Seven()", root ).Select().Execute();
         Assert.AreEqual( 1, r.Count );
         Assert.AreEqual( r[ 0 ], 7 );
 
@@ -246,22 +263,26 @@ public class TestQuery
                             new TestObject( "aaa" ),
                             new TestObject( "bbb" ),
                             new TestObject( "ccc", new TestObject[] { new TestObject( "dddd", new TestObject[] { new TestObject( "dddd" ) } ) } ),
+                            new TestObject( "ccc (Clone)"),
+                            new TestObject( "wierd=name"),
                         }),
                         new TestObject( "cc" ),
                     }
                 )
             },
             {
-                "b", new TestObject( "b", new TestObject[] {
+                "b (Clone)", new TestObject( "b", new TestObject[] {
                         new TestObject( "aa", new TestObject[] {
                             new TestObject( "aaa" ),
                             new TestObject( "bbb" ),
                             new TestObject( "ccc", new TestObject[] { new TestObject( "dddd" ) } ),
+                            new TestObject( "ccc (Clone)" ),
                         }),
                         new TestObject( "bb", new TestObject[] {
                             new TestObject( "aaa" ),
                             new TestObject( "bbb" ),
                             new TestObject( "ccc", new TestObject[] { new TestObject( "dddd" ) } ),
+                            new TestObject( "ccc (Clone)" ),
                         }),
                         new TestObject( "cc" ),
                     }
@@ -289,6 +310,10 @@ public class TestQuery
         Assert.AreEqual( 1, r.Count );
         Assert.AreEqual( r[ 0 ], "dddd" );
 
+        r = new Query( "/a/bb/ccc (Clone).name", root ).Select().Execute();
+        Assert.AreEqual( 1, r.Count );
+        Assert.AreEqual( r[ 0 ], "ccc (Clone)" );
+
         r = new Query( "/a/*[name='bb'].name", root ).Select().Execute();
         Assert.AreEqual( 1, r.Count );
         Assert.AreEqual( r[ 0 ], "bb" );
@@ -312,6 +337,14 @@ public class TestQuery
         r = new Query( "//[name='ccc']/dddd.name", root ).Select().Execute();
         Assert.AreEqual( 4, r.Count );
 
+        r = new Query( "/a//ccc (Clone)", root ).Select().Execute();
+        Assert.AreEqual( 1, r.Count );
+
+        r = new Query( "//ccc (Clone)", root ).Select().Execute();
+        Assert.AreEqual( 3, r.Count );
+
+        r = new Query( "/a//wierd=name", root ).Select().Execute();
+        Assert.AreEqual( 1, r.Count );
 
         // not found
 
@@ -347,12 +380,17 @@ public class TestQuery
         Assert.AreEqual( 4, r.Count );
         Assert.AreEqual( r[ 0 ], 7 );
 
+        r = new Query( "/a//ccc (Clone).Add(3,4)", root ).Select().Execute();
+        Assert.AreEqual( 1, r.Count );
+        Assert.AreEqual( r[ 0 ], 7 );
+
+        r = new Query( "/b (Clone)//dddd.Add(3,4)", root ).Select().Execute();
+        Assert.AreEqual( 2, r.Count );
+        Assert.AreEqual( r[ 0 ], 7 );
 
         // bad formatting
 
-        Assert.Throws<FormatException>( () => new Query( "/a//=7", root ) );
-        Assert.Throws<FormatException>( () => new Query( "/a//SetThis=7", root ) );
-        Assert.Throws<FormatException>( () => new Query( "/a//InvokeThis()", root ) );
+        Assert.Throws<FormatException>( () => new Query( "/a//aa.=7", root ) );
     }
 
     //----------------------------------------------------------------------------------------------------

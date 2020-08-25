@@ -50,7 +50,7 @@ namespace gw.gql
         static Regex sMatchToken = new Regex(
 
             @"(?<type>[/\.])" +
-            @"(?<name>[^\[\]\./=\(]+)?" +
+            @"(?<name>(?(?<=\/)[^\[\]\.\/]+|[^\[\]\.\/=\(]+))?" +
             @"(\[(?<where>[^\]]+)\])?" +
             @"(?<action>(=|\()(?<params>.*))?"
             , RegexOptions.Singleline
@@ -126,13 +126,6 @@ namespace gw.gql
 
                 if( match.Groups[ "action" ].Success )
                 {
-                    // actions can only be applied to attributes
-
-                    if( type != Segment.Type.Attribute )
-                    {
-                        throw new FormatException( "GQL::Query - failed to parse query, no attribute to set" );
-                    }
-
                     // get target (attribute) of action
 
                     Target = name;

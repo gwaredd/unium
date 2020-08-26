@@ -14,7 +14,7 @@ namespace gw.unium
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // unium configuration
 
-    static class Unium
+    public static class Unium
     {
         public delegate void EventDelegate( object data );
 

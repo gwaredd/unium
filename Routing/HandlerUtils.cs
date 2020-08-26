@@ -147,6 +147,19 @@ namespace gw.unium
 
         static List<string> sLog = new List<string>();
 
+#if UNITY_2019_2_OR_NEWER
+
+        [RuntimeInitializeOnLoadMethod( RuntimeInitializeLoadType.SubsystemRegistration )]
+        static void Init()
+        {
+            if( sLog != null )
+            {
+                sLog.Clear();
+            }
+        }
+
+#endif
+
         public static void LogMessage( string condition, string stackTrace, LogType type )
         {
             sLog.Add( condition );

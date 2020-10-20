@@ -74,7 +74,8 @@ namespace gw.unium
         public bool                 Rejected                    { get; private set; }
 
 
-        public override String Path                             { get { return mMessage.q; } }
+        public override String Path                             { get { return mMessage.uri; } }
+        public override string Query                            { get { return mMessage.queryParameters; } }
         public override byte[] Body                             { get { return null; } }
 
         public override void SetContentType( string mimetype )  {}

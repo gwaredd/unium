@@ -24,7 +24,10 @@ namespace gw.unium
             }
 
             public string   id;             // arbitary message identifier
-            public string   q;              // query
+            public string   q;              // full query (uri + optional query string parameters)
+            private int     queryStringIndex           { get { return q.IndexOf('?'); } }
+            public string   uri                        { get { return queryStringIndex >= 0 ? q.Substring(0, queryStringIndex) : q; } }
+            public string   queryParameters            { get { return queryStringIndex >= 0 ? q.Substring(queryStringIndex + 1) : string.Empty; } }
             public Repeat   repeat;
 
 

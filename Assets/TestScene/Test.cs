@@ -19,7 +19,7 @@ public class Test : MonoBehaviour
     {
         // check we can add routes dynamically
         // TODO: gw - temporarily remove test route - RoutesHTTP is protected
-        //Unium.RoutesHTTP.AddImmediate( "/test", ( RequestAdapter req, string path ) => req.Respond( @"{""test"":""ok""}" ) );
+        Unium.RoutesHTTP.AddImmediate( "/test", ( RequestAdapter req, string path ) => req.Respond( @"{""test"":""ok""}" ) );
 
         if( IPText != null )
         {

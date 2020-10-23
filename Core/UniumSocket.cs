@@ -157,7 +157,7 @@ namespace gw.unium
 
                 // find route
 
-                var route = Unium.RoutesSocket.Find( msg.uri );
+                var route = Unium.RoutesSocket.Find( msg.Path );
 
                 if( route == null || route.Handler == null )
                 {

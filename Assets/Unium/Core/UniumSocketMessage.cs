@@ -17,23 +17,22 @@ namespace gw.unium
 
             public class Repeat
             {
-                public int      skip    = 0;
-                public int      samples = int.MaxValue;
-                public float    freq    = 1.0f;
-                public bool     cache   = false;
+                public int   skip    = 0;
+                public int   samples = int.MaxValue;
+                public float freq    = 1.0f;
+                public bool  cache   = false;
             }
 
-            public string   id;             // arbitary message identifier
-            public string   q;              // full query (uri + optional query string parameters)
-            private int     queryStringIndex           { get { return q.IndexOf('?'); } }
-            public string   uri                        { get { return queryStringIndex >= 0 ? q.Substring(0, queryStringIndex) : q; } }
-            public string   queryParameters            { get { return queryStringIndex >= 0 ? q.Substring(queryStringIndex + 1) : string.Empty; } }
+            public string   id;                         // arbitary message identifier
+            public string   q;                          // full query ( <Path>[?<Parameters>] )
             public Repeat   repeat;
 
+            public string   Path                        { get { var i = q.IndexOf( '?' ); return i >= 0 ? q.Substring( 0, i ) : q; } }
+            public string   Parameters                  { get { var i = q.IndexOf( '?' ); return i >= 0 ? q.Substring( ++i ) : string.Empty; } }
 
             // replying to message
 
-            public UniumSocket Socket;      // bound on dispatch
+            public UniumSocket Socket;                  // bound on dispatch
 
             public void Reply( string data )            { Socket.Send( id, "data", string.IsNullOrEmpty( data ) ? "null" : data ); }
             public void Reply( object data )            { Socket.Send( id, "data", JsonReflector.Reflect( data ) ); }

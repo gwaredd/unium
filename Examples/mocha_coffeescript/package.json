@@ -7,7 +7,7 @@
     "test": "mocha ./test/*.coffee"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "chai": "^4.2.0",
     "coffeescript": "^2.5.1",
     "mocha": "^7.1.2",

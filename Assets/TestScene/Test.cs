@@ -76,4 +76,27 @@ public class Test : MonoBehaviour
             TickEvent( new { levelTime = Time.timeSinceLevelLoad } );
         }
     }
+
+    //----------------------------------------------------------------------------------------------------
+    // polymorph
+
+    public int p( int a )
+    {
+        return a;
+    }
+
+    public int p( int a, int b = 1 )
+    {
+        return a + b;
+    }
+
+    public int p2( int a )
+    {
+        return a;
+    }
+
+    public int p2( float a )
+    {
+        return (int)a + 10;
+    }
 }

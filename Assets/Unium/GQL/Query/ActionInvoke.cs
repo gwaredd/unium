@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace gw.gql
@@ -46,7 +47,7 @@ namespace gw.gql
 
                     if( ( memberType & MemberTypes.Method ) == MemberTypes.Method )
                     {
-                        method = targetType.GetMethod( actionName );
+                        method = targetType.GetMethods().Where( m => m.Name == actionName && m.GetParameters().Length == args.Length ).FirstOrDefault();
                     }
                     else if( ( memberType & MemberTypes.Event ) == MemberTypes.Event )
                     {

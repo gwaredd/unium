@@ -124,6 +124,30 @@ describe 'GQL Positive Tests', ->
 
       return true
 
+  #--------------------------------------------------------------------------------
+  it 'should be able to differentiate a polymorphic function with 1 argument',  ->
+    req
+      .get "#{ config.url }/q/scene/Game.Test.p(8)"
+      .then (res) ->
+        res.code.should.equal 200
+        body = JSON.parse res.body
+        body.should.be.an "array"
+        body.should.have.length 1
+        body.should.eql [ 8 ]
+
+        return true
+
+  it 'should be able to differentiate a polymorphic function with 2 arguments',  ->
+    req
+      .get "#{ config.url }/q/scene/Game.Test.p(7,3)"
+      .then (res) ->
+        res.code.should.equal 200
+        body = JSON.parse res.body
+        body.should.be.an "array"
+        body.should.have.length 1
+        body.should.eql [ 10 ]
+
+        return true
 
   #--------------------------------------------------------------------------------
   it 'should be able to set multiple variables', ->

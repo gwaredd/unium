@@ -47,35 +47,20 @@ Alternatively you can
 
 ### Package Manager
 
-As of `v1.0.4` you can use the unity packaging to add unium directly. The `upm` branch of the repository contains just the library setup for use with the [package manager](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@1.8/manual/index.html).
+As of `v1.0.4` you can use the unity packaging to add unium directly.
 
-There are two ways to do this, either
-
-#### Clone the branch into the Packages directory
-
-```
-cd Packages
-git clone --branch upm https://github.com/gwaredd/unium.git
-```
-
-This adds the package as a local project dependency.
-
-#### Or, add to the packages manifest
-
-Add the following dependency to your `Packages\manifest.json` file
-
+You can now [import unium as a git package using UPM](https://docs.unity3d.com/Manual/upm-git.html). With Unity 2020.1 or later, you can point to the github repository in your `Packages/manifest.json` dependencies. You can optionally pin to a specific version of unium by adding a revision or tag to this url as per the above documentation.
 
 ```
 {
   "dependencies": {
-    "com.gwaredd.unium": "https://github.com/gwaredd/unium.git#upm",
+    "com.gwaredd.unium": "https://github.com/gwaredd/unium.git?path=/Assets/Unium",
     ...
   }
 }
 ```
 
-This caches the dependency globally.
-
+For earlier versions of Unity that do not support sub folders in git dependencies, the `upm` branch of the repository contains just the library setup for use with the [package manager](https://docs.unity3d.com/Packages/com.unity.package-manager-ui@1.8/manual/index.html). Note that this version might not contain all latest fixes and improvements.
 
 ## Notes
 

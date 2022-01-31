@@ -100,7 +100,11 @@ namespace gw.unium
                 Thread.Sleep( 10 );
             }
 
+#if UNITY_2020_1_OR_NEWER
+            if( www.result != UnityWebRequest.Result.Success )
+#else
             if( www.isNetworkError || www.isHttpError )
+#endif
             {
                 req.Reject( ResponseCode.InternalServerError );
             }

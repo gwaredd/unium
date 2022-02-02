@@ -118,8 +118,7 @@ namespace gw.gql
 
                     case '\"':
                     {
-                        value.Clear();
-
+                        value.Length = 0;
                         var escape = false;
 
                         while( ++i < str.Length && ( escape || str[i] != token ) )
@@ -143,7 +142,7 @@ namespace gw.gql
                         var start = i;
                         while( ++i < str.Length && !sPunctuation.Contains( str[i] ) );
 
-                        value.Clear();
+                        value.Length = 0;
                         value.Append( str, start, i - start );
                         --i;
                     }

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace gw.gql
@@ -43,6 +44,134 @@ namespace gw.gql
 
 
         //----------------------------------------------------------------------------------------------------
+        // GQL function parameters are JSON objects, separated by commas
+        // SplitArgs - split a given parameters string into then separate argument
+
+        private static readonly HashSet<char> sPunctuation = new HashSet<char>( "\":,{}[] " );
+
+        static public string[] SplitArgs( string str )
+        {
+            var args  = new List<string>();
+            var value = new StringBuilder();
+            var depth = 0;
+            var begin = 0;
+
+            for( int i = 0; i < str.Length; i++ )
+            {
+                // get next token
+
+                var token = str[i];
+
+                // ignore whitespace (and control characters)
+
+                if( token <= ' ' )
+                {
+                    continue;
+                }
+
+                // depth == -1 means we have just created an argument
+                // therefore the only valid next token is a comma
+
+                if( depth == -1 )
+                {
+                    if( token != ',' )
+                    {
+                        throw new FormatException( "GQL::Query - bad function parameters" );
+                    }
+
+                    depth = 0;
+                    continue;
+                }
+
+                switch( token )
+                {
+                    // ignore data structure tokens - we are not a validating parser
+
+                    case ':':
+                    case ',':
+                        break;
+
+                    // keep track of data structure 'nesting' so we can figure out the end.
+                    // NB: there is no validation here, we just keep track of the brackets
+
+                    case '{':
+                    case '[':
+                    {
+                        if( ++depth == 1 )
+                        {
+                            begin = i; // the start of a JSON data structure
+                        }
+                    }
+                    break;
+
+                    case '}':
+                    case ']':
+                    {
+                        if( --depth < 0 )
+                        {
+                            throw new FormatException( "GQL::Query - bad function parameters" );
+                        }
+                    }
+                    break;
+
+                    // get string
+
+                    case '\"':
+                    {
+                        value.Clear();
+
+                        var escape = false;
+
+                        while( ++i < str.Length && ( escape || str[i] != token ) )
+                        {
+                            escape = !escape && str[i] == '\\';
+
+                            if( !escape )
+                            {
+                                value.Append( str[i] );
+                            }
+                        }
+                    }
+                    break;
+
+                    // get value
+
+                    default:
+                    {
+                        token = 'V';
+
+                        var start = i;
+                        while( ++i < str.Length && !sPunctuation.Contains( str[i] ) );
+
+                        value.Clear();
+                        value.Append( str, start, i - start );
+                        --i;
+                    }
+                    break;
+                }
+
+
+                // process token
+
+                if( depth == 0 )
+                {
+                    if( token == 'V' || token == '\"' )
+                    {
+                        args.Add( value.ToString() );
+                        depth = -1; // want comma
+                    }
+                    else if( token == '}' || token == ']' )
+                    {
+                        args.Add( str.Substring( begin, i - begin + 1 ) );
+                        depth = -1; // want comma
+                    }
+                }
+            }
+
+            return args.ToArray();
+        }
+
+        //----------------------------------------------------------------------------------------------------
         // q := /some/node.attr[x>3]/child.value
         // q := /some/node.attr[x>3]/child.value=value
         // q := /some/node.attr[x>3]/child.function(arg)
@@ -60,6 +189,8 @@ namespace gw.gql
             | RegexOptions.Compiled
             #endif
         );
+
+
 
         public void Parse( string query )
         {
@@ -93,7 +224,7 @@ namespace gw.gql
 
                     else
                     {
-                        // being recrusive find ...
+                        // being recursive find ...
 
 
                         // only available on child nodes because we don't list attr's
@@ -152,53 +283,8 @@ namespace gw.gql
                             throw new FormatException( "GQL::Query - failed to parse invoke, end of arguments not found" );
                         }
 
-                        Action = Query.Action.Invoke;
-
-                        var argsStr = p.Substring( 0, p.Length - 1 );
-
-                        var args = new List<string>();
-
-                        for( int pos = 0; pos < argsStr.Length; pos++ )
-                        {
-                            var ch = argsStr[ pos ];
-
-                            if( char.IsWhiteSpace( ch ) )
-                            {
-                                continue;
-                            }
-
-                            var start = pos;
-
-                            if( ch == '\'' || ch == '{' || ch == '"' )
-                            {
-                                var end = ch == '{' ? '}' : ch;
-
-                                while( ++pos < argsStr.Length )
-                                {
-                                    if( argsStr[ pos ] == end )
-                                    {
-                                        args.Add( argsStr.Substring( start, pos - start + 1 ) );
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                do
-                                {
-                                    if( pos == argsStr.Length || argsStr[ pos ] == ',' || char.IsWhiteSpace( argsStr[ pos ] ) )
-                                    {
-                                        args.Add( argsStr.Substring( start, pos - start ) );
-                                        break;
-                                    }
-
-                                    pos++;
-                                }
-                                while( true );
-                            }
-                        }
-
-                        Arguments = args.ToArray();
+                        Action    = Query.Action.Invoke;
+                        Arguments = SplitArgs( p.Substring( 0, p.Length - 1 ) );
                     }
 
                     // an action can only occur on the last segment
@@ -214,11 +300,11 @@ namespace gw.gql
 
                 // wildcard name match?
 
-                #if NET_2_0
+#if NET_2_0
                     Regex name_match = name.Contains( "*" ) ? new Regex( name.Replace( "*", ".*?" ), RegexOptions.Compiled ) : null;
-                #else
+#else
                     Regex name_match = name.Contains( "*" ) ? new Regex( name.Replace( "*", ".*?" ) ) : null;
-                #endif
+#endif
 
 
                 // add section to path

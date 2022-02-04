@@ -75,6 +75,8 @@ public class TestPath
         Assert.AreEqual( new string[] { "{\"name\":\"g\",\"v\":{x:1,y:1,z:1}}", "123" }, Path.SplitArgs( " {\"name\":\"g\",\"v\":{x:1,y:1,z:1}} , 123 " ) );
 
         Assert.AreEqual( new string[] { "[{x:1},{a:1,b:1},{c:[1,2,3]}]" }, Path.SplitArgs( "[{x:1},{a:1,b:1},{c:[1,2,3]}]" ) );
+
+        Assert.AreEqual( new string[] { "a b", "c d" }, Path.SplitArgs( "  a b  ,  c d  " ) );
     }
 }
 

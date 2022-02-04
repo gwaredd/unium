@@ -47,7 +47,7 @@ namespace gw.gql
         // GQL function parameters are JSON objects, separated by commas
         // SplitArgs - split a given parameters string into then separate argument
 
-        private static readonly HashSet<char> sPunctuation = new HashSet<char>( "\":,{}[] " );
+        private static readonly HashSet<char> sPunctuation = new HashSet<char>( ":,}]" );
 
         static public string[] SplitArgs( string str )
         {
@@ -107,7 +107,12 @@ namespace gw.gql
                     case '}':
                     case ']':
                     {
-                        if( --depth < 0 )
+                        if( --depth == 0 )
+                        {
+                            args.Add( str.Substring( begin, i - begin + 1 ) );
+                            depth = -1; // want comma
+                        }
+                        else if( depth < 0 )
                         {
                             throw new FormatException( "GQL::Query - bad function parameters" );
                         }
@@ -121,49 +126,40 @@ namespace gw.gql
                         value.Length = 0;
                         var escape = false;
 
-                        while( ++i < str.Length && ( escape || str[i] != token ) )
+                        while( ++i < str.Length && ( escape || str[ i ] != token ) )
                         {
-                            escape = !escape && str[i] == '\\';
+                            escape = !escape && str[ i ] == '\\';
 
                             if( !escape )
                             {
-                                value.Append( str[i] );
+                                value.Append( str[ i ] );
                             }
+                        }
+
+                        if( depth == 0 )
+                        {
+                            args.Add( value.ToString() );
+                            depth = -1; // want comma
                         }
                     }
                     break;
 
-                    // get value
+                    // value
 
                     default:
                     {
-                        token = 'V';
-
                         var start = i;
                         while( ++i < str.Length && !sPunctuation.Contains( str[i] ) );
 
-                        value.Length = 0;
-                        value.Append( str, start, i - start );
-                        --i;
+                        if( depth == 0 )
+                        {
+                            args.Add( str.Substring( start, i - start ).Trim() );
+                            depth = -1; // want comma
+                        }
+
+                        --i; // put next token back
                     }
                     break;
-                }
-
-
-                // process token
-
-                if( depth == 0 )
-                {
-                    if( token == 'V' || token == '\"' )
-                    {
-                        args.Add( value.ToString() );
-                        depth = -1; // want comma
-                    }
-                    else if( token == '}' || token == ']' )
-                    {
-                        args.Add( str.Substring( begin, i - begin + 1 ) );
-                        depth = -1; // want comma
-                    }
                 }
             }
 

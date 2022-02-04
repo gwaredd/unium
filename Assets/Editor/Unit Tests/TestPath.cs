@@ -3,6 +3,7 @@
 
 using NUnit.Framework;
 using gw.gql;
+using System;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +56,7 @@ public class TestPath
     //----------------------------------------------------------------------------------------------------
 
     [Test]
-    public void Args()
+    public void ArgsGood()
     {
         Assert.AreEqual( new string[] { }, Path.SplitArgs( "" ) );
         Assert.AreEqual( new string[] { }, Path.SplitArgs( "   " ) );
@@ -77,6 +78,14 @@ public class TestPath
         Assert.AreEqual( new string[] { "[{x:1},{a:1,b:1},{c:[1,2,3]}]" }, Path.SplitArgs( "[{x:1},{a:1,b:1},{c:[1,2,3]}]" ) );
 
         Assert.AreEqual( new string[] { "a b", "c d" }, Path.SplitArgs( "  a b  ,  c d  " ) );
+    }
+
+    [Test]
+    public void ArgsBad()
+    {
+        Assert.Throws<FormatException>( () => Path.SplitArgs( "ab ]," ) );
+        Assert.Throws<FormatException>( () => Path.SplitArgs( "a,b,{a:1}}," ) );
+        Assert.Throws<FormatException>( () => Path.SplitArgs( "]" ) );
     }
 }
 
